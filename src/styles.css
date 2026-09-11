@@ -153,3 +153,57 @@
     color: var(--color-foreground);
   }
 }
+
+/* Utilidades y movimiento del Home Logixtic */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-royal);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+}
+
+@utility anim-rise {
+  animation: logixtic-rise 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@utility anim-delay-1 {
+  animation-delay: 90ms;
+}
+
+@utility anim-delay-2 {
+  animation-delay: 160ms;
+}
+
+@keyframes logixtic-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  overflow-x: hidden;
+}
