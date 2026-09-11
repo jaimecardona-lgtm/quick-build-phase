@@ -256,7 +256,7 @@ function ProductFrame({ activeIndex }: { activeIndex: number }) {
       <div className="border-t border-neutralbrand/15 bg-white px-4 py-3">
         <p className="font-ui text-xs text-night sm:text-sm">
           <span className="mr-2 inline-block h-2 w-2 rounded-full bg-royal" aria-hidden="true" />
-          {STAGES[activeIndex].hotspot}
+          {STAGES[activeIndex]?.hotspot}
         </p>
       </div>
     </div>
@@ -303,7 +303,7 @@ export function Journey() {
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible) {
-          const index = Number((visible.target as HTMLElement).dataset.index);
+          const index = Number((visible.target as HTMLElement).dataset["index"]);
           if (!Number.isNaN(index)) setActive(index);
         }
       },
@@ -385,7 +385,7 @@ export function Journey() {
                 aria-valuemin={1}
                 aria-valuemax={STAGES.length}
                 aria-valuenow={active + 1}
-                aria-valuetext={`Etapa ${active + 1} de ${STAGES.length}: ${STAGES[active].kicker}`}
+                aria-valuetext={`Etapa ${active + 1} de ${STAGES.length}: ${STAGES[active]?.kicker ?? ""}`}
                 className="h-1.5 w-full overflow-hidden rounded-full bg-mist"
               >
                 <div
