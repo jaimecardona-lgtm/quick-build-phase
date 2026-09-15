@@ -26,10 +26,14 @@
   --color-orangebrand: oklch(0.708 0.171 51.1);
   --color-neutralbrand: oklch(0.577 0.033 259.1);
   --color-mist: oklch(0.968 0.005 247.9);
+  --color-skybrand: oklch(0.79 0.13 238);
+  --color-on-dark: oklch(0.985 0.004 247);
   --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
   --shadow-frame: 0 24px 60px -24px oklch(0.291 0.06 258.3 / 0.35);
   --shadow-tag: 0 8px 20px -8px oklch(0.291 0.06 258.3 / 0.45);
+  --shadow-product: 0 32px 90px -32px oklch(0.12 0.07 252 / 0.62);
+  --shadow-signal: 0 0 28px oklch(0.834 0.163 84.2 / 0.38);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -207,3 +211,87 @@ body {
   font-family: var(--font-ui);
   overflow-x: hidden;
 }
+
+/* Logixtic connected-operation experience */
+.hero-shell {
+  background:
+    radial-gradient(circle at 72% 38%, color-mix(in oklab, var(--color-royal) 30%, transparent), transparent 34%),
+    linear-gradient(135deg, var(--color-night), color-mix(in oklab, var(--color-night) 76%, var(--color-royal)));
+}
+
+.hero-grid,
+.journey-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.13;
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-on-dark) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-on-dark) 18%, transparent) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, transparent, black 28%, black 72%, transparent);
+}
+
+.hero-world { position: absolute; inset: 0; overflow: hidden; opacity: 0.82; }
+.hero-routes { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 0 8px color-mix(in oklab, var(--color-skybrand) 35%, transparent)); }
+.route-line { fill: none; stroke: color-mix(in oklab, var(--color-skybrand) 55%, transparent); stroke-width: 1; stroke-dasharray: 5 12; animation: route-drift 28s linear infinite; }
+.route-line-b { opacity: 0.5; animation-duration: 34s; animation-direction: reverse; }
+.route-line-c { opacity: 0.34; animation-duration: 23s; }
+.map-node { fill: var(--color-skybrand); transform-box: fill-box; transform-origin: center; animation: node-pulse 4.8s ease-in-out infinite; }
+.map-node-2 { animation-delay: -1.8s; }.map-node-3 { animation-delay: -3.2s; }
+.hero-orbit { position: absolute; width: 58vw; aspect-ratio: 1; border: 1px solid color-mix(in oklab, var(--color-skybrand) 12%, transparent); border-radius: 50%; }
+.hero-orbit-a { right: -20vw; top: -34vw; animation: orbit-turn 35s linear infinite; }
+.hero-orbit-b { left: -34vw; bottom: -45vw; animation: orbit-turn 29s linear infinite reverse; }
+.cargo-marker { position: absolute; color: color-mix(in oklab, var(--color-on-dark) 32%, transparent); filter: drop-shadow(0 0 12px color-mix(in oklab, var(--color-skybrand) 26%, transparent)); }
+.cargo-marker svg { width: 26px; height: 26px; stroke-width: 1; }
+.cargo-ship { left: 10%; bottom: 17%; animation: vessel-drift 31s ease-in-out infinite; }
+.cargo-plane { right: 13%; top: 15%; animation: plane-drift 27s ease-in-out infinite; }
+.cargo-truck { right: 43%; bottom: 14%; animation: truck-drift 22s ease-in-out infinite; }
+.data-pulse { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--color-amber); box-shadow: 0 0 20px var(--color-amber); animation: data-travel 18s linear infinite; }
+.data-pulse-a { left: 12%; top: 33%; }.data-pulse-b { left: 55%; top: 21%; animation-delay: -8s; animation-duration: 25s; }.data-pulse-c { left: 76%; top: 66%; animation-delay: -14s; animation-duration: 31s; }
+.product-glow { position: absolute; inset: 12% 8% -4%; background: color-mix(in oklab, var(--color-royal) 42%, transparent); filter: blur(80px); }
+.hero-product { animation: product-float 11s ease-in-out infinite; }
+.hero-status { position: absolute; display: none; align-items: center; gap: 8px; border: 1px solid color-mix(in oklab, var(--color-on-dark) 16%, transparent); border-radius: 6px; background: color-mix(in oklab, var(--color-night) 82%, transparent); padding: 9px 12px; color: color-mix(in oklab, var(--color-on-dark) 78%, transparent); font: 500 11px var(--font-ui); backdrop-filter: blur(12px); box-shadow: var(--shadow-tag); }
+.hero-status span { width: 6px; height: 6px; border-radius: 50%; background: var(--color-amber); box-shadow: 0 0 12px var(--color-amber); }
+.hero-status-a { left: -4%; bottom: 14%; }.hero-status-b { right: -2%; top: 19%; animation-delay: -2s; }
+.hero-reveal { animation: hero-reveal 900ms cubic-bezier(.2,.7,.2,1) both; }.hero-delay-1 { animation-delay: 80ms; }.hero-delay-2 { animation-delay: 180ms; }.hero-delay-3 { animation-delay: 310ms; }.hero-delay-4 { animation-delay: 430ms; }.hero-delay-5 { animation-delay: 560ms; }
+.animate-soft-bounce { animation: soft-bounce 2.8s ease-in-out infinite; }
+
+.section-kicker { font: 600 11px var(--font-ui); letter-spacing: .16em; text-transform: uppercase; color: var(--color-royal); }
+.section-title { max-width: 860px; font: 600 clamp(2rem, 4vw, 3.75rem)/1.08 var(--font-display); letter-spacing: 0; color: var(--color-night); }
+.section-lead { max-width: 680px; font: 400 clamp(1rem, 1.5vw, 1.125rem)/1.7 var(--font-ui); color: var(--color-neutralbrand); }
+.reveal-item { opacity: 0; transform: translateY(24px); transition: opacity 850ms ease, transform 850ms cubic-bezier(.2,.7,.2,1); }
+.reveal-item[data-visible="true"] { opacity: 1; transform: translateY(0); }
+.fragment-map { position: relative; height: 430px; max-width: 1050px; margin-inline: auto; }
+.fragment-line { fill: none; stroke: color-mix(in oklab, var(--color-royal) 45%, transparent); stroke-width: 1.5; stroke-dasharray: 4 8; animation: route-drift 24s linear infinite; }
+.fragment-node { position: absolute; z-index: 2; min-width: 110px; border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-background); padding: 11px 15px; text-align: center; font: 500 13px var(--font-ui); color: var(--color-night); box-shadow: var(--shadow-tag); }
+.fragment-node-1 { left: 5%; top: 14%; }.fragment-node-2 { left: 42%; top: 4%; }.fragment-node-3 { right: 3%; top: 16%; }.fragment-node-4 { left: 9%; bottom: 12%; }.fragment-node-5 { left: 43%; bottom: 3%; }.fragment-node-6 { right: 7%; bottom: 13%; }.fragment-node-7 { left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0; pointer-events: none; }
+.fragment-core { position: absolute; z-index: 3; left: 50%; top: 50%; display: flex; width: 200px; min-height: 110px; transform: translate(-50%,-50%); flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; background: var(--color-night); box-shadow: var(--shadow-product); }
+.fragment-core img { width: 118px; height: auto; }.fragment-core span { margin-top: 9px; font: 400 11px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 62%, transparent); }
+.platform-step { opacity: .42; transition: opacity 450ms ease, border-color 450ms ease, transform 450ms ease; }.platform-step[data-on="true"] { opacity: 1; border-color: var(--color-royal); transform: translateX(6px); }
+.journey-grid { opacity: .09; mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent); }
+.journey-track { position: absolute; top: 24px; left: 12%; right: 12%; display: none; height: 1px; overflow: hidden; background: color-mix(in oklab, var(--color-on-dark) 18%, transparent); }
+.journey-track span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, var(--color-skybrand), var(--color-amber), transparent); transform: translateX(-100%); animation: track-light 8s ease-in-out infinite; }
+.journey-stop { display: flex; width: 48px; height: 48px; align-items: center; justify-content: center; border: 1px solid color-mix(in oklab, var(--color-skybrand) 46%, transparent); border-radius: 50%; background: var(--color-night); color: var(--color-skybrand); box-shadow: 0 0 26px color-mix(in oklab, var(--color-skybrand) 16%, transparent); }
+.final-cta { background: linear-gradient(135deg, color-mix(in oklab, var(--color-royal) 88%, var(--color-night)), var(--color-royal)); }
+.final-lines { position: absolute; inset: 0; opacity: .35; background: repeating-radial-gradient(ellipse at 50% 115%, transparent 0 74px, color-mix(in oklab, var(--color-on-dark) 17%, transparent) 75px 76px); animation: final-pulse 9s ease-in-out infinite; }
+
+@media (min-width: 768px) { .hero-status { display: flex; }.journey-track { display: block; } }
+@media (max-width: 767px) {
+  .hero-world { opacity: .5; }.cargo-truck, .cargo-plane, .data-pulse-c { display: none; }
+  .hero-product { animation: none; }.fragment-map { height: 520px; }.fragment-map svg { display: none; }
+  .fragment-node { min-width: 92px; padding: 9px 10px; font-size: 11px; }.fragment-node-1 { left: 0; top: 6%; }.fragment-node-2 { left: 50%; top: 0; transform: translateX(-50%); }.fragment-node-3 { right: 0; top: 8%; }.fragment-node-4 { left: 0; bottom: 8%; }.fragment-node-5 { left: 50%; bottom: 0; transform: translateX(-50%); }.fragment-node-6 { right: 0; bottom: 9%; }
+  .fragment-core { width: 174px; min-height: 104px; }
+}
+
+@keyframes route-drift { to { stroke-dashoffset: -170; } }
+@keyframes node-pulse { 0%,100% { opacity: .28; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.7); } }
+@keyframes orbit-turn { to { transform: rotate(360deg); } }
+@keyframes vessel-drift { 0%,100% { transform: translate(0,0); } 50% { transform: translate(90px,-18px); } }
+@keyframes plane-drift { 0%,100% { transform: translate(0,0) rotate(-10deg); } 50% { transform: translate(-120px,48px) rotate(-4deg); } }
+@keyframes truck-drift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(75px); } }
+@keyframes data-travel { 0% { transform: translate(-80px,80px); opacity: 0; } 15%,80% { opacity: .85; } 100% { transform: translate(220px,-120px); opacity: 0; } }
+@keyframes product-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes hero-reveal { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes soft-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+@keyframes track-light { 0%,15% { transform: translateX(-100%); } 75%,100% { transform: translateX(100%); } }
+@keyframes final-pulse { 0%,100% { transform: scale(1); opacity: .24; } 50% { transform: scale(1.04); opacity: .42; } }
