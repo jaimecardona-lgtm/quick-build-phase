@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Bot, Box, FileText, MapPin, Plane, Ship, Truck } from "lucide-react";
+import { ArrowRight, Bot, Box, MapPin, Ship, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDemoUrl } from "@/hooks/use-demo-url";
 
