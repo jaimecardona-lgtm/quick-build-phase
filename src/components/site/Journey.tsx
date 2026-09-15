@@ -76,7 +76,7 @@ function Platform() {
           <h2 className="section-title mt-4">Una plataforma. <span className="text-royal">Toda la operación.</span></h2>
           <p className="section-lead mt-5">La misma información acompaña el trabajo comercial, operativo y documental, desde la oportunidad hasta el margen real.</p>
         </div>
-        <div className="mt-16 lg:grid lg:grid-cols-[35%_65%] lg:gap-14">
+        <div className="mt-16 lg:grid lg:grid-cols-[minmax(0,35%)_minmax(0,1fr)] lg:gap-14">
           <div>
             {productStages.map((stage, index) => (
               <article key={stage.label} ref={(node) => { refs.current[index] = node; }} data-stage={index} data-on={active === index} className="platform-step border-l border-border py-8 pl-6 lg:min-h-[40vh] lg:py-12">
