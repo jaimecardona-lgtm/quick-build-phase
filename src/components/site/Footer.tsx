@@ -55,10 +55,18 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-3 border-t border-on-dark/10 pt-6 font-ui text-xs text-on-dark/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Logixtic®. Todos los derechos reservados.</p>
           <div className="flex gap-6">
-            <a href="/politica-de-privacidad" className="focus-ring rounded-md hover:text-on-dark">
+            <a
+              href="https://www.logixtic.co/politica-de-privacidad"
+              rel="noopener noreferrer"
+              className="focus-ring rounded-md hover:text-on-dark"
+            >
               Política de privacidad
             </a>
-            <a href="/terminos-y-condiciones" className="focus-ring rounded-md hover:text-on-dark">
+            <a
+              href="https://www.logixtic.co/terminos-y-condiciones"
+              rel="noopener noreferrer"
+              className="focus-ring rounded-md hover:text-on-dark"
+            >
               Términos y condiciones
             </a>
           </div>
