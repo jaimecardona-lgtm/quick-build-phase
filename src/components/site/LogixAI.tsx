@@ -1,13 +1,22 @@
 import { FileText, Search } from "lucide-react";
 import { logix } from "@/lib/content";
-import logixAsset from "@/assets/logix1.jpeg.asset.json";
+import logixAsset from "@/assets/logix-transparent.png.asset.json";
+
+const sources = ["Clientes", "Prospectos", "DO", "Pedidos", "Operaciones", "Documentos"];
 
 export function LogixAI() {
   return (
     <section id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
       <div className="mx-auto grid max-w-[1320px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[minmax(0,30%)_minmax(0,1fr)]">
-        <div data-reveal className="reveal-item logix-portrait">
-          <img src={logixAsset.url} alt="Logix" width={1024} height={1024} loading="lazy" />
+        <div data-reveal className="reveal-item logix-orbit">
+          <div className="logix-portrait">
+            <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
+          </div>
+          <ul aria-label="Fuentes que Logix puede consultar">
+            {sources.map((source, index) => (
+              <li key={source} className={`logix-node logix-node-${index + 1}`}>{source}</li>
+            ))}
+          </ul>
         </div>
 
         <div data-reveal className="reveal-item">
@@ -29,7 +38,7 @@ export function LogixAI() {
             <p className="mt-4 border-t border-on-dark/10 pt-4 font-ui text-sm leading-relaxed text-on-dark/70">
               {logix.answer}
             </p>
-            <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+            <ul className="logix-answer-details mt-5">
               {logix.answerItems.map((item, index) => (
                 <li key={item} className="logix-result-row" style={{ transitionDelay: `${index * 80}ms` }}>
                   <FileText className="h-4 w-4 text-skybrand" aria-hidden="true" />

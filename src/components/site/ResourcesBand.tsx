@@ -1,8 +1,9 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, Library, Video } from "lucide-react";
 import { resourceLinks } from "@/lib/content";
 import { track } from "@/lib/analytics";
 
 export function ResourcesBand() {
+  const icons = [FileText, BookOpen, Video, Library];
   return (
     <section id="recursos" aria-labelledby="recursos-title" className="surface-deep border-y border-on-dark/10 py-14 md:py-16">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
@@ -11,25 +12,29 @@ export function ResourcesBand() {
             Recursos para seguir avanzando
           </h2>
           <ul className="grid flex-1 gap-3 sm:grid-cols-2 lg:max-w-3xl lg:grid-cols-4">
-            {resourceLinks.map((item) => (
+            {resourceLinks.map((item, index) => {
+              const Icon = icons[index] ?? FileText;
+              return (
               <li key={item.label}>
                 {item.available ? (
                   <a
                     href={item.href}
                     onClick={() => track("resource_link_click", { resource: item.label, section_id: "recursos" })}
-                    className="focus-ring group flex min-h-[44px] items-start justify-between gap-3 rounded-md border border-on-dark/12 bg-on-dark/5 px-4 py-3 transition-colors hover:border-skybrand/40 hover:bg-on-dark/8"
+                    className="focus-ring resource-cover group"
                   >
+                    <Icon className="resource-icon" aria-hidden="true" />
                     <span>
                       <span className="block font-ui text-sm font-medium text-on-dark">{item.label}</span>
                       <span className="mt-0.5 block font-ui text-xs text-on-dark/55">{item.description}</span>
                     </span>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-skybrand transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />
+                    <ArrowUpRight className="resource-access" aria-hidden="true" />
                   </a>
                 ) : (
                   <span
                     aria-disabled="true"
-                    className="flex min-h-[44px] cursor-not-allowed items-start justify-between gap-3 rounded-md border border-on-dark/8 bg-on-dark/3 px-4 py-3 opacity-55"
+                    className="resource-cover resource-disabled"
                   >
+                    <Icon className="resource-icon" aria-hidden="true" />
                     <span>
                       <span className="block font-ui text-sm font-medium text-on-dark">{item.label}</span>
                       <span className="mt-0.5 block font-ui text-xs text-on-dark/55">{item.description}</span>
@@ -37,7 +42,7 @@ export function ResourcesBand() {
                   </span>
                 )}
               </li>
-            ))}
+            )})}
           </ul>
         </div>
       </div>

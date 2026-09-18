@@ -13,8 +13,8 @@ export function Transformation() {
           <p className="section-lead-dark mt-5">{transformation.body}</p>
         </div>
 
-        <div className="mt-14 grid gap-5 lg:grid-cols-2">
-          <article data-reveal className="reveal-item panel-dark">
+        <div data-reveal className="reveal-item transformation-rail mt-14">
+          <article className="transformation-before">
             <h3 className="font-display text-lg font-semibold text-on-dark/80">Antes</h3>
             <ul className="mt-5 space-y-3">
               {transformation.before.map((item) => (
@@ -25,7 +25,10 @@ export function Transformation() {
               ))}
             </ul>
           </article>
-          <article data-reveal className="reveal-item panel-dark panel-active">
+          <div className="transformation-transfer" aria-hidden="true">
+            <span />
+          </div>
+          <article className="transformation-after">
             <h3 className="font-display text-lg font-semibold text-on-dark">Con Logixtic®</h3>
             <ul className="mt-5 space-y-3">
               {transformation.after.map((item) => (
@@ -35,7 +38,7 @@ export function Transformation() {
                 </li>
               ))}
             </ul>
-            <figure className="mt-6 overflow-hidden rounded-md border border-on-dark/12">
+            <figure className="transformation-product mt-6 overflow-hidden rounded-md border border-on-dark/12">
               <img
                 src={transformation.image}
                 alt={transformation.imageAlt}

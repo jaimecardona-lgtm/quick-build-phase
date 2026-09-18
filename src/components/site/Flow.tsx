@@ -27,7 +27,7 @@ export function Flow() {
           <p className="section-lead-dark mt-5">{flow.body}</p>
         </div>
 
-        <div className="mt-14 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,38%)] lg:gap-12">
+        <div className="flow-layout mt-14 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,38%)] lg:gap-12">
           <div className="hidden lg:sticky lg:top-28 lg:block lg:h-fit">
             <figure className="product-frame">
               <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
@@ -75,7 +75,7 @@ export function Flow() {
             </div>
           </div>
 
-          <ol className="space-y-3">
+          <ol className="flow-stages">
             {flow.stages.map((item, index) => (
               <li key={item.label}>
                 <button
@@ -86,6 +86,7 @@ export function Flow() {
                   className="focus-ring stage-button"
                   data-on={active === index}
                 >
+                  <span className="stage-signal" aria-hidden="true" />
                   <span className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand">
                     {String(index + 1).padStart(2, "0")}
                   </span>
