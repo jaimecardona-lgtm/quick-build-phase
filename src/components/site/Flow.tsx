@@ -5,11 +5,15 @@ import { track } from "@/lib/analytics";
 
 export function Flow() {
   const [active, setActive] = useState(0);
-  const stage = flow.stages[active]!;
+  const stage = flow.stages[active] ?? flow.stages[0];
+
+  if (!stage) return null;
 
   const select = (index: number) => {
+    const selected = flow.stages[index];
+    if (!selected) return;
     setActive(index);
-    track("flow_stage_select", { stage: flow.stages[index]!.label, section_id: "plataforma" });
+    track("flow_stage_select", { stage: selected.label, section_id: "plataforma" });
   };
 
   return (

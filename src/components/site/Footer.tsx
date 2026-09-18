@@ -1,10 +1,10 @@
-import { nav, resourceLinks } from "@/lib/content";
+import { companyLink, nav, resourceLinks } from "@/lib/content";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer id="nosotros" className="surface-deep border-t border-on-dark/10 py-16">
+    <footer className="surface-deep border-t border-on-dark/10 py-16">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
@@ -28,13 +28,18 @@ export function Footer() {
               Logixtic®
             </h2>
             <ul className="mt-4 space-y-2.5">
-              {[...nav, { label: "Nosotros", href: "#nosotros" }].map((link) => (
+              {nav.map((link) => (
                 <li key={link.label}>
                   <a href={link.href} className="focus-ring rounded-md font-ui text-sm text-on-dark/70 hover:text-on-dark">
                     {link.label}
                   </a>
                 </li>
               ))}
+              <li>
+                <span aria-disabled="true" className="rounded-md font-ui text-sm text-on-dark/34">
+                  {companyLink.label}
+                </span>
+              </li>
             </ul>
           </nav>
           <nav aria-label="Recursos">
@@ -44,9 +49,15 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5">
               {resourceLinks.map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} className="focus-ring rounded-md font-ui text-sm text-on-dark/70 hover:text-on-dark">
-                    {item.label}
-                  </a>
+                  {item.available ? (
+                    <a href={item.href} className="focus-ring rounded-md font-ui text-sm text-on-dark/70 hover:text-on-dark">
+                      {item.label}
+                    </a>
+                  ) : (
+                    <span aria-disabled="true" className="rounded-md font-ui text-sm text-on-dark/34">
+                      {item.label}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>

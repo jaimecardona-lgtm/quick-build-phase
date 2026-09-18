@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { DemoButton } from "@/components/site/DemoButton";
-import { nav, resourceLinks } from "@/lib/content";
+import { companyLink, nav, resourceLinks } from "@/lib/content";
 import { track } from "@/lib/analytics";
 
 export function Header() {
@@ -24,8 +24,9 @@ export function Header() {
       if (event.key !== "Tab" || !panelRef.current) return;
       const focusable = panelRef.current.querySelectorAll<HTMLElement>("a, button");
       if (focusable.length === 0) return;
-      const first = focusable[0]!;
-      const last = focusable[focusable.length - 1]!;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -83,24 +84,35 @@ export function Header() {
             {openResources ? (
               <div className="absolute top-full left-0 w-52 rounded-md border border-on-dark/12 bg-night/97 p-2 shadow-product backdrop-blur-md">
                 {resourceLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => track("resource_link_click", { resource: item.label, section_id: "header" })}
-                    className="focus-ring block rounded-md px-3 py-2 font-ui text-sm text-on-dark/72 hover:bg-on-dark/8 hover:text-on-dark"
-                  >
-                    {item.label}
-                  </a>
+                  item.available ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => track("resource_link_click", { resource: item.label, section_id: "header" })}
+                      className="focus-ring block rounded-md px-3 py-2 font-ui text-sm text-on-dark/72 hover:bg-on-dark/8 hover:text-on-dark"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <span
+                      key={item.label}
+                      aria-disabled="true"
+                      className="block cursor-not-allowed rounded-md px-3 py-2 font-ui text-sm text-on-dark/34"
+                    >
+                      {item.label}
+                    </span>
+                  )
                 ))}
               </div>
             ) : null}
           </div>
-          <a
-            href="#nosotros"
-            className="focus-ring rounded-md py-2 font-ui text-sm text-on-dark/70 transition-colors hover:text-on-dark"
+          <span
+            aria-disabled="true"
+            title="Ruta corporativa pendiente"
+            className="rounded-md py-2 font-ui text-sm text-on-dark/34"
           >
-            Nosotros
-          </a>
+            {companyLink.label}
+          </span>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -138,7 +150,7 @@ export function Header() {
               </button>
             </div>
             <nav aria-label="Navegación móvil" className="mt-8 flex flex-col">
-              {[...nav, { label: "Nosotros", href: "#nosotros" }].map((link) => (
+              {nav.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -148,21 +160,37 @@ export function Header() {
                   {link.label}
                 </a>
               ))}
+              <span
+                aria-disabled="true"
+                className="border-b border-on-dark/10 py-4 font-display text-lg text-on-dark/34"
+              >
+                {companyLink.label}
+              </span>
               <p className="mt-6 font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">
                 Recursos
               </p>
               {resourceLinks.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => {
-                    track("resource_link_click", { resource: item.label, section_id: "mobile_menu" });
-                    setOpenMenu(false);
-                  }}
-                  className="focus-ring border-b border-on-dark/10 py-3.5 font-ui text-base text-on-dark/75"
-                >
-                  {item.label}
-                </a>
+                item.available ? (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => {
+                      track("resource_link_click", { resource: item.label, section_id: "mobile_menu" });
+                      setOpenMenu(false);
+                    }}
+                    className="focus-ring border-b border-on-dark/10 py-3.5 font-ui text-base text-on-dark/75"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <span
+                    key={item.label}
+                    aria-disabled="true"
+                    className="border-b border-on-dark/10 py-3.5 font-ui text-base text-on-dark/34"
+                  >
+                    {item.label}
+                  </span>
+                )
               ))}
             </nav>
             <div className="mt-8">

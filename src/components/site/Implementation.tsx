@@ -12,12 +12,11 @@ export function Implementation() {
           <p className="section-lead-dark mt-5">{implementation.body}</p>
         </div>
 
-        <ol className="mt-14 grid gap-4 md:grid-cols-3">
+        <ol data-reveal className="reveal-item implementation-track mt-14 grid gap-4 md:grid-cols-3">
           {implementation.steps.map((step, index) => (
             <li
               key={step.label}
-              data-reveal
-              className="reveal-item panel-dark"
+              className="implementation-step panel-dark"
               style={{ transitionDelay: `${index * 80}ms` }}
             >
               <span className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand">
