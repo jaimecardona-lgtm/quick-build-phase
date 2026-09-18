@@ -13,17 +13,29 @@ export function ResourcesBand() {
           <ul className="grid flex-1 gap-3 sm:grid-cols-2 lg:max-w-3xl lg:grid-cols-4">
             {resourceLinks.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
-                  onClick={() => track("resource_link_click", { resource: item.label, section_id: "recursos" })}
-                  className="focus-ring group flex min-h-[44px] items-start justify-between gap-3 rounded-md border border-on-dark/12 bg-on-dark/5 px-4 py-3 transition-colors hover:border-skybrand/40 hover:bg-on-dark/8"
-                >
-                  <span>
-                    <span className="block font-ui text-sm font-medium text-on-dark">{item.label}</span>
-                    <span className="mt-0.5 block font-ui text-xs text-on-dark/55">{item.description}</span>
+                {item.available ? (
+                  <a
+                    href={item.href}
+                    onClick={() => track("resource_link_click", { resource: item.label, section_id: "recursos" })}
+                    className="focus-ring group flex min-h-[44px] items-start justify-between gap-3 rounded-md border border-on-dark/12 bg-on-dark/5 px-4 py-3 transition-colors hover:border-skybrand/40 hover:bg-on-dark/8"
+                  >
+                    <span>
+                      <span className="block font-ui text-sm font-medium text-on-dark">{item.label}</span>
+                      <span className="mt-0.5 block font-ui text-xs text-on-dark/55">{item.description}</span>
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 shrink-0 text-skybrand transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />
+                  </a>
+                ) : (
+                  <span
+                    aria-disabled="true"
+                    className="flex min-h-[44px] cursor-not-allowed items-start justify-between gap-3 rounded-md border border-on-dark/8 bg-on-dark/3 px-4 py-3 opacity-55"
+                  >
+                    <span>
+                      <span className="block font-ui text-sm font-medium text-on-dark">{item.label}</span>
+                      <span className="mt-0.5 block font-ui text-xs text-on-dark/55">{item.description}</span>
+                    </span>
                   </span>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-skybrand transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />
-                </a>
+                )}
               </li>
             ))}
           </ul>

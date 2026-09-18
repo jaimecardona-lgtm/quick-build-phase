@@ -20,8 +20,8 @@ export function Portal() {
             ))}
           </ul>
         </div>
-        <div data-reveal className="reveal-item panel-dark">
-          <ol className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+        <div data-reveal className="reveal-item portal-proof">
+          <ol className="portal-flow flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
             {portal.diagram.map((node, index) => (
               <li key={node} className="flex flex-1 items-center gap-3">
                 <span className="diagram-node">
@@ -40,6 +40,14 @@ export function Portal() {
               </li>
             ))}
           </ol>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            {portal.benefits.map((benefit) => (
+              <div key={benefit} className="portal-proof-item">
+                <Check className="h-4 w-4 text-skybrand" aria-hidden="true" />
+                <span>{benefit}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -13,11 +13,13 @@ export const nav = [
 ] as const;
 
 export const resourceLinks = [
-  { label: "Blog", href: "#recursos", description: "Artículos y tendencias" },
-  { label: "Guías", href: "#recursos", description: "Material descargable" },
-  { label: "Webinars", href: "#recursos", description: "Eventos y grabaciones" },
-  { label: "Glosario", href: "#recursos", description: "Términos de la industria" },
+  { label: "Blog", href: "https://logixtic.co/blog-logixtic/", description: "Artículos y tendencias", available: true },
+  { label: "Guías", href: "", description: "Ruta pendiente", available: false },
+  { label: "Webinars", href: "", description: "Ruta pendiente", available: false },
+  { label: "Glosario", href: "", description: "Ruta pendiente", available: false },
 ] as const;
+
+export const companyLink = { label: "Nosotros", href: "", available: false } as const;
 
 export const hero = {
   eyebrow: "Software para Agentes de Carga Internacional",
@@ -125,11 +127,16 @@ export const flow: { title: string; body: string; stages: FlowStage[] } = {
 export const logix = {
   title: "Pregúntale a Logix sobre tu operación.",
   body: "Logix consulta la información disponible en Logixtic® para agilizar búsquedas de clientes, prospectos, DO's, pedidos, operaciones y datos relacionados, respetando los permisos de cada usuario.",
-  exampleTitle: "Ejemplos de consulta",
+  exampleTitle: "Consulta operativa",
   query: "¿Dónde está el pedido 4587?",
-  answer:
-    "Logix localiza la información registrada y permite consultar el estado del pedido, la operación relacionada y los documentos disponibles para ese usuario.",
-  chips: ["Buscar cliente", "Consultar prospecto", "Encontrar un DO", "Ver información relacionada"],
+  answer: "Logix consulta la información registrada según los permisos del usuario.",
+  answerItems: [
+    "Pedido 4587",
+    "Estado disponible en la operación",
+    "Operación relacionada",
+    "Documentos disponibles para ese usuario",
+  ],
+  actions: ["Ver operación", "Consultar documentos", "Información del cliente"],
 };
 
 export const portal = {
