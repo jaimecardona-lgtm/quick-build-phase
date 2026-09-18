@@ -1,4 +1,4 @@
-import { FileSpreadsheet, FileText, Mail, MessageSquare, Phone } from "lucide-react";
+import { FileSpreadsheet, FileText, Mail, MessageSquare, Phone, RefreshCw } from "lucide-react";
 import { problem } from "@/lib/content";
 
 const icons = {
@@ -7,7 +7,10 @@ const icons = {
   message: MessageSquare,
   phone: Phone,
   doc: FileText,
+  status: RefreshCw,
 } as const;
+
+const visualSources = [...problem.sources, { label: "Actualización de estado", icon: "status" as const }];
 
 export function Problem() {
   return (
@@ -23,10 +26,10 @@ export function Problem() {
 
         <div data-reveal className="reveal-item converge mt-16 md:mt-20">
           <ul className="converge-sources">
-            {problem.sources.map((source, index) => {
+            {visualSources.map((source, index) => {
               const Icon = icons[source.icon];
               return (
-                <li key={source.label} className="converge-node" style={{ transitionDelay: `${index * 90}ms` }}>
+                <li key={source.label} className={`converge-node converge-node-${index + 1}`} style={{ transitionDelay: `${index * 90}ms` }}>
                   <Icon className="h-4 w-4 text-skybrand" aria-hidden="true" />
                   {source.label}
                 </li>
@@ -35,7 +38,7 @@ export function Problem() {
           </ul>
           <div className="converge-lines" aria-hidden="true">
             <svg viewBox="0 0 220 300" preserveAspectRatio="none">
-              {[30, 90, 150, 210, 270].map((y) => (
+              {[24, 74, 124, 174, 224, 274].map((y) => (
                 <path key={y} className="converge-line" d={`M0 ${y} C130 ${y} 110 150 220 150`} />
               ))}
             </svg>

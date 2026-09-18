@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, Check, Users } from "lucide-react";
+import { ArrowRight, Building2, FileClock, FileText, Route, Users } from "lucide-react";
 import { portal } from "@/lib/content";
 
 export function Portal() {
@@ -11,14 +11,6 @@ export function Portal() {
             {portal.title}
           </h2>
           <p className="section-lead-dark mt-5">{portal.body}</p>
-          <ul className="mt-7 grid gap-3 sm:grid-cols-2">
-            {portal.benefits.map((benefit) => (
-              <li key={benefit} className="flex items-center gap-2.5 font-ui text-sm text-on-dark/78">
-                <Check className="h-4 w-4 shrink-0 text-skybrand" aria-hidden="true" />
-                {benefit}
-              </li>
-            ))}
-          </ul>
         </div>
         <div data-reveal className="reveal-item portal-proof">
           <ol className="portal-flow flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
@@ -40,10 +32,10 @@ export function Portal() {
               </li>
             ))}
           </ol>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <div className="portal-client-orbit mt-8 grid gap-3 sm:grid-cols-2">
             {portal.benefits.map((benefit) => (
               <div key={benefit} className="portal-proof-item">
-                <Check className="h-4 w-4 text-skybrand" aria-hidden="true" />
+                {benefit.includes("operaciones") ? <Building2 aria-hidden="true" /> : benefit === "Trazabilidad" ? <Route aria-hidden="true" /> : benefit.includes("documentos") ? <FileText aria-hidden="true" /> : <FileClock aria-hidden="true" />}
                 <span>{benefit}</span>
               </div>
             ))}

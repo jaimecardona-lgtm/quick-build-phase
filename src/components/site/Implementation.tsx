@@ -1,4 +1,7 @@
+import { ClipboardList, GraduationCap, Rocket, Settings2, ShieldCheck, UsersRound } from "lucide-react";
 import { implementation } from "@/lib/content";
+
+const stepIcons = [ClipboardList, Settings2, GraduationCap, ShieldCheck, Rocket, UsersRound];
 
 export function Implementation() {
   return (
@@ -13,19 +16,21 @@ export function Implementation() {
         </div>
 
         <ol data-reveal className="reveal-item implementation-track mt-14 grid gap-4 md:grid-cols-3">
-          {implementation.steps.map((step, index) => (
-            <li
+          {implementation.steps.map((step, index) => {
+            const Icon = stepIcons[index] ?? ClipboardList;
+            return <li
               key={step.label}
-              className="implementation-step panel-dark"
+              className="implementation-step"
               style={{ transitionDelay: `${index * 80}ms` }}
             >
+              <span className="implementation-icon"><Icon aria-hidden="true" /></span>
               <span className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-2 font-display text-base font-semibold text-on-dark">{step.label}</h3>
               <p className="mt-2 font-ui text-sm leading-relaxed text-on-dark/65">{step.body}</p>
             </li>
-          ))}
+          })}
         </ol>
       </div>
     </section>

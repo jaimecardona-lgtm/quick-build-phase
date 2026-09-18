@@ -101,16 +101,31 @@ export function Evidence() {
           ))}
         </ul>
 
-        <dl data-reveal className="reveal-item mt-12 grid gap-5 md:grid-cols-3">
-          {evidence.metrics.map((metric) => (
-            <div key={metric.label} className="panel-dark">
+        <div data-reveal className="reveal-item evidence-impact mt-12">
+          <dl className="evidence-metrics">
+          {evidence.metrics.slice(0, 2).map((metric) => (
+            <div key={metric.label}>
               <dt className="font-display text-2xl font-semibold text-on-dark md:text-3xl">
                 <CountUpValue value={metric.value} />
               </dt>
               <dd className="mt-2 font-ui text-sm text-on-dark/62">{metric.label}</dd>
             </div>
           ))}
-        </dl>
+          </dl>
+          <figure className="presence-map" aria-labelledby="presence-caption">
+            <svg viewBox="0 0 520 250" role="img" aria-label="Mapa gráfico de presencia en Colombia, Panamá y Florida">
+              <path className="map-coast" d="M61 49c37 6 67 25 83 48 12 18 22 25 46 32 25 8 39 28 34 50-4 20-21 34-39 44M226 146c42-11 70-9 96 8M346 45c28 22 40 52 36 85" />
+              <path className="map-route" d="M161 170 C235 154 278 158 347 111 S422 65 465 57" />
+              <circle className="map-point" cx="161" cy="170" r="7" />
+              <circle className="map-point" cx="275" cy="157" r="7" />
+              <circle className="map-point" cx="465" cy="57" r="7" />
+              <text x="115" y="205">Colombia</text>
+              <text x="253" y="190">Panamá</text>
+              <text x="430" y="91">Florida</text>
+            </svg>
+            <figcaption id="presence-caption">{evidence.metrics[2]?.value}</figcaption>
+          </figure>
+        </div>
 
         <div data-reveal className="reveal-item mt-12">
           <div role="tablist" aria-label="Casos de éxito" className="flex flex-wrap gap-2">

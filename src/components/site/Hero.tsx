@@ -5,6 +5,7 @@ import { DemoButton } from "@/components/site/DemoButton";
 import { hero } from "@/lib/content";
 import { track } from "@/lib/analytics";
 import logixAsset from "@/assets/logix1.jpeg.asset.json";
+import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
 const routePoints = [
   [168, 424],
@@ -41,50 +42,18 @@ export function Hero() {
       className="hero-shell relative isolate overflow-hidden"
     >
       <div className="hero-scene" aria-hidden="true">
-        <div className="hero-port-depth hero-port-depth-a" />
-        <div className="hero-port-depth hero-port-depth-b" />
-        <svg className="hero-port-svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
-          <g className="hero-horizon">
-            <path d="M0 442 H1200" />
-            <path d="M0 488 C240 474 422 512 634 491 S1008 462 1200 482" />
-          </g>
-          <g className="port-layer port-layer-back">
-            <path className="port-crane" d="M682 430 V190 L784 430 M682 190 L590 260 M682 190 H836 L884 238" />
-            <path className="port-crane" d="M888 424 V150 L1028 424 M888 150 L790 236 M888 150 H1065 L1118 215" />
-            <path className="port-crane" d="M1036 438 V246 L1130 438 M1036 246 L962 318 M1036 246 H1170" />
-          </g>
-          <g className="container-stack container-stack-a">
-            <rect className="container container-a" x="788" y="408" width="74" height="28" rx="2" />
-            <rect className="container container-b" x="866" y="408" width="82" height="28" rx="2" />
-            <rect className="container container-c" x="950" y="408" width="68" height="28" rx="2" />
-            <rect className="container container-b" x="826" y="376" width="82" height="28" rx="2" />
-            <rect className="container container-a" x="912" y="376" width="74" height="28" rx="2" />
-            <rect className="container container-c" x="886" y="344" width="86" height="28" rx="2" />
-          </g>
-          <g className="hero-ship">
-            <path className="ship-body" d="M640 498 H1090 L1047 562 H696 C670 545 652 525 640 498Z" />
-            <rect className="container container-a" x="705" y="444" width="78" height="42" rx="2" />
-            <rect className="container container-b" x="789" y="444" width="82" height="42" rx="2" />
-            <rect className="container container-c" x="877" y="444" width="82" height="42" rx="2" />
-            <rect className="container container-a" x="963" y="444" width="74" height="42" rx="2" />
-            <rect className="container container-b" x="748" y="397" width="78" height="42" rx="2" />
-            <rect className="container container-c" x="832" y="397" width="82" height="42" rx="2" />
-            <rect className="container container-a" x="920" y="397" width="74" height="42" rx="2" />
-            <path className="ship-bridge" d="M1034 398 H1118 L1144 498 H1034Z" />
-          </g>
-          <path className="hero-trace" d="M116 420 C302 312 472 390 604 318 S834 174 1098 208" />
+        <img className="hero-port-photo" src={portAsset.url} alt="" width={1672} height={941} fetchPriority="high" />
+        <div className="hero-port-lights" />
+        <svg className="hero-trace-map" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
+          <path className="hero-trace" d="M92 462 C274 354 432 412 574 342 S824 224 1110 270" />
           {routePoints.map(([cx, cy], index) => (
             <circle key={`${cx}-${cy}`} className={`trace-node trace-node-${index + 1}`} cx={cx} cy={cy} r="5" />
           ))}
-          <g className="hero-plane">
-            <path d="M828 126 L894 104 L876 132 L916 152 L904 164 L866 150 L846 178 L840 164 L852 142 Z" />
-          </g>
         </svg>
-        <div className="hero-water" />
       </div>
       <div className="hero-grid" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto grid min-h-[92vh] max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">
+      <div className="relative z-10 mx-auto grid min-h-[94vh] max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-5">
           <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
             {hero.eyebrow}
@@ -118,7 +87,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-reveal hero-delay-4 hero-product-wrap relative lg:col-span-7">
+        <div className="hero-reveal hero-delay-4 hero-product-wrap relative lg:col-span-6 lg:col-start-7 lg:mt-28">
           <div className="product-glow" aria-hidden="true" />
           <figure className="product-frame hero-product-frame relative">
             <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
