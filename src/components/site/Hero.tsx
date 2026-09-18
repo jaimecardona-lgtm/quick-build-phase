@@ -23,7 +23,7 @@ export function Hero() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        node.dataset.active = entry?.isIntersecting ? "true" : "false";
+        node.dataset["active"] = entry?.isIntersecting ? "true" : "false";
       },
       { threshold: 0.16 },
     );
