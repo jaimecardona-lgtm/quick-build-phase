@@ -112,7 +112,7 @@ export function Header() {
             onClick={() => setOpenMenu((value) => !value)}
             className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-on-dark/15 text-on-dark lg:hidden"
           >
-            {openMenu ? <Menu className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
       </div>
