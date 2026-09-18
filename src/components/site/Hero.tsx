@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DemoButton } from "@/components/site/DemoButton";
 import { hero } from "@/lib/content";
 import { track } from "@/lib/analytics";
-import logixAsset from "@/assets/logix1.jpeg.asset.json";
+import logixAsset from "@/assets/logix-transparent.png.asset.json";
 import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
 const routePoints = [
@@ -111,7 +111,7 @@ export function Hero() {
             />
           </figure>
           <div className="hero-guide" aria-label="Logix consulta información registrada en la operación">
-            <img src={logixAsset.url} alt="Logix" width={1024} height={1024} />
+            <img src={logixAsset.url} alt="Logix" width={1254} height={1254} />
             <span>Logix consulta información registrada</span>
           </div>
           <p className="status-card">
