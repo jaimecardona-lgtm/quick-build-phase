@@ -626,9 +626,12 @@ body {
   .portal-flow::after,
   .implementation-track::before { display: none; }
   .converge-sources { min-height: 440px; }
+  .converge-node { width: min(220px, 66%); }
+  .converge-node-1, .converge-node-3, .converge-node-5 { left: 2px; }
+  .converge-node-2, .converge-node-4, .converge-node-6 { right: 2px; }
   .logix-orbit { min-height: 420px; }
   .logix-answer-details { grid-template-columns: 1fr; }
   .implementation-track { display: grid; grid-template-columns: 1fr; gap: 28px; padding-left: 28px; }
   .implementation-track::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 1px; background: color-mix(in oklab, var(--color-skybrand) 34%, transparent); }
-  .implementation-icon { margin-left: -55px; }
+  .implementation-icon { margin-left: -48px; }
 }
