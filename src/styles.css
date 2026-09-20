@@ -589,10 +589,11 @@ body {
   .hero-content { min-height: 0; }
   .implementation-track::before { display: none; }
   .product-backing { inset: 8px -8px -8px 8px; }
+  .transformation-product::before { inset: 8px 0 -8px 8px; }
   .converge-sources { min-height: 310px; }
   .converge-node { width: min(220px, 66%); }
-  .converge-node-1, .converge-node-3, .converge-node-5 { left: 2px; }
-  .converge-node-2, .converge-node-4, .converge-node-6 { right: 2px; }
+  .converge-node-1, .converge-node-3, .converge-node-5 { left: 8px; }
+  .converge-node-2, .converge-node-4, .converge-node-6 { right: 8px; }
   .logix-orbit { min-height: 420px; }
   .logix-answer-details { grid-template-columns: 1fr; }
   .implementation-track { display: grid; grid-template-columns: 1fr; gap: 28px; padding-left: 28px; }
