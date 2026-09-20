@@ -152,8 +152,8 @@ export const portal = {
 };
 
 export const evidence = {
-  title: "Resultados que se sostienen en operaciones reales.",
-  body: "Agentes de carga que ya conectaron su operación en una sola plataforma.",
+  title: "Empresas que ya conectan su operación con Logixtic",
+  body: "Agentes de carga que gestionan su operación desde una sola plataforma.",
   companies: ["R&R Logistics CFS", "Connecta Global", "Trade & Business SAS"],
   metrics: [
     { value: "17.543", label: "operaciones globales gestionadas" },
