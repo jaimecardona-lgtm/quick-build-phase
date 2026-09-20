@@ -6,6 +6,8 @@ import { track } from "@/lib/analytics";
 export function Flow() {
   const [active, setActive] = useState(0);
   const stage = flow.stages[active] ?? flow.stages[0];
+  const previousStage = flow.stages[(active - 1 + flow.stages.length) % flow.stages.length];
+  const nextStage = flow.stages[(active + 1) % flow.stages.length];
 
   if (!stage) return null;
 
@@ -27,9 +29,11 @@ export function Flow() {
           <p className="section-lead-dark mt-5">{flow.body}</p>
         </div>
 
-        <div className="flow-layout mt-14 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,38%)] lg:gap-12">
-          <div className="hidden lg:sticky lg:top-28 lg:block lg:h-fit">
-            <figure className="product-frame">
+        <div className="flow-layout mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,38%)] lg:gap-12">
+          <div className="flow-visual lg:sticky lg:top-28 lg:h-fit">
+            {previousStage?.image ? <img className="flow-layer flow-layer-back" src={previousStage.image} alt="" loading="lazy" aria-hidden="true" /> : null}
+            {nextStage?.image ? <img className="flow-layer flow-layer-mid" src={nextStage.image} alt="" loading="lazy" aria-hidden="true" /> : null}
+            <figure className="product-frame flow-product-frame">
               <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
                 <span className="font-ui text-[10px] tracking-[0.16em] text-on-dark/55 uppercase">
                   Logixtic® · {stage.label}
@@ -39,19 +43,7 @@ export function Flow() {
                 </span>
               </div>
               <div className="relative aspect-[2/1] bg-night">
-                {flow.stages.map((item, index) =>
-                  item.image ? (
-                    <img
-                      key={item.image + index}
-                      src={item.image}
-                      alt={item.alt ?? ""}
-                      loading="lazy"
-                      className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${
-                        active === index ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  ) : null,
-                )}
+                {stage.image ? <img key={stage.image} src={stage.image} alt={stage.alt ?? ""} loading="lazy" className="flow-active-image absolute inset-0 h-full w-full object-contain" /> : null}
                 {stage.image ? null : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-dark/60">
                     <Layers className="h-7 w-7 text-skybrand" aria-hidden="true" />
@@ -97,11 +89,6 @@ export function Flow() {
                     {item.body}
                   </span>
                 </button>
-                {item.image ? (
-                  <figure className="mt-3 overflow-hidden rounded-md border border-on-dark/12 lg:hidden">
-                    <img src={item.image} alt={item.alt ?? ""} loading="lazy" className="block w-full" />
-                  </figure>
-                ) : null}
               </li>
             ))}
           </ol>

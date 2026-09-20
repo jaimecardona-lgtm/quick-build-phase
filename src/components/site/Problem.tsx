@@ -1,4 +1,4 @@
-import { FileSpreadsheet, FileText, Mail, MessageSquare, Phone, RefreshCw } from "lucide-react";
+import { FileSpreadsheet, FileText, Mail, MessageSquare, Phone } from "lucide-react";
 import { problem } from "@/lib/content";
 
 const icons = {
@@ -7,10 +7,7 @@ const icons = {
   message: MessageSquare,
   phone: Phone,
   doc: FileText,
-  status: RefreshCw,
 } as const;
-
-const visualSources = [...problem.sources, { label: "Actualización de estado", icon: "status" as const }];
 
 export function Problem() {
   return (
@@ -24,9 +21,9 @@ export function Problem() {
           <p className="section-lead-dark mt-5">{problem.body}</p>
         </div>
 
-        <div data-reveal className="reveal-item converge mt-16 md:mt-20">
+        <div data-reveal className="reveal-item converge mt-10 md:mt-12">
           <ul className="converge-sources">
-            {visualSources.map((source, index) => {
+            {problem.sources.map((source, index) => {
               const Icon = icons[source.icon];
               return (
                 <li key={source.label} className={`converge-node converge-node-${index + 1}`} style={{ transitionDelay: `${index * 90}ms` }}>
@@ -36,13 +33,6 @@ export function Problem() {
               );
             })}
           </ul>
-          <div className="converge-lines" aria-hidden="true">
-            <svg viewBox="0 0 220 300" preserveAspectRatio="none">
-              {[24, 74, 124, 174, 224, 274].map((y) => (
-                <path key={y} className="converge-line" d={`M0 ${y} C130 ${y} 110 150 220 150`} />
-              ))}
-            </svg>
-          </div>
           <div className="converge-core">
             <img
               src="/assets/logixtic-logo-negativo-transparente.png"
@@ -51,6 +41,9 @@ export function Problem() {
               height={465}
             />
             <p>{problem.outcome}</p>
+            <figure className="converge-product" aria-hidden="true">
+              <img src="/assets/01-plataforma-servicios-menu.webp" alt="" loading="lazy" />
+            </figure>
           </div>
         </div>
       </div>

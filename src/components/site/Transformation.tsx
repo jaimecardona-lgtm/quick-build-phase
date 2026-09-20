@@ -13,7 +13,7 @@ export function Transformation() {
           <p className="section-lead-dark mt-5">{transformation.body}</p>
         </div>
 
-        <div data-reveal className="reveal-item transformation-rail mt-14">
+        <div data-reveal className="reveal-item transformation-rail mt-10 md:mt-12">
           <article className="transformation-before">
             <h3 className="font-display text-lg font-semibold text-on-dark/80">Antes</h3>
             <ul className="mt-5 space-y-3">
@@ -38,7 +38,8 @@ export function Transformation() {
                 </li>
               ))}
             </ul>
-            <figure className="transformation-product mt-6 overflow-hidden rounded-md border border-on-dark/12">
+            <figure className="product-frame transformation-product mt-6">
+              <div className="product-toolbar" aria-hidden="true"><span /><span /><span /></div>
               <img
                 src={transformation.image}
                 alt={transformation.imageAlt}
@@ -49,7 +50,7 @@ export function Transformation() {
           </article>
         </div>
 
-        <ol data-reveal className="reveal-item moments mt-14">
+        <ol data-reveal className="reveal-item moments mt-10">
           {transformation.moments.map((moment, index) => (
             <li key={moment}>
               <span className="moment-dot" aria-hidden="true" />

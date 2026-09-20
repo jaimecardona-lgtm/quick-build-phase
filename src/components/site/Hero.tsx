@@ -7,14 +7,6 @@ import { track } from "@/lib/analytics";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
-const routePoints = [
-  [168, 424],
-  [334, 350],
-  [542, 392],
-  [744, 286],
-  [972, 214],
-] as const;
-
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
 
@@ -43,17 +35,9 @@ export function Hero() {
     >
       <div className="hero-scene" aria-hidden="true">
         <img className="hero-port-photo" src={portAsset.url} alt="" width={1672} height={941} fetchPriority="high" />
-        <div className="hero-port-lights" />
-        <svg className="hero-trace-map" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
-          <path className="hero-trace" d="M92 462 C274 354 432 412 574 342 S824 224 1110 270" />
-          {routePoints.map(([cx, cy], index) => (
-            <circle key={`${cx}-${cy}`} className={`trace-node trace-node-${index + 1}`} cx={cx} cy={cy} r="5" />
-          ))}
-        </svg>
       </div>
-      <div className="hero-grid" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto grid min-h-[94vh] max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">
+      <div className="hero-content relative z-10 mx-auto grid max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-5">
           <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
             {hero.eyebrow}
@@ -89,6 +73,7 @@ export function Hero() {
 
         <div className="hero-reveal hero-delay-4 hero-product-wrap relative lg:col-span-6 lg:col-start-7 lg:mt-28">
           <div className="product-glow" aria-hidden="true" />
+          <div className="product-backing" aria-hidden="true" />
           <figure className="product-frame hero-product-frame relative">
             <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
               <div className="flex items-center gap-1.5" aria-hidden="true">
