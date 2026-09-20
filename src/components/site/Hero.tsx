@@ -35,7 +35,6 @@ export function Hero() {
     >
       <div className="hero-scene" aria-hidden="true">
         <img className="hero-port-photo" src={portAsset.url} alt="" width={1672} height={941} fetchPriority="high" />
-        <div className="hero-port-lights" />
       </div>
 
       <div className="relative z-10 mx-auto grid min-h-[94vh] max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">

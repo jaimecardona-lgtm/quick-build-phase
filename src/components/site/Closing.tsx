@@ -4,7 +4,7 @@ import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
 export function Closing() {
   return (
-    <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden py-24 md:py-32">
+    <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden py-20 md:py-28">
       <img className="closing-port" src={portAsset.url} alt="" width={1672} height={941} loading="lazy" aria-hidden="true" />
       <div data-reveal className="reveal-item relative z-10 mx-auto max-w-3xl px-5 text-center md:px-8">
         <p className="section-kicker">Cierre y conversión</p>

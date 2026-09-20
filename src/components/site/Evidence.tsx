@@ -115,7 +115,6 @@ export function Evidence() {
           <figure className="presence-map" aria-labelledby="presence-caption">
             <svg viewBox="0 0 520 250" role="img" aria-label="Mapa gráfico de presencia en Colombia, Panamá y Florida">
               <path className="map-coast" d="M61 49c37 6 67 25 83 48 12 18 22 25 46 32 25 8 39 28 34 50-4 20-21 34-39 44M226 146c42-11 70-9 96 8M346 45c28 22 40 52 36 85" />
-              <path className="map-route" d="M161 170 C235 154 278 158 347 111 S422 65 465 57" />
               <circle className="map-point" cx="161" cy="170" r="7" />
               <circle className="map-point" cx="275" cy="157" r="7" />
               <circle className="map-point" cx="465" cy="57" r="7" />
