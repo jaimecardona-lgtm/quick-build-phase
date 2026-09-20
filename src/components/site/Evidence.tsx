@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { evidence } from "@/lib/content";
 import { track } from "@/lib/analytics";
+import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
+import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
+import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
+
+const companyLogos = [
+  { name: "R&R Logistics CFS", src: rrLogo.url, className: "client-logo-rr" },
+  { name: "Connecta Global Logistics", src: connectaLogo.url, className: "client-logo-connecta" },
+  { name: "Trade & Business SAS", src: tradeLogo.url, className: "client-logo-trade" },
+];
 
 function parseCount(value: string) {
   if (!/^\d[\d.]*$/.test(value)) return null;
@@ -93,36 +102,39 @@ export function Evidence() {
           <p className="section-lead-dark mt-5">{evidence.body}</p>
         </div>
 
-        <ul data-reveal className="reveal-item client-strip mt-12">
-          {evidence.companies.map((company) => (
-            <li key={company} className="client-logo-text">
-              {company}
+        <ul data-reveal className="reveal-item client-strip mt-10">
+          {companyLogos.map((company) => (
+            <li key={company.name} className="client-logo-item">
+              <img src={company.src} alt={company.name} className={company.className} loading="lazy" />
             </li>
           ))}
         </ul>
 
         <div data-reveal className="reveal-item evidence-impact mt-12">
           <dl className="evidence-metrics">
-          {evidence.metrics.slice(0, 2).map((metric) => (
-            <div key={metric.label}>
-              <dt className="font-display text-2xl font-semibold text-on-dark md:text-3xl">
-                <CountUpValue value={metric.value} />
-              </dt>
-              <dd className="mt-2 font-ui text-sm text-on-dark/62">{metric.label}</dd>
-            </div>
-          ))}
+            {evidence.metrics.slice(0, 2).map((metric) => (
+              <div key={metric.label} className="evidence-metric">
+                <dt className="font-display font-semibold text-on-dark">
+                  <CountUpValue value={metric.value} />
+                </dt>
+                <dd className="mt-3 font-ui text-sm leading-relaxed text-on-dark/62">{metric.label}</dd>
+              </div>
+            ))}
           </dl>
-          <figure className="presence-map" aria-labelledby="presence-caption">
-            <svg viewBox="0 0 520 250" role="img" aria-label="Mapa gráfico de presencia en Colombia, Panamá y Florida">
-              <path className="map-coast" d="M61 49c37 6 67 25 83 48 12 18 22 25 46 32 25 8 39 28 34 50-4 20-21 34-39 44M226 146c42-11 70-9 96 8M346 45c28 22 40 52 36 85" />
-              <circle className="map-point" cx="161" cy="170" r="7" />
-              <circle className="map-point" cx="275" cy="157" r="7" />
-              <circle className="map-point" cx="465" cy="57" r="7" />
-              <text x="115" y="205">Colombia</text>
-              <text x="253" y="190">Panamá</text>
-              <text x="430" y="91">Florida</text>
+          <figure className="presence-map">
+            <figcaption>Presencia regional</figcaption>
+            <svg viewBox="0 0 520 330" role="img" aria-label="Presencia de Logixtic en Colombia, Panamá y Florida">
+              <path className="map-land" d="M94 36 128 22l54 7 28 21 29 8 19 31-10 21-25 4-10 18-25 6-17 21-21-8-14-21-25-5-16-25-21-12 6-19-15-17 15-13Z" />
+              <path className="map-land" d="m188 145 23 4 17 16 24 4 18 17-8 15-18-1-10 15-20-8-15-17-20-5-8-15Z" />
+              <path className="map-land" d="m261 197 26-11 38 13 28 30-2 34-19 22-16 30-29-9-18-31-6-29-18-28Z" />
+              <path className="map-land map-florida" d="m258 112 18 5 9 25-8 22-8-19-15-12Z" />
+              <circle className="map-point" cx="277" cy="142" r="5" />
+              <circle className="map-point" cx="226" cy="186" r="5" />
+              <circle className="map-point" cx="276" cy="217" r="5" />
+              <text x="290" y="140">Florida</text>
+              <text x="184" y="181">Panamá</text>
+              <text x="290" y="221">Colombia</text>
             </svg>
-            <figcaption id="presence-caption">{evidence.metrics[2]?.value}</figcaption>
           </figure>
         </div>
 

@@ -1,8 +1,15 @@
-import { FileText, Search } from "lucide-react";
+import { ClipboardCheck, FileText, Search, Settings2, ShoppingCart, UserRoundSearch, UsersRound } from "lucide-react";
 import { logix } from "@/lib/content";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 
-const sources = ["Clientes", "Prospectos", "DO", "Pedidos", "Operaciones", "Documentos"];
+const sources = [
+  { label: "Clientes", icon: UsersRound },
+  { label: "Prospectos", icon: UserRoundSearch },
+  { label: "DO", icon: ClipboardCheck },
+  { label: "Pedidos", icon: ShoppingCart },
+  { label: "Operaciones", icon: Settings2 },
+  { label: "Documentos", icon: FileText },
+];
 
 export function LogixAI() {
   return (
@@ -13,9 +20,16 @@ export function LogixAI() {
             <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
           </div>
           <ul aria-label="Fuentes que Logix puede consultar">
-            {sources.map((source, index) => (
-              <li key={source} className={`logix-node logix-node-${index + 1}`}>{source}</li>
-            ))}
+            {sources.map((source, index) => {
+              const Icon = source.icon;
+              return (
+                <li key={source.label} className={`logix-node logix-node-${index + 1}`} style={{ transitionDelay: `${index * 70}ms` }}>
+                  <span className="logix-node-icon"><Icon aria-hidden="true" /></span>
+                  <span>{source.label}</span>
+                  <span className="logix-node-status" aria-hidden="true" />
+                </li>
+              );
+            })}
           </ul>
         </div>
 
