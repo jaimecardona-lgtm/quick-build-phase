@@ -589,6 +589,8 @@ body {
   .hero-content { min-height: 0; }
   .implementation-track::before { display: none; }
   .product-backing { inset: 8px -8px -8px 8px; }
+  .transformation-product { transform: translateY(14px); }
+  .reveal-item[data-visible="true"] .transformation-product { transform: translateY(0); }
   .transformation-product::before { inset: 8px 0 -8px 8px; }
   .converge-sources { min-height: 310px; }
   .converge-node { width: min(220px, 66%); }
