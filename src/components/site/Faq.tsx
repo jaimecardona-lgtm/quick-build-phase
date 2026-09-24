@@ -1,15 +1,17 @@
 import { Plus } from "lucide-react";
-import { faqs } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
 export function Faq() {
+  const { content } = useLanguage();
+  const { faqs, ui } = content;
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-shell surface-mid">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">Preguntas frecuentes</p>
+          <p className="section-kicker">{ui.faqKicker}</p>
           <h2 id="faq-title" className="section-title-dark mt-4">
-            Preguntas frecuentes
+            {ui.faqKicker}
           </h2>
         </div>
         <div className="mt-12 grid gap-3 lg:grid-cols-2">

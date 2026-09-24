@@ -14,6 +14,7 @@ import { Closing } from "@/components/site/Closing";
 import { Footer } from "@/components/site/Footer";
 import { useReveal } from "@/hooks/use-reveal";
 import { faqs } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 
 const title = "Logixtic® | Software para Agentes de Carga Internacional";
 const description =
@@ -71,6 +72,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   useReveal();
+  const { content } = useLanguage();
 
   return (
     <div className="min-h-screen bg-night">
@@ -78,7 +80,7 @@ function Index() {
         href="#contenido"
         className="focus-ring sr-only font-ui text-sm focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-amber focus:px-4 focus:py-2 focus:text-night"
       >
-        Saltar al contenido principal
+        {content.ui.skipContent}
       </a>
       <Header />
       <main id="contenido">

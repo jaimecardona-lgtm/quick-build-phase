@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { DemoButton } from "@/components/site/DemoButton";
-import { companyLink, nav, resourceLinks } from "@/lib/content";
+import { LanguageSelector } from "@/components/site/LanguageSelector";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
 export function Header() {
+  const { content } = useLanguage();
+  const { companyLink, nav, resourceLinks, ui } = content;
   const [scrolled, setScrolled] = useState(false);
   const [openResources, setOpenResources] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -47,17 +50,14 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-full max-w-[1320px] items-center justify-between gap-6 px-5 md:px-8">
-        <a href="#inicio" className="focus-ring flex items-center rounded-md" aria-label="Logixtic, inicio">
-          <img
-            src="/assets/logixtic-logo-negativo-transparente.png"
-            alt="Logixtic"
-            width={1520}
-            height={465}
-            className="h-6 w-auto md:h-7"
-          />
-        </a>
+        <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
+          <a href="#inicio" className="focus-ring flex min-w-0 items-center rounded-md" aria-label={`Logixtic, ${ui.home}`}>
+            <img src="/assets/logixtic-logo-negativo-transparente.png" alt="Logixtic" width={1520} height={465} className="h-6 w-auto md:h-7" />
+          </a>
+          <div className="hidden lg:block"><LanguageSelector /></div>
+        </div>
 
-        <nav aria-label="Navegación principal" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label={ui.mainNavigation} className="hidden items-center gap-7 lg:flex">
           {nav.map((link) => (
             <a
               key={link.label}
@@ -78,7 +78,7 @@ export function Header() {
               onClick={() => setOpenResources((value) => !value)}
               className="focus-ring flex items-center gap-1 rounded-md py-2 font-ui text-sm text-on-dark/70 transition-colors hover:text-on-dark"
             >
-              Recursos
+              {ui.resources}
               <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
             {openResources ? (
@@ -108,7 +108,7 @@ export function Header() {
           </div>
           <span
             aria-disabled="true"
-            title="Ruta corporativa pendiente"
+            title={ui.pendingRoute}
             className="rounded-md py-2 font-ui text-sm text-on-dark/34"
           >
             {companyLink.label}
@@ -117,10 +117,11 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <DemoButton sectionId="header" className="hidden sm:inline-flex" />
+          <div className="lg:hidden"><LanguageSelector /></div>
           <button
             type="button"
             aria-expanded={openMenu}
-            aria-label={openMenu ? "Cerrar menú" : "Abrir menú"}
+            aria-label={openMenu ? ui.closeMenu : ui.openMenu}
             onClick={() => setOpenMenu((value) => !value)}
             className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-on-dark/15 text-on-dark lg:hidden"
           >
@@ -130,7 +131,7 @@ export function Header() {
       </div>
 
       {openMenu ? (
-        <div className="fixed inset-0 top-0 z-50 bg-night/98 backdrop-blur-md lg:hidden" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+        <div className="fixed inset-0 top-0 z-50 bg-night/98 backdrop-blur-md lg:hidden" role="dialog" aria-modal="true" aria-label={ui.navigationMenu}>
           <div ref={panelRef} className="mx-auto flex h-full max-w-[640px] flex-col px-5 pt-5 pb-10">
             <div className="flex items-center justify-between">
               <img
@@ -143,13 +144,13 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setOpenMenu(false)}
-                aria-label="Cerrar menú"
+                aria-label={ui.closeMenu}
                 className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-on-dark/15 text-on-dark"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav aria-label="Navegación móvil" className="mt-8 flex flex-col">
+            <nav aria-label={ui.mobileNavigation} className="mt-8 flex flex-col">
               {nav.map((link) => (
                 <a
                   key={link.label}
@@ -167,7 +168,7 @@ export function Header() {
                 {companyLink.label}
               </span>
               <p className="mt-6 font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">
-                Recursos
+                {ui.resources}
               </p>
               {resourceLinks.map((item) => (
                 item.available ? (

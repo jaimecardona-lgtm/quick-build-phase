@@ -1,7 +1,9 @@
-import { companyLink, nav, resourceLinks } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { content } = useLanguage();
+  const { companyLink, nav, resourceLinks, ui } = content;
 
   return (
     <footer className="surface-deep border-t border-on-dark/10 py-16">
@@ -23,7 +25,7 @@ export function Footer() {
               info@logixtic.co
             </a>
           </div>
-          <nav aria-label="Navegación del sitio">
+          <nav aria-label={ui.siteNavigation}>
             <h2 className="font-ui text-[11px] font-semibold tracking-[0.16em] text-on-dark/50 uppercase">
               Logixtic®
             </h2>
@@ -42,9 +44,9 @@ export function Footer() {
               </li>
             </ul>
           </nav>
-          <nav aria-label="Recursos">
+          <nav aria-label={ui.resources}>
             <h2 className="font-ui text-[11px] font-semibold tracking-[0.16em] text-on-dark/50 uppercase">
-              Recursos
+              {ui.resources}
             </h2>
             <ul className="mt-4 space-y-2.5">
               {resourceLinks.map((item) => (
@@ -64,21 +66,21 @@ export function Footer() {
           </nav>
         </div>
         <div className="mt-12 flex flex-col gap-3 border-t border-on-dark/10 pt-6 font-ui text-xs text-on-dark/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Logixtic®. Todos los derechos reservados.</p>
+          <p>© {year} Logixtic®. {ui.rights}</p>
           <div className="flex gap-6">
             <a
               href="https://www.logixtic.co/politica-de-privacidad"
               rel="noopener noreferrer"
               className="focus-ring rounded-md hover:text-on-dark"
             >
-              Política de privacidad
+              {ui.privacy}
             </a>
             <a
               href="https://www.logixtic.co/terminos-y-condiciones"
               rel="noopener noreferrer"
               className="focus-ring rounded-md hover:text-on-dark"
             >
-              Términos y condiciones
+              {ui.terms}
             </a>
           </div>
         </div>

@@ -2,12 +2,14 @@ import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DemoButton } from "@/components/site/DemoButton";
-import { hero } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
 export function Hero() {
+  const { content } = useLanguage();
+  const { hero } = content;
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -95,12 +97,12 @@ export function Hero() {
               className="block h-auto w-full object-contain"
             />
           </figure>
-          <div className="hero-guide" aria-label="Logix consulta información registrada en la operación">
+          <div className="hero-guide" aria-label={hero.body}>
             <img src={logixAsset.url} alt="Logix" width={1254} height={1254} />
-            <span>Logix consulta información registrada</span>
+            <span>{content.logix.answer}</span>
           </div>
           <p className="status-card">
-            <span aria-hidden="true" /> Información centralizada
+            <span aria-hidden="true" /> {content.transformation.after[0]}
           </p>
         </div>
       </div>

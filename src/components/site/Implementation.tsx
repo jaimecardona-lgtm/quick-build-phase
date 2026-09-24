@@ -1,14 +1,16 @@
 import { ClipboardList, GraduationCap, Rocket, Settings2, ShieldCheck, UsersRound } from "lucide-react";
-import { implementation } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 
 const stepIcons = [ClipboardList, Settings2, GraduationCap, ShieldCheck, Rocket, UsersRound];
 
 export function Implementation() {
+  const { content } = useLanguage();
+  const { implementation, ui } = content;
   return (
     <section id="implementacion" aria-labelledby="implementacion-title" className="section-shell surface-deep">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">Implementación y acompañamiento</p>
+          <p className="section-kicker">{ui.implementationKicker}</p>
           <h2 id="implementacion-title" className="section-title-dark mt-4">
             {implementation.title}
           </h2>

@@ -1,15 +1,17 @@
 import { ArrowUpRight, BookOpen, FileText, Library, Video } from "lucide-react";
-import { resourceLinks } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
 export function ResourcesBand() {
+  const { content } = useLanguage();
+  const { resourceLinks, ui } = content;
   const icons = [FileText, BookOpen, Video, Library];
   return (
     <section id="recursos" aria-labelledby="recursos-title" className="surface-deep border-y border-on-dark/10 py-14 md:py-16">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <h2 id="recursos-title" className="font-display text-xl font-semibold text-on-dark md:text-2xl">
-            Recursos para seguir avanzando
+            {ui.resourcesTitle}
           </h2>
           <ul className="grid flex-1 gap-3 sm:grid-cols-2 lg:max-w-3xl lg:grid-cols-4">
             {resourceLinks.map((item, index) => {

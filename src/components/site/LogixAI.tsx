@@ -1,17 +1,16 @@
 import { ClipboardCheck, FileText, Search, Settings2, ShoppingCart, UserRoundSearch, UsersRound } from "lucide-react";
-import { logix } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 
-const sources = [
-  { label: "Clientes", icon: UsersRound },
-  { label: "Prospectos", icon: UserRoundSearch },
-  { label: "DO", icon: ClipboardCheck },
-  { label: "Pedidos", icon: ShoppingCart },
-  { label: "Operaciones", icon: Settings2 },
-  { label: "Documentos", icon: FileText },
-];
+const sourceIcons = [UsersRound, UserRoundSearch, ClipboardCheck, ShoppingCart, Settings2, FileText];
 
 export function LogixAI() {
+  const { content } = useLanguage();
+  const { logix, ui } = content;
+  const sources = content.ui.logixModules.map((label, index) => ({
+    label,
+    icon: sourceIcons[index] ?? FileText,
+  }));
   return (
     <section id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
       <div className="mx-auto grid max-w-[1320px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[minmax(0,30%)_minmax(0,1fr)]">
@@ -19,7 +18,7 @@ export function LogixAI() {
           <div className="logix-portrait">
             <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
           </div>
-          <ul aria-label="Fuentes que Logix puede consultar">
+          <ul aria-label={ui.logixSources}>
             {sources.map((source, index) => {
               const Icon = source.icon;
               return (
@@ -34,7 +33,7 @@ export function LogixAI() {
         </div>
 
         <div data-reveal className="reveal-item">
-          <p className="section-kicker">Logix aplicado</p>
+          <p className="section-kicker">{ui.logixKicker}</p>
           <h2 id="logix-title" className="section-title-dark mt-4">
             {logix.title}
           </h2>
@@ -46,7 +45,7 @@ export function LogixAI() {
             <p className="flex items-start gap-3 font-ui text-sm text-on-dark">
               <Search className="mt-0.5 h-4 w-4 shrink-0 text-skybrand" aria-hidden="true" />
               <span>
-                <span className="font-semibold">Consulta:</span> {logix.query}
+                <span className="font-semibold">{ui.query}</span> {logix.query}
               </span>
             </p>
             <p className="mt-4 border-t border-on-dark/10 pt-4 font-ui text-sm leading-relaxed text-on-dark/70">

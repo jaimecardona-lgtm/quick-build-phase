@@ -1,12 +1,14 @@
 import { ArrowRight, Building2, FileClock, FileText, Route, Users } from "lucide-react";
-import { portal } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 
 export function Portal() {
+  const { content } = useLanguage();
+  const { portal, ui } = content;
   return (
     <section id="portal-clientes" aria-labelledby="portal-title" className="section-shell-compact surface-deep">
       <div className="mx-auto grid max-w-[1320px] items-center gap-10 px-5 md:px-8 lg:grid-cols-2">
         <div data-reveal className="reveal-item">
-          <p className="section-kicker">Portal de Clientes</p>
+          <p className="section-kicker">{ui.portalKicker}</p>
           <h2 id="portal-title" className="section-title-dark mt-4">
             {portal.title}
           </h2>

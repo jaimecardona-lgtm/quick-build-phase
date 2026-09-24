@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Layers } from "lucide-react";
-import { flow } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
 export function Flow() {
+  const { content } = useLanguage();
+  const { flow, ui } = content;
   const [active, setActive] = useState(0);
   const stage = flow.stages[active] ?? flow.stages[0];
   const previousStage = flow.stages[(active - 1 + flow.stages.length) % flow.stages.length];
@@ -22,7 +24,7 @@ export function Flow() {
     <section id="plataforma" aria-labelledby="plataforma-title" className="section-shell surface-deep">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">Así fluye una operación</p>
+          <p className="section-kicker">{ui.flowKicker}</p>
           <h2 id="plataforma-title" className="section-title-dark mt-4">
             {flow.title}
           </h2>
@@ -55,7 +57,7 @@ export function Flow() {
             <div
               className="mt-4 h-px bg-on-dark/12"
               role="progressbar"
-              aria-label="Progreso del recorrido operativo"
+              aria-label={ui.flowProgress}
               aria-valuemin={1}
               aria-valuemax={flow.stages.length}
               aria-valuenow={active + 1}
