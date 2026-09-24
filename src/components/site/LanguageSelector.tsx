@@ -12,7 +12,7 @@ export function LanguageSelector() {
   const { locale, setLocale, content } = useLanguage();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const active = options.find((option) => option.locale === locale) ?? options[0];
+  const activeCode = options.find((option) => option.locale === locale)?.code ?? "ES";
 
   useEffect(() => {
     if (!open) return;
@@ -41,7 +41,7 @@ export function LanguageSelector() {
         onClick={() => setOpen((value) => !value)}
       >
         <Globe2 aria-hidden="true" />
-        <span>{active.code}</span>
+        <span>{activeCode}</span>
         <ChevronDown aria-hidden="true" className={open ? "rotate-180" : ""} />
       </button>
       {open ? (

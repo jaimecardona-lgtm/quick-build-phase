@@ -7,8 +7,8 @@ const sourceIcons = [UsersRound, UserRoundSearch, ClipboardCheck, ShoppingCart, 
 export function LogixAI() {
   const { content } = useLanguage();
   const { logix, ui } = content;
-  const sources = content.problem.sources.map((source, index) => ({
-    label: index === 0 ? content.portal.diagram[2] + (content.portal.diagram[2].endsWith("s") ? "" : "s") : [content.flow.stages[0]?.label, "DO", content.logix.answerItems[0]?.split(" ")[0], content.flow.stages[3]?.label, content.flow.stages[4]?.label][index - 1] ?? source.label,
+  const sources = content.ui.logixModules.map((label, index) => ({
+    label,
     icon: sourceIcons[index] ?? FileText,
   }));
   return (
