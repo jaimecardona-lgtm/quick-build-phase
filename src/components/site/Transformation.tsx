@@ -1,12 +1,14 @@
 import { Check, Minus } from "lucide-react";
-import { transformation } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 
 export function Transformation() {
+  const { content } = useLanguage();
+  const { transformation, ui } = content;
   return (
     <section id="transformacion" aria-labelledby="transformacion-title" className="section-shell surface-mid">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">La transformación Logixtic®</p>
+          <p className="section-kicker">{ui.transformationKicker}</p>
           <h2 id="transformacion-title" className="section-title-dark mt-4">
             {transformation.title}
           </h2>
@@ -15,7 +17,7 @@ export function Transformation() {
 
         <div data-reveal className="reveal-item transformation-rail mt-10 md:mt-12">
           <article className="transformation-before">
-            <h3 className="font-display text-lg font-semibold text-on-dark/80">Antes</h3>
+            <h3 className="font-display text-lg font-semibold text-on-dark/80">{ui.before}</h3>
             <ul className="mt-5 space-y-3">
               {transformation.before.map((item) => (
                 <li key={item} className="flex items-center gap-3 font-ui text-sm text-on-dark/62">
@@ -29,7 +31,7 @@ export function Transformation() {
             <span />
           </div>
           <article className="transformation-after">
-            <h3 className="font-display text-lg font-semibold text-on-dark">Con Logixtic®</h3>
+            <h3 className="font-display text-lg font-semibold text-on-dark">{ui.withLogixtic}</h3>
             <ul className="mt-5 space-y-3">
               {transformation.after.map((item) => (
                 <li key={item} className="flex items-center gap-3 font-ui text-sm text-on-dark/82">

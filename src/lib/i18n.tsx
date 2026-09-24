@@ -2,8 +2,9 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import * as esContent from "@/lib/content";
 
 export type Locale = "es" | "en" | "pt-BR";
+type Widen<T> = T extends string ? string : T extends number ? number : T extends boolean ? boolean : T extends readonly (infer U)[] ? Widen<U>[] : T extends object ? { [K in keyof T]: Widen<T[K]> } : T;
 
-type Dictionary = {
+type Dictionary = Widen<{
   demoLabel: string;
   nav: Array<{ label: string; href: string }>;
   resourceLinks: Array<{ label: string; href: string; description: string; available: boolean }>;
@@ -27,7 +28,7 @@ type Dictionary = {
     mainNavigation: string; mobileNavigation: string; navigationMenu: string; openMenu: string; closeMenu: string;
     home: string; pendingRoute: string; skipContent: string; language: string;
   };
-};
+}>;
 
 const sharedImages = {
   hero: { image: esContent.hero.image },
