@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { evidence } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
 import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
@@ -16,11 +16,11 @@ function parseCount(value: string) {
   return Number(value.replaceAll(".", ""));
 }
 
-function formatCount(value: number) {
-  return new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(value);
+function formatCount(value: number, locale: string) {
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
 }
 
-function CountUpValue({ value }: { value: string }) {
+function CountUpValue({ value, locale }: { value: string; locale: string }) {
   const target = parseCount(value);
   const ref = useRef<HTMLElement>(null);
   const hasRun = useRef(false);
@@ -46,7 +46,7 @@ function CountUpValue({ value }: { value: string }) {
       const tick = (now: number) => {
         const progress = Math.min((now - start) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        setDisplay(formatCount(Math.round(target * eased)));
+        setDisplay(formatCount(Math.round(target * eased), locale));
         if (progress < 1) {
           frame = requestAnimationFrame(tick);
         } else {
@@ -71,7 +71,7 @@ function CountUpValue({ value }: { value: string }) {
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [target, value]);
+  }, [locale, target, value]);
 
   if (target === null) {
     return <span>{value}</span>;
@@ -86,6 +86,8 @@ function CountUpValue({ value }: { value: string }) {
 }
 
 export function Evidence() {
+  const { content, locale } = useLanguage();
+  const { evidence, ui } = content;
   const [active, setActive] = useState(0);
   const current = evidence.cases[active] ?? evidence.cases[0];
 
@@ -95,7 +97,7 @@ export function Evidence() {
     <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">Evidencia</p>
+          <p className="section-kicker">{ui.evidenceKicker}</p>
           <h2 id="clientes-title" className="section-title-dark mt-4">
             {evidence.title}
           </h2>
@@ -115,15 +117,15 @@ export function Evidence() {
             {evidence.metrics.slice(0, 2).map((metric) => (
               <div key={metric.label} className="evidence-metric">
                 <dt className="font-display font-semibold text-on-dark">
-                  <CountUpValue value={metric.value} />
+                   <CountUpValue value={metric.value} locale={locale === "pt-BR" ? "pt-BR" : locale === "en" ? "en-US" : "es-CO"} />
                 </dt>
                 <dd className="mt-3 font-ui text-sm leading-relaxed text-on-dark/62">{metric.label}</dd>
               </div>
             ))}
           </dl>
           <figure className="presence-map">
-            <figcaption>Presencia regional</figcaption>
-            <svg viewBox="0 0 520 330" role="img" aria-label="Presencia de Logixtic en Colombia, Panamá y Florida">
+            <figcaption>{ui.regionalPresence}</figcaption>
+            <svg viewBox="0 0 520 330" role="img" aria-label={ui.mapLabel}>
               <path className="map-land" d="M94 36 128 22l54 7 28 21 29 8 19 31-10 21-25 4-10 18-25 6-17 21-21-8-14-21-25-5-16-25-21-12 6-19-15-17 15-13Z" />
               <path className="map-land" d="m188 145 23 4 17 16 24 4 18 17-8 15-18-1-10 15-20-8-15-17-20-5-8-15Z" />
               <path className="map-land" d="m261 197 26-11 38 13 28 30-2 34-19 22-16 30-29-9-18-31-6-29-18-28Z" />
@@ -132,14 +134,14 @@ export function Evidence() {
               <circle className="map-point" cx="226" cy="186" r="5" />
               <circle className="map-point" cx="276" cy="217" r="5" />
               <text x="290" y="140">Florida</text>
-              <text x="184" y="181">Panamá</text>
-              <text x="290" y="221">Colombia</text>
+              <text x="184" y="181">{locale === "en" ? "Panama" : "Panamá"}</text>
+              <text x="290" y="221">{locale === "pt-BR" ? "Colômbia" : "Colombia"}</text>
             </svg>
           </figure>
         </div>
 
         <div data-reveal className="reveal-item mt-12">
-          <div role="tablist" aria-label="Casos de éxito" className="flex flex-wrap gap-2">
+          <div role="tablist" aria-label={ui.successCases} className="flex flex-wrap gap-2">
             {evidence.cases.map((item, index) => (
               <button
                 key={item.company}

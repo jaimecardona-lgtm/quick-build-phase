@@ -213,6 +213,22 @@ body {
   overflow-x: hidden;
 }
 
+.language-selector { position: relative; flex: none; }
+.language-trigger {
+  display: inline-flex; height: 36px; min-width: 70px; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid color-mix(in oklab, var(--color-on-dark) 18%, transparent); border-radius: 8px;
+  background: color-mix(in oklab, var(--color-night) 54%, transparent); padding: 0 9px;
+  color: var(--color-on-dark); font: 600 11px var(--font-ui); transition: background var(--motion-fast), border-color var(--motion-fast);
+}
+.language-trigger:hover, .language-trigger[aria-expanded="true"] { border-color: color-mix(in oklab, var(--color-skybrand) 46%, transparent); background: color-mix(in oklab, var(--color-night) 84%, transparent); }
+.language-trigger svg:first-child { width: 15px; height: 15px; }
+.language-trigger svg:last-child { width: 12px; height: 12px; transition: transform var(--motion-fast); }
+.language-menu { position: absolute; top: calc(100% + 8px); left: 0; z-index: 70; width: 148px; border: 1px solid color-mix(in oklab, var(--color-on-dark) 16%, transparent); border-radius: 8px; background: color-mix(in oklab, var(--color-night) 97%, transparent); padding: 5px; box-shadow: var(--shadow-product); backdrop-filter: blur(14px); }
+.language-option { display: flex; width: 100%; min-height: 36px; align-items: center; justify-content: space-between; border-radius: 6px; padding: 7px 9px; color: color-mix(in oklab, var(--color-on-dark) 72%, transparent); font: 500 12px var(--font-ui); text-align: left; }
+.language-option:hover, .language-option[data-active="true"] { background: color-mix(in oklab, var(--color-royal) 18%, transparent); color: var(--color-on-dark); }
+.language-option svg { width: 14px; height: 14px; color: var(--color-amber); }
+@media (max-width: 390px) { .language-trigger { min-width: 62px; padding-inline: 7px; } }
+
 /* Logixtic Web — universo azul noche continuo */
 :root {
   --motion-instant: 120ms;

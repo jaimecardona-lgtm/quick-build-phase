@@ -1,13 +1,15 @@
 import { DemoButton } from "@/components/site/DemoButton";
-import { closing } from "@/lib/content";
+import { useLanguage } from "@/lib/i18n";
 import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
 
 export function Closing() {
+  const { content } = useLanguage();
+  const { closing, ui } = content;
   return (
     <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden py-20 md:py-28">
       <img className="closing-port" src={portAsset.url} alt="" width={1672} height={941} loading="lazy" aria-hidden="true" />
       <div data-reveal className="reveal-item relative z-10 mx-auto max-w-3xl px-5 text-center md:px-8">
-        <p className="section-kicker">Cierre y conversión</p>
+        <p className="section-kicker">{ui.closingKicker}</p>
         <h2 id="demo-title" className="mt-5 font-display text-3xl leading-[1.1] font-semibold text-on-dark md:text-5xl">
           {closing.title}
         </h2>
