@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import * as esContent from "@/lib/content";
 
 export type Locale = "es" | "en" | "pt-BR";
-type Widen<T> = T extends string ? string : T extends number ? number : T extends boolean ? boolean : T extends readonly (infer U)[] ? Widen<U>[] : T extends object ? { -readonly [K in keyof T]: Widen<T[K]> } : T;
+type Widen<T> = T extends string ? string : T extends number ? number : T extends boolean ? boolean : T extends readonly (infer U)[] ? readonly Widen<U>[] : T extends object ? { readonly [K in keyof T]: Widen<T[K]> } : T;
 
 type Dictionary = Widen<{
   demoLabel: string;
@@ -27,7 +27,7 @@ type Dictionary = Widen<{
     closingKicker: string; siteNavigation: string; rights: string; privacy: string; terms: string;
     mainNavigation: string; mobileNavigation: string; navigationMenu: string; openMenu: string; closeMenu: string;
     home: string; pendingRoute: string; skipContent: string; language: string;
-    logixModules: string[];
+    logixModules: readonly string[];
   };
 }>;
 
