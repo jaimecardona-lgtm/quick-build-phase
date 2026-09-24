@@ -20,7 +20,7 @@ export function DemoButton({ sectionId, size = "default", className }: Props) {
       asChild
       size={size}
       className={cn(
-        "group min-h-11 rounded-md bg-amber px-5 font-ui font-semibold text-night hover:bg-amber/90",
+        "group min-h-11 rounded-md bg-amber px-4 text-center font-ui text-xs leading-tight font-semibold whitespace-normal text-night hover:bg-amber/90 sm:px-5 sm:text-sm sm:whitespace-nowrap",
         className,
       )}
     >

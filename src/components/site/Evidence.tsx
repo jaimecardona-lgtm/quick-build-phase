@@ -12,8 +12,8 @@ const companyLogos = [
 ];
 
 function parseCount(value: string) {
-  if (!/^\d[\d.]*$/.test(value)) return null;
-  return Number(value.replaceAll(".", ""));
+  if (!/^\d[\d.,]*$/.test(value)) return null;
+  return Number(value.replace(/[.,]/g, ""));
 }
 
 function formatCount(value: number, locale: string) {
