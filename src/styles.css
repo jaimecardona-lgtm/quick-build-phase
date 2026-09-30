@@ -276,7 +276,6 @@ body {
 .hero-shell[data-active="false"] .hero-bg-photo { animation-play-state: paused; }
 .product-glow { position: absolute; inset: 30% 18% -4%; background: color-mix(in oklab, var(--color-royal) 15%, transparent); filter: blur(58px); }
 .product-backing { position: absolute; inset: 14px -14px -14px 14px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 14%, transparent); border-radius: 10px; background: color-mix(in oklab, var(--color-night) 38%, transparent); backdrop-filter: blur(8px); }
-.hero-product-wrap { max-width: 540px; justify-self: end; animation: product-enter 900ms var(--ease-enter) 240ms both; }
 .hero-product-frame { background: color-mix(in oklab, var(--color-night) 72%, var(--color-on-dark)); backdrop-filter: blur(14px); }
 .product-frame {
   position: relative;
@@ -286,50 +285,7 @@ body {
   background: color-mix(in oklab, var(--color-on-dark) 6%, transparent);
   box-shadow: var(--shadow-product);
 }
-.status-card {
-  position: absolute;
-  right: 0;
-  bottom: -18px;
-  display: none;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid color-mix(in oklab, var(--color-on-dark) 14%, transparent);
-  border-radius: 6px;
-  background: color-mix(in oklab, var(--color-night) 90%, transparent);
-  padding: 9px 13px;
-  color: color-mix(in oklab, var(--color-on-dark) 76%, transparent);
-  font: 500 11px var(--font-ui);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-tag);
-  opacity: 0;
-  animation: guide-in 500ms var(--ease-enter) 1.35s forwards;
-}
-.status-card span { width: 6px; height: 6px; border-radius: 50%; background: var(--color-amber); }
-@media (min-width: 768px) { .status-card { display: inline-flex; } }
-.hero-guide {
-  position: absolute;
-  left: -18px;
-  bottom: -34px;
-  display: none;
-  max-width: 250px;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid color-mix(in oklab, var(--color-skybrand) 24%, transparent);
-  border-radius: 8px;
-  background: color-mix(in oklab, var(--color-night) 88%, transparent);
-  padding: 9px 12px 9px 8px;
-  color: color-mix(in oklab, var(--color-on-dark) 74%, transparent);
-  font: 500 11px var(--font-ui);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-tag);
-  opacity: 0;
-  animation: guide-in 460ms var(--ease-enter) 1.75s forwards;
-}
-.hero-guide img { width: 42px; height: 42px; object-fit: contain; }
-@media (min-width: 768px) { .hero-guide { display: flex; } }
-
 .hero-reveal { animation: logixtic-rise var(--motion-hero) var(--ease-enter) both; }
-.hero-product-wrap.hero-reveal { animation: product-enter 900ms var(--ease-enter) 240ms both; }
 .hero-delay-1 { animation-delay: 0ms; }
 .hero-delay-2 { animation-delay: 80ms; }
 .hero-delay-3 { animation-delay: 160ms; }
@@ -597,7 +553,7 @@ body {
 .closing-shell::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, color-mix(in oklab, var(--color-night) 54%, transparent), var(--color-night) 82%); }
 
 @keyframes line-draw { to { stroke-dashoffset: 0; } }
-@keyframes port-photo-drift { from { transform: translate3d(-7px, 0, 0) scale(1.025); } to { transform: translate3d(9px, -3px, 0) scale(1.025); } }
+@keyframes hero-bg-drift { from { transform: translate3d(-6px, 0, 0) scale(1); } to { transform: translate3d(6px, -2px, 0) scale(1.06); } }
 @keyframes product-enter { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes guide-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes transfer-dot { from { left: 10%; } to { left: calc(90% - 8px); } }
@@ -605,10 +561,8 @@ body {
 
 @media (max-width: 767px) {
   .product-glow { display: none; }
-  .hero-scene { opacity: .54; }
-  .hero-port-photo,
-  .hero-product-wrap { animation: none; }
-  .hero-port-photo { width: 150%; right: -50%; opacity: .7; object-position: 58% center; transform: none; }
+  .hero-scene { opacity: .6; }
+  .hero-bg-photo { animation: none; transform: none; }
   .hero-shell { min-height: auto; }
   .hero-content { min-height: 0; }
   .implementation-track::before { display: none; }
