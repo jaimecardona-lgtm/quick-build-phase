@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DemoButton } from "@/components/site/DemoButton";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
-import logixAsset from "@/assets/logix-transparent.png.asset.json";
-import portAsset from "@/assets/logixtic-port-hero.webp.asset.json";
+import controlCenterAsset from "@/assets/logixtic-control-center.png.asset.json";
 
 export function Hero() {
   const { content } = useLanguage();
@@ -36,74 +35,46 @@ export function Hero() {
       className="hero-shell relative isolate overflow-hidden"
     >
       <div className="hero-scene" aria-hidden="true">
-        <img className="hero-port-photo" src={portAsset.url} alt="" width={1672} height={941} fetchPriority="high" />
+        <img
+          className="hero-bg-photo"
+          src={controlCenterAsset.url}
+          alt=""
+          width={1672}
+          height={941}
+          fetchPriority="high"
+        />
       </div>
 
-      <div className="hero-content relative z-10 mx-auto grid max-w-[1320px] grid-cols-1 items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-12 lg:gap-14">
-        <div className="lg:col-span-5">
-          <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
-            {hero.eyebrow}
-          </p>
-          <h1
-            id="hero-title"
-            className="hero-reveal hero-delay-2 mt-5 font-display text-[2.4rem] leading-[1.07] font-semibold text-on-dark sm:text-5xl lg:text-[3.5rem]"
+      <div className="hero-content relative z-10 mx-auto flex max-w-[1050px] flex-col items-center justify-center px-5 pt-28 pb-16 text-center md:px-8 md:pt-32 md:pb-20">
+        <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
+          {hero.eyebrow}
+        </p>
+        <h1
+          id="hero-title"
+          className="hero-reveal hero-delay-2 mt-5 font-display text-[2.4rem] leading-[1.07] font-semibold text-on-dark sm:text-5xl lg:text-[3.5rem]"
+        >
+          {hero.title[0]}
+          <span className="block text-skybrand">{hero.title[1]}</span>
+        </h1>
+        <p className="hero-reveal hero-delay-3 mx-auto mt-6 max-w-xl font-ui text-base leading-relaxed text-on-dark/72">
+          {hero.body}
+        </p>
+        <div className="hero-reveal hero-delay-3 mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
+          <DemoButton sectionId="hero" size="lg" className="w-full sm:w-auto" />
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="group min-h-12 w-full rounded-md border-on-dark/25 bg-on-dark/5 px-5 text-on-dark shadow-none hover:bg-on-dark/10 hover:text-on-dark sm:w-auto"
           >
-            {hero.title[0]}
-            <span className="block text-skybrand">{hero.title[1]}</span>
-          </h1>
-          <p className="hero-reveal hero-delay-3 mt-6 max-w-xl font-ui text-base leading-relaxed text-on-dark/72">
-            {hero.body}
-          </p>
-          <div className="hero-reveal hero-delay-3 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <DemoButton sectionId="hero" size="lg" className="w-full sm:w-auto" />
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="group min-h-12 w-full rounded-md border-on-dark/25 bg-on-dark/5 px-5 text-on-dark shadow-none hover:bg-on-dark/10 hover:text-on-dark sm:w-auto"
+            <a
+              href="#plataforma"
+              onClick={() => track("secondary_cta_click", { section_id: "hero" })}
             >
-              <a
-                href="#plataforma"
-                onClick={() => track("secondary_cta_click", { section_id: "hero" })}
-              >
-                {hero.secondaryCta}
-                <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-            </Button>
-          </div>
-        </div>
-
-        <div className="hero-reveal hero-delay-4 hero-product-wrap relative lg:col-span-6 lg:col-start-7 lg:mt-28">
-          <div className="product-glow" aria-hidden="true" />
-          <div className="product-backing" aria-hidden="true" />
-          <figure className="product-frame hero-product-frame relative">
-            <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
-              <div className="flex items-center gap-1.5" aria-hidden="true">
-                <span className="h-1.5 w-1.5 rounded-full bg-skybrand" />
-                <span className="h-1.5 w-1.5 rounded-full bg-amber" />
-                <span className="h-1.5 w-1.5 rounded-full bg-on-dark/30" />
-              </div>
-              <span className="font-ui text-[10px] tracking-[0.16em] text-on-dark/55 uppercase">
-                Logixtic®
-              </span>
-            </div>
-            <img
-              src={hero.image}
-              alt={hero.imageAlt}
-              width={1836}
-              height={857}
-              fetchPriority="high"
-              decoding="async"
-              className="block h-auto w-full object-contain"
-            />
-          </figure>
-          <div className="hero-guide" aria-label={hero.body}>
-            <img src={logixAsset.url} alt="Logix" width={1254} height={1254} />
-            <span>{content.logix.answer}</span>
-          </div>
-          <p className="status-card">
-            <span aria-hidden="true" /> {content.transformation.after[0]}
-          </p>
+              {hero.secondaryCta}
+              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </a>
+          </Button>
         </div>
       </div>
     </section>
