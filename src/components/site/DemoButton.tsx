@@ -9,9 +9,10 @@ type Props = {
   sectionId: string;
   size?: "default" | "lg";
   className?: string;
+  label?: string;
 };
 
-export function DemoButton({ sectionId, size = "default", className }: Props) {
+export function DemoButton({ sectionId, size = "default", className, label }: Props) {
   const demoUrl = useDemoUrl();
   const { content } = useLanguage();
 
@@ -30,7 +31,7 @@ export function DemoButton({ sectionId, size = "default", className }: Props) {
         rel="noopener noreferrer"
         onClick={() => track("demo_cta_click", { section_id: sectionId })}
       >
-        {content.demoLabel}
+        {label ?? content.demoLabel}
         <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
       </a>
     </Button>

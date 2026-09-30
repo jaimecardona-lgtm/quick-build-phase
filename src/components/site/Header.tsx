@@ -116,7 +116,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <DemoButton sectionId="header" className="hidden sm:inline-flex" />
+          <DemoButton sectionId="header" label={ui.headerCta} className="hidden sm:inline-flex" />
           <div className="lg:hidden"><LanguageSelector /></div>
           <button
             type="button"
@@ -195,7 +195,7 @@ export function Header() {
               ))}
             </nav>
             <div className="mt-8">
-              <DemoButton sectionId="mobile_menu" className="w-full" size="lg" />
+              <DemoButton sectionId="mobile_menu" label={ui.headerCta} className="w-full" size="lg" />
             </div>
           </div>
         </div>
