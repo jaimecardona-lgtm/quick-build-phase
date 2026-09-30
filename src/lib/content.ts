@@ -22,9 +22,9 @@ export const resourceLinks = [
 export const companyLink = { label: "Nosotros", href: "", available: false } as const;
 
 export const hero = {
-  eyebrow: "Software para Agentes de Carga Internacional",
-  title: ["Toda tu operación logística,", "en un solo sistema."],
-  body: "Logixtic® conecta la gestión comercial, operativa, documental y de clientes en una sola plataforma, con automatización e inteligencia artificial aplicada a la operación.",
+  eyebrow: "Exclusivo para agentes de carga internacional en Latam.",
+  title: ["No necesitas otro software.", "Necesitas un sistema operativo impulsado con IA."],
+  body: "Logixtic® conecta toda tu operación, automatiza procesos y creces con mayor control, productividad y rentabilidad con ayuda de la IA.",
   secondaryCta: "Conoce la plataforma",
   image: "/assets/01-plataforma-servicios-menu.webp",
   imageAlt:
