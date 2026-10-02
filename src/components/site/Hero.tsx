@@ -43,6 +43,42 @@ export function Hero() {
           height={941}
           fetchPriority="high"
         />
+        <svg
+          className="hero-digital-layer"
+          viewBox="0 0 1672 941"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          <g className="hero-route-bases">
+            <path d="M-24 342 C92 363 112 426 222 438 C314 448 343 427 432 474 C461 489 487 495 523 497" />
+            <path d="M-18 365 C92 385 130 449 235 457 C322 464 355 443 443 485 C473 500 500 503 538 505" />
+            <path d="M-12 389 C102 405 142 467 246 476 C337 484 376 458 459 496 C487 509 520 513 554 513" />
+            <path d="M914 521 C1001 514 1033 474 1115 455 C1207 434 1248 457 1326 469 C1426 486 1487 450 1696 387" />
+            <path d="M902 536 C1004 529 1042 492 1123 472 C1201 453 1250 476 1329 486 C1433 499 1504 466 1694 414" />
+            <path d="M936 501 C1007 488 1047 447 1120 431 C1204 413 1261 438 1339 449 C1438 463 1510 424 1692 367" />
+            <path d="M2 33 C73 65 126 116 161 169 C184 204 194 231 203 264" />
+            <path d="M1047 314 C1086 256 1137 219 1206 208 C1275 197 1309 156 1371 145 C1471 127 1546 171 1674 252" />
+            <path d="M1071 346 C1117 293 1166 261 1233 249 C1300 237 1350 203 1410 196 C1513 184 1573 213 1681 279" />
+            <path d="M132 0 L132 178 L273 178 L273 22" />
+            <path d="M1062 22 L1062 378 L1115 378 L1115 0" />
+          </g>
+
+          <g className="hero-route-pulses">
+            <path className="hero-pulse hero-pulse-blue hero-pulse-1" d="M-24 342 C92 363 112 426 222 438 C314 448 343 427 432 474 C461 489 487 495 523 497" />
+            <path className="hero-pulse hero-pulse-yellow hero-pulse-2" d="M-12 389 C102 405 142 467 246 476 C337 484 376 458 459 496 C487 509 520 513 554 513" />
+            <path className="hero-pulse hero-pulse-blue hero-pulse-3" d="M914 521 C1001 514 1033 474 1115 455 C1207 434 1248 457 1326 469 C1426 486 1487 450 1696 387" />
+            <path className="hero-pulse hero-pulse-yellow hero-pulse-4" d="M936 501 C1007 488 1047 447 1120 431 C1204 413 1261 438 1339 449 C1438 463 1510 424 1692 367" />
+            <path className="hero-pulse hero-pulse-blue hero-pulse-5 hero-signal-mobile-hide" d="M2 33 C73 65 126 116 161 169 C184 204 194 231 203 264" />
+            <path className="hero-pulse hero-pulse-yellow hero-pulse-6 hero-signal-mobile-hide" d="M1047 314 C1086 256 1137 219 1206 208 C1275 197 1309 156 1371 145 C1471 127 1546 171 1674 252" />
+          </g>
+
+          <g className="hero-route-points">
+            <circle className="hero-route-point hero-route-point-1" r="3.2" />
+            <circle className="hero-route-point hero-route-point-2" r="2.7" />
+            <circle className="hero-route-point hero-route-point-3 hero-signal-mobile-hide" r="3" />
+            <circle className="hero-route-point hero-route-point-4 hero-signal-mobile-hide" r="2.6" />
+          </g>
+        </svg>
       </div>
 
       <div className="hero-content relative z-10 mx-auto flex max-w-[1050px] flex-col items-center justify-center px-5 pt-28 pb-16 text-center md:px-8 md:pt-32 md:pb-20">
