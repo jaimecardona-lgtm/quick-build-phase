@@ -7,7 +7,7 @@ export const DEMO_LABEL = "Agenda una demo personalizada";
 
 export const nav = [
   { label: "Plataforma", href: "#plataforma" },
-  { label: "Logix AI", href: "#logix-ai" },
+  { label: "Logix", href: "#logix-ai" },
   { label: "Clientes", href: "#clientes" },
   { label: "Implementación", href: "#implementacion" },
 ] as const;

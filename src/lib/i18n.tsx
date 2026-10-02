@@ -55,7 +55,7 @@ const es: Dictionary = {
 
 const en: Dictionary = {
   demoLabel: "Book a personalized demo",
-  nav: [{ label: "Platform", href: "#plataforma" }, { label: "Logix AI", href: "#logix-ai" }, { label: "Customers", href: "#clientes" }, { label: "Implementation", href: "#implementacion" }],
+  nav: [{ label: "Platform", href: "#plataforma" }, { label: "Logix", href: "#logix-ai" }, { label: "Customers", href: "#clientes" }, { label: "Implementation", href: "#implementacion" }],
   resourceLinks: [
     { label: "Blog", href: "https://logixtic.co/blog-logixtic/", description: "Articles and trends", available: true },
     { label: "Guides", href: "", description: "Coming soon", available: false },
@@ -107,7 +107,7 @@ const en: Dictionary = {
 
 const pt: Dictionary = {
   demoLabel: "Agende uma demonstração personalizada",
-  nav: [{ label: "Plataforma", href: "#plataforma" }, { label: "Logix AI", href: "#logix-ai" }, { label: "Clientes", href: "#clientes" }, { label: "Implementação", href: "#implementacion" }],
+  nav: [{ label: "Plataforma", href: "#plataforma" }, { label: "Logix", href: "#logix-ai" }, { label: "Clientes", href: "#clientes" }, { label: "Implementação", href: "#implementacion" }],
   resourceLinks: [{ label: "Blog", href: "https://logixtic.co/blog-logixtic/", description: "Artigos e tendências", available: true }, { label: "Guias", href: "", description: "Em breve", available: false }, { label: "Webinars", href: "", description: "Em breve", available: false }, { label: "Glossário", href: "", description: "Em breve", available: false }],
   companyLink: { label: "Sobre nós", href: "", available: false },
   hero: { eyebrow: "Exclusivo para agentes de carga internacional na Latam.", title: ["Você não precisa de outro software.", "Você precisa de um sistema operacional potencializado com IA."], body: "Logixtic® conecta toda a sua operação, automatiza processos e faz você crescer com mais controle, produtividade e rentabilidade com a ajuda da IA.", secondaryCta: "Conheça a plataforma", ...sharedImages.hero, imageAlt: "Tela real do Logixtic com o menu de serviços da plataforma de gestão de cargas." },
