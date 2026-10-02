@@ -272,7 +272,7 @@ body {
     linear-gradient(180deg, color-mix(in oklab, var(--color-night) 62%, transparent) 0%, color-mix(in oklab, var(--color-night) 50%, transparent) 45%, color-mix(in oklab, var(--color-night) 88%, transparent) 100%);
   z-index: 2;
 }
-.hero-bg-photo { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center center; animation: hero-bg-drift 20s var(--ease-standard) infinite alternate; }
+.hero-bg-photo { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: center center; will-change: transform; animation: hero-bg-drift 20s ease-in-out infinite alternate; }
 .hero-shell[data-active="false"] .hero-bg-photo { animation-play-state: paused; }
 .product-glow { position: absolute; inset: 30% 18% -4%; background: color-mix(in oklab, var(--color-royal) 15%, transparent); filter: blur(58px); }
 .product-backing { position: absolute; inset: 14px -14px -14px 14px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 14%, transparent); border-radius: 10px; background: color-mix(in oklab, var(--color-night) 38%, transparent); backdrop-filter: blur(8px); }
@@ -553,14 +553,15 @@ body {
 .closing-shell::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, color-mix(in oklab, var(--color-night) 54%, transparent), var(--color-night) 82%); }
 
 @keyframes line-draw { to { stroke-dashoffset: 0; } }
-@keyframes hero-bg-drift { from { transform: translate3d(-6px, 0, 0) scale(1); } to { transform: translate3d(6px, -2px, 0) scale(1.06); } }
+@keyframes hero-bg-drift { from { transform: translate3d(-8px, 0, 0) scale(1); } to { transform: translate3d(8px, -4px, 0) scale(1.08); } }
+@keyframes hero-bg-drift-mobile { from { transform: translate3d(-4px, 0, 0) scale(1); } to { transform: translate3d(4px, -2px, 0) scale(1.04); } }
 @keyframes transfer-dot { from { left: 10%; } to { left: calc(90% - 8px); } }
 @keyframes flow-crossfade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 767px) {
   .product-glow { display: none; }
   .hero-scene { opacity: .6; }
-  .hero-bg-photo { animation: none; transform: none; }
+  .hero-bg-photo { animation-name: hero-bg-drift-mobile; }
   .hero-shell { min-height: auto; }
   .hero-content { min-height: 0; }
   .implementation-track::before { display: none; }
@@ -584,4 +585,83 @@ body {
   .implementation-track { display: grid; grid-template-columns: 1fr; gap: 28px; padding-left: 28px; }
   .implementation-track::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 1px; background: color-mix(in oklab, var(--color-skybrand) 34%, transparent); }
   .implementation-icon { margin-left: -48px; }
+}
+
+/* ===== Planeación Estratégica Integratech (/planeacion) ===== */
+.pl-app { min-height: 100vh; background: #f4f6fa; color: #16233a; font-family: inherit; }
+.pl-header { background: #0b1f3a; color: #fff; }
+.pl-header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 14px; }
+.pl-brand { font-weight: 800; font-size: 20px; letter-spacing: .02em; color: #fff; text-decoration: none; }
+.pl-header-tag { font-size: 13px; color: #9fb4d0; border-left: 1px solid #29425f; padding-left: 14px; }
+.pl-main { max-width: 1200px; margin: 0 auto; padding: 32px 20px 64px; }
+.pl-units-title { font-size: 26px; font-weight: 800; margin: 8px 0 4px; }
+.pl-units-sub { color: #5a6b84; margin: 0 0 24px; }
+.pl-units-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.pl-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 3px rgb(11 31 58 / .06); }
+.pl-card-name { font-size: 18px; font-weight: 700; margin: 0; }
+.pl-card-tagline { font-size: 13px; color: #5a6b84; margin: 0; }
+.pl-card-status { font-size: 12px; font-weight: 600; margin: 8px 0 12px; }
+.pl-card-status-idle { color: #8a97a8; }
+.pl-card-status-progress { color: #b7791f; }
+.pl-card-status-done { color: #2f855a; }
+.pl-open-btn { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; justify-content: center; background: #0b1f3a; color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.pl-open-btn:hover { background: #16305a; }
+.pl-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.pl-back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; color: #0b1f3a; cursor: pointer; }
+.pl-back-btn:hover { background: #eaf0f7; }
+.pl-breadcrumb-trail { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #5a6b84; margin: 0; }
+.pl-unit-title { font-size: 24px; font-weight: 800; margin: 0; }
+.pl-unit-tagline { color: #5a6b84; margin: 4px 0 24px; }
+.pl-form { display: flex; flex-direction: column; gap: 20px; }
+.pl-year { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+.pl-year-input { width: 110px; }
+.pl-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+.pl-section-title { font-size: 17px; font-weight: 700; margin: 0 0 14px; }
+.pl-subsection-title { font-size: 14px; font-weight: 700; margin: 20px 0 10px; color: #0b1f3a; }
+.pl-table-wrap { overflow-x: auto; }
+.pl-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+.pl-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #5a6b84; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; }
+.pl-table td { padding: 6px 8px; border-bottom: 1px solid #f0f4f8; vertical-align: middle; }
+.pl-input { width: 100%; min-width: 110px; border: 1px solid #d7dee8; border-radius: 6px; padding: 7px 9px; font-size: 13px; background: #fff; color: #16233a; }
+.pl-input:focus { outline: 2px solid #2f6fed; outline-offset: 1px; border-color: #2f6fed; }
+.pl-textarea { min-height: 110px; resize: vertical; }
+.pl-col-actions { width: 40px; text-align: right; }
+.pl-icon-btn { background: none; border: 0; color: #b0443c; cursor: pointer; padding: 6px; border-radius: 6px; }
+.pl-icon-btn:hover { background: #fbeae8; }
+.pl-empty { color: #8a97a8; font-size: 13px; padding: 14px 8px; }
+.pl-add-btn { margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px dashed #9fb4d0; color: #0b1f3a; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.pl-add-btn:hover { background: #eaf0f7; }
+.pl-tabs { display: inline-flex; gap: 4px; background: #eef2f7; border-radius: 8px; padding: 4px; margin-bottom: 14px; }
+.pl-tab { border: 0; background: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 600; color: #5a6b84; cursor: pointer; }
+.pl-tab.is-active { background: #fff; color: #0b1f3a; box-shadow: 0 1px 2px rgb(11 31 58 / .12); }
+.pl-resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+.pl-resource-cat-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #2f6fed; margin: 0 0 8px; }
+.pl-currency { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.pl-currency-select { width: auto; min-width: 220px; }
+.pl-subtotal-label { text-align: right; font-weight: 700; font-size: 13px; padding: 10px 8px; }
+.pl-subtotal-value { font-weight: 800; font-size: 14px; padding: 10px 8px; white-space: nowrap; }
+.pl-summary { margin-top: 20px; background: #f0f5fc; border: 1px solid #d7e3f5; border-radius: 10px; padding: 16px; }
+.pl-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 0; }
+.pl-summary-grid dt { font-size: 12px; color: #5a6b84; margin-bottom: 4px; }
+.pl-summary-grid dd { margin: 0; font-size: 18px; font-weight: 800; }
+.pl-summary-result dd { color: #0b1f3a; }
+/* Gantt */
+.pl-gantt-wrap { overflow-x: auto; }
+.pl-gantt { display: grid; grid-template-columns: minmax(180px, 240px) repeat(12, minmax(46px, 1fr)); font-size: 12px; min-width: 760px; }
+.pl-gantt-quarter { grid-column: span 3; text-align: center; font-weight: 700; color: #0b1f3a; padding: 4px; border-bottom: 2px solid #0b1f3a; }
+.pl-gantt-head { font-weight: 700; color: #5a6b84; padding: 4px 8px; }
+.pl-gantt-month { text-align: center; color: #8a97a8; padding: 4px 0; border-bottom: 1px solid #e2e8f0; }
+.pl-gantt-row { display: contents; }
+.pl-gantt-task { padding: 8px; border-bottom: 1px solid #f0f4f8; display: flex; flex-direction: column; gap: 2px; }
+.pl-gantt-task-name { font-weight: 600; }
+.pl-gantt-task-meta { color: #8a97a8; font-size: 11px; }
+.pl-gantt-track { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(12, 1fr); align-items: center; border-bottom: 1px solid #f0f4f8; padding: 4px 0; }
+.pl-gantt-bar { height: 14px; border-radius: 7px; background: #2f6fed; }
+.pl-gantt-bar.pl-status-completado { background: #2f855a; }
+.pl-gantt-bar.pl-status-en-progreso { background: #2f6fed; }
+.pl-gantt-bar.pl-status-en-riesgo { background: #c53030; }
+.pl-gantt-bar.pl-status-no-iniciado { background: #a8b6c8; }
+@media (max-width: 640px) {
+  .pl-main { padding: 20px 14px 48px; }
+  .pl-summary-grid dd { font-size: 16px; }
 }
