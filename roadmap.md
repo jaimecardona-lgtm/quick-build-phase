@@ -13,5 +13,5 @@
 
 # Hero y menú
 
-- [x] Fondo del Hero con zoom cinematográfico 100→108 %, 20 s alternado, will-change, 104 % en móvil, estático con prefers-reduced-motion.
+- [x] Imagen fija en el Hero con capa SVG independiente de conexiones digitales, pulsos diferenciados y versión móvil reducida.
 - [x] Menú "Logix AI" renombrado a "Logix" en es/en/pt-BR.
