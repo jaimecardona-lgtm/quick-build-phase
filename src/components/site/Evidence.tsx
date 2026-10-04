@@ -1,15 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
-import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
-import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
-import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
-
-const companyLogos = [
-  { name: "R&R Logistics CFS", src: rrLogo.url, className: "client-logo-rr" },
-  { name: "Connecta Global Logistics", src: connectaLogo.url, className: "client-logo-connecta" },
-  { name: "Trade & Business SAS", src: tradeLogo.url, className: "client-logo-trade" },
-];
 
 function parseCount(value: string) {
   if (!/^\d[\d.,]*$/.test(value)) return null;
@@ -104,13 +95,6 @@ export function Evidence() {
           <p className="section-lead-dark mt-5">{evidence.body}</p>
         </div>
 
-        <ul data-reveal className="reveal-item client-strip mt-10">
-          {companyLogos.map((company) => (
-            <li key={company.name} className="client-logo-item">
-              <img src={company.src} alt={company.name} className={company.className} loading="lazy" />
-            </li>
-          ))}
-        </ul>
 
         <div data-reveal className="reveal-item evidence-impact mt-12">
           <dl className="evidence-metrics">
