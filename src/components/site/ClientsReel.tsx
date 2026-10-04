@@ -34,7 +34,7 @@ export function ClientsReel() {
   return (
     <section aria-labelledby="clientes-reel-title" className="clients-reel-section bg-night">
       <div className="mx-auto max-w-[1100px] px-5 text-center md:px-8">
-        <h2 id="clientes-reel-title" className="section-title-dark">{ui.clientsTitle}</h2>
+        <h2 id="clientes-reel-title" className="section-title-dark mx-auto">{ui.clientsTitle}</h2>
         <p className="section-lead-dark mx-auto mt-5 max-w-[1100px]">{ui.clientsBody}</p>
       </div>
       <div className="clients-reel clients-reel-mask mt-10" tabIndex={0} aria-label={ui.clientsLabel}>
