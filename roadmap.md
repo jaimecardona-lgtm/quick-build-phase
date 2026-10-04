@@ -15,3 +15,7 @@
 
 - [x] Imagen fija en el Hero con capa SVG independiente de conexiones digitales, pulsos diferenciados y versión móvil reducida.
 - [x] Menú "Logix AI" renombrado a "Logix" en es/en/pt-BR.
+
+# Clientes
+
+- [x] 12 logos guardados en la carpeta de logos de clientes y franja animada de clientes justo después de la portada (es/en/pt).
