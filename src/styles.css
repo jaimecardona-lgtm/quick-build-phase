@@ -733,7 +733,8 @@ body {
 .clients-reel:hover .clients-reel-track, .clients-reel:focus-within .clients-reel-track { animation-play-state: paused; }
 .clients-reel-group { display: flex; gap: 16px; padding-right: 16px; }
 .clients-reel-item { flex: 0 0 auto; width: clamp(150px, calc((100vw - 64px) / 5.5), 220px); height: 96px; display: grid; place-items: center; padding: 14px 18px; border-radius: 12px; background: color-mix(in oklab, var(--color-on-dark) 5%, transparent); }
-.clients-reel-item img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.clients-reel-item { overflow: hidden; }
+.clients-reel-item img { width: 135%; max-width: none; height: 150%; object-fit: contain; }
 @media (max-width: 1023px) { .clients-reel-item { width: calc((100vw - 40px) / 3.5); } }
 @media (max-width: 639px) { .clients-reel-item { width: calc((100vw - 40px) / 2.4); height: 80px; } }
 @keyframes clients-marquee { to { transform: translateX(-50%); } }
