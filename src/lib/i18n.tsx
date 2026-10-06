@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import * as esContent from "@/lib/content";
+import { operationalChallenges } from "@/lib/operational-challenges";
 
 export type Locale = "es" | "en" | "pt-BR";
 type Widen<T> = T extends string ? string : T extends number ? number : T extends boolean ? boolean : T extends readonly (infer U)[] ? readonly Widen<U>[] : T extends object ? { readonly [K in keyof T]: Widen<T[K]> } : T;
@@ -11,6 +12,7 @@ type Dictionary = Widen<{
   companyLink: { label: string; href: string; available: boolean };
   hero: typeof esContent.hero;
   problem: typeof esContent.problem;
+  challenges: typeof operationalChallenges.es;
   transformation: typeof esContent.transformation;
   flow: typeof esContent.flow;
   logix: typeof esContent.logix;
@@ -37,6 +39,7 @@ const sharedImages = {
 };
 
 const es: Dictionary = {
+  challenges: operationalChallenges.es,
   demoLabel: esContent.DEMO_LABEL,
   nav: [...esContent.nav], resourceLinks: [...esContent.resourceLinks], companyLink: esContent.companyLink,
   hero: esContent.hero, problem: esContent.problem, transformation: esContent.transformation, flow: esContent.flow,
@@ -54,6 +57,7 @@ const es: Dictionary = {
 };
 
 const en: Dictionary = {
+  challenges: operationalChallenges.en,
   demoLabel: "Book a personalized demo",
   nav: [{ label: "Platform", href: "#plataforma" }, { label: "Logix", href: "#logix-ai" }, { label: "Customers", href: "#clientes" }, { label: "Implementation", href: "#implementacion" }],
   resourceLinks: [
@@ -106,6 +110,7 @@ const en: Dictionary = {
 };
 
 const pt: Dictionary = {
+  challenges: operationalChallenges["pt-BR"],
   demoLabel: "Agende uma demonstração personalizada",
   nav: [{ label: "Plataforma", href: "#plataforma" }, { label: "Logix", href: "#logix-ai" }, { label: "Clientes", href: "#clientes" }, { label: "Implementação", href: "#implementacion" }],
   resourceLinks: [{ label: "Blog", href: "https://logixtic.co/blog-logixtic/", description: "Artigos e tendências", available: true }, { label: "Guias", href: "", description: "Em breve", available: false }, { label: "Webinars", href: "", description: "Em breve", available: false }, { label: "Glossário", href: "", description: "Em breve", available: false }],
