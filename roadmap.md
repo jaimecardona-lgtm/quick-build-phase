@@ -22,5 +22,5 @@
 
 # Desafíos operativos
 
-- [ ] Añadir la nueva sección después de clientes con textos ES/EN/PT y tres fotografías reales.
-- [ ] Verificar ubicación, imágenes, movimiento reducido y cinco anchos sin desbordamiento.
+- [x] Añadir la nueva sección después de clientes con textos ES/EN/PT y tres fotografías reales.
+- [x] Verificar ubicación, imágenes, movimiento reducido y cinco anchos sin desbordamiento.
