@@ -31,8 +31,8 @@ export function SuccessStories() {
     <section id="transformacion" aria-labelledby="casos-title" className="success-shell">
       <div className="mx-auto max-w-[1150px] px-5 text-center md:px-8">
         <div data-reveal className="reveal-item">
-          <p className="success-kicker">{t.kicker}</p>
-          <h2 id="casos-title" className="success-title">
+          <p className="section-kicker">{t.kicker}</p>
+          <h2 id="casos-title" className="section-title-dark mx-auto mt-4 text-balance">
             {t.titleStart} <span className="success-brand">Logi<span>x</span>tic</span>
           </h2>
           <p className="success-body">{t.body}</p>
@@ -45,8 +45,6 @@ export function SuccessStories() {
             aria-label="Ver historia de cliente"
             onClick={() => setOpen(true)}
           >
-            <img className="success-video-bg" src={thumb} alt="" aria-hidden="true" />
-            <span className="success-video-bg-overlay" aria-hidden="true" />
             <img
               className="success-video-main"
               src={thumb}
