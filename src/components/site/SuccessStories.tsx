@@ -9,7 +9,7 @@ export function SuccessStories() {
   const { locale } = useLanguage();
   const t = successCopy[locale];
   const [open, setOpen] = useState(false);
-  const [thumb, setThumb] = useState(`https://i.ytimg.com/vi/${VIDEO_ID}/maxresdefault.jpg`);
+  const [thumb, setThumb] = useState(`https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`);
   const closeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
