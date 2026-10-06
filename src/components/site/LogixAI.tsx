@@ -100,8 +100,14 @@ export function LogixAI() {
 
   return (
     <section ref={ref} id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
-      <div className="logix2-grid mx-auto max-w-[1320px] px-5 md:px-8">
-        <div className="logix2-left">
+      <div className="logix3 mx-auto max-w-[1320px] px-5 md:px-8">
+        <div data-reveal className="reveal-item logix3-head">
+          <p className="section-kicker">{ui.logixKicker}</p>
+          <h2 id="logix-title" className="section-title-dark">{logix.title}</h2>
+          <p className="section-lead-dark">{logix.body}</p>
+        </div>
+
+        <div className="logix3-row">
           <div data-reveal className="reveal-item logix2-cluster" data-motion={motionOn ? "on" : "off"}>
             <div className="logix2-avatar">
               <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
@@ -119,53 +125,52 @@ export function LogixAI() {
               })}
             </ul>
           </div>
-          <div role="radiogroup" aria-label={t.copilotsLabel} className="logix2-copilots">
-            {t.copilots.map((c, i) => (
-              <button
-                key={c.name}
-                ref={(el) => { btns.current[i] = el; }}
-                type="button" role="radio" aria-checked={active === i} tabIndex={active === i ? 0 : -1}
-                onClick={() => choose(i)} onKeyDown={(e) => onKey(e, i)}
-                className="logix2-copilot focus-ring"
-              >
-                {c.name}
-              </button>
-            ))}
+
+          <div data-reveal className="reveal-item logix3-main">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">{current.label}</p>
+              <span className="logix2-badge">{t.illustrative}</span>
+            </div>
+            <div className="logix-console" aria-live="polite">
+              <div className="logix2-swap" data-fading={fading ? "true" : undefined}>
+                <p className="flex items-start gap-3 font-ui text-sm text-on-dark">
+                  <Search className="mt-0.5 h-4 w-4 shrink-0 text-skybrand" aria-hidden="true" />
+                  <span><span className="font-semibold">{ui.query}</span> {current.query}</span>
+                </p>
+                <p className="logix3-answer font-ui text-sm leading-relaxed text-on-dark/70">{current.answer}</p>
+                <ul className="logix-answer-details">
+                  {current.items.map((item) => (
+                    <li key={item} className="logix-result-row" style={{ opacity: 1, transform: "none" }}>
+                      <FileText className="h-4 w-4 text-skybrand" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div role="radiogroup" aria-label={t.copilotsLabel} className="logix3-copilots">
+          {t.copilots.map((c, i) => (
+            <button
+              key={c.name}
+              ref={(el) => { btns.current[i] = el; }}
+              type="button" role="radio" aria-checked={active === i} tabIndex={active === i ? 0 : -1}
+              onClick={() => choose(i)} onKeyDown={(e) => onKey(e, i)}
+              className="logix2-copilot focus-ring"
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="logix3-controls">
           <button type="button" onClick={() => setPaused((p) => !p)} className="logix2-pause focus-ring" aria-pressed={paused}>
             {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
             {paused ? t.play : t.pause}
           </button>
-        </div>
-
-        <div data-reveal className="reveal-item logix2-head">
-          <p className="section-kicker">{ui.logixKicker}</p>
-          <h2 id="logix-title" className="section-title-dark mt-4">{logix.title}</h2>
-          <p className="section-lead-dark mt-5">{logix.body}</p>
-        </div>
-        <div data-reveal className="reveal-item logix2-main">
-          <div className=" flex flex-wrap items-center justify-between gap-2">
-            <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">{current.label}</p>
-            <span className="logix2-badge">{t.illustrative}</span>
-          </div>
-          <div className="logix-console mt-4" aria-live="polite">
-            <div className="logix2-swap" data-fading={fading ? "true" : undefined}>
-              <p className="flex items-start gap-3 font-ui text-sm text-on-dark">
-                <Search className="mt-0.5 h-4 w-4 shrink-0 text-skybrand" aria-hidden="true" />
-                <span><span className="font-semibold">{ui.query}</span> {current.query}</span>
-              </p>
-              <p className="mt-4 border-t border-on-dark/10 pt-4 font-ui text-sm leading-relaxed text-on-dark/70">{current.answer}</p>
-              <ul className="logix-answer-details mt-5">
-                {current.items.map((item) => (
-                  <li key={item} className="logix-result-row" style={{ opacity: 1, transform: "none" }}>
-                    <FileText className="h-4 w-4 text-skybrand" aria-hidden="true" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <ul className="mt-5 flex flex-wrap gap-2.5">
+          <ul className="logix3-actions">
             {logix.actions.map((chip, i) => (
               <li key={chip}>
                 <button type="button" aria-pressed={action === i} onClick={() => setAction(action === i ? null : i)} className="logix2-action focus-ring">
@@ -174,8 +179,8 @@ export function LogixAI() {
               </li>
             ))}
           </ul>
-          <p className="logix2-action-detail" aria-live="polite">{action !== null ? t.actionDetails[action] : "\u00a0"}</p>
         </div>
+        <p className="logix2-action-detail" aria-live="polite">{action !== null ? t.actionDetails[action] : "\u00a0"}</p>
       </div>
     </section>
   );
