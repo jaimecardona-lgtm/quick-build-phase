@@ -100,8 +100,8 @@ export function LogixAI() {
 
   return (
     <section ref={ref} id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
-      <div className="mx-auto grid max-w-[1320px] items-center gap-10 px-5 md:px-8 lg:grid-cols-[minmax(0,32%)_minmax(0,1fr)]">
-        <div className="order-2 lg:order-1">
+      <div className="logix2-grid mx-auto max-w-[1320px] px-5 md:px-8">
+        <div className="logix2-left">
           <div data-reveal className="reveal-item logix2-cluster" data-motion={motionOn ? "on" : "off"}>
             <div className="logix2-avatar">
               <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
@@ -138,11 +138,13 @@ export function LogixAI() {
           </button>
         </div>
 
-        <div data-reveal className="reveal-item order-1 lg:order-2">
+        <div data-reveal className="reveal-item logix2-head">
           <p className="section-kicker">{ui.logixKicker}</p>
           <h2 id="logix-title" className="section-title-dark mt-4">{logix.title}</h2>
           <p className="section-lead-dark mt-5">{logix.body}</p>
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-2">
+        </div>
+        <div data-reveal className="reveal-item logix2-main">
+          <div className=" flex flex-wrap items-center justify-between gap-2">
             <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">{current.label}</p>
             <span className="logix2-badge">{t.illustrative}</span>
           </div>
