@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
+import { DemoButton } from "@/components/site/DemoButton";
 
 const copy = {
   es: {
@@ -187,6 +188,9 @@ export function Flow() {
                 </div>
               ))}
             </dl>
+            <div className="flow2-cta">
+              <DemoButton sectionId="plataforma" size="lg" />
+            </div>
           </div>
         </div>
       </div>
