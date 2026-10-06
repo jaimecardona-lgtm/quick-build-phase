@@ -51,7 +51,7 @@ const copy: Record<"es" | "en" | "pt-BR", Copy> = {
 };
 
 export function LogixAI() {
-  const { content, locale } = useLanguage() as ReturnType<typeof useLanguage> & { locale: keyof typeof copy };
+  const { content, locale } = useLanguage();
   const { logix, ui } = content;
   const t = copy[locale] ?? copy.es;
   const [active, setActive] = useState(2);
