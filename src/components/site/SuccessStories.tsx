@@ -45,7 +45,10 @@ export function SuccessStories() {
             aria-label="Ver historia de cliente"
             onClick={() => setOpen(true)}
           >
+            <img className="success-video-bg" src={thumb} alt="" aria-hidden="true" />
+            <span className="success-video-bg-overlay" aria-hidden="true" />
             <img
+              className="success-video-main"
               src={thumb}
               alt={t.coverAlt}
               loading="lazy"
