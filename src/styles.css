@@ -914,6 +914,7 @@ body {
   .flow2-menu::before { content: ""; position: absolute; top: 22px; bottom: 22px; left: 0; width: 1px; background: color-mix(in oklab, var(--color-on-dark) 14%, transparent); }
   .flow2-stage { min-width: 0; }
   .flow2-number { font-size: clamp(52px, 4.6vw, 68px); }
+  .flow2-results { margin-top: 32px; }
 }
 @media (max-width: 767px) { .flow2-stage:not([data-on="true"]) > span:last-child { display: none; } .flow2-stage { max-width: 240px; } }
 @media (prefers-reduced-motion: reduce) { .flow2-image, .flow2-progress { animation: none !important; } }
