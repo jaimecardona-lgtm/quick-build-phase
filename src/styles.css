@@ -919,3 +919,62 @@ body {
 }
 @media (max-width: 767px) { .flow2-stage:not([data-on="true"]) > span:last-child { display: none; } .flow2-stage { max-width: 240px; } }
 @media (prefers-reduced-motion: reduce) { .flow2-image, .flow2-progress { animation: none !important; } }
+
+/* Logix aplicado — composición compacta con copilotos */
+.logix2-cluster { position: relative; display: grid; grid-template-columns: 1fr 150px 1fr; grid-template-rows: repeat(3, auto); align-items: center; gap: 14px 8px; max-width: 440px; margin-inline: auto; }
+.logix2-avatar { grid-column: 2; grid-row: 1 / span 3; position: relative; opacity: 0; transform: translateY(8px); transition: opacity 500ms var(--ease-standard), transform 500ms var(--ease-enter); }
+.logix2-avatar::before { content: ""; position: absolute; inset: 20% 8% 0; border-radius: 50%; background: color-mix(in oklab, var(--color-royal) 22%, transparent); filter: blur(36px); }
+.logix2-avatar img { position: relative; width: 100%; height: auto; object-fit: contain; }
+.reveal-item[data-visible="true"] .logix2-avatar { opacity: 1; transform: none; }
+.logix2-cluster[data-motion="on"] .logix2-avatar img { animation: logix2-float 6s ease-in-out infinite; }
+@keyframes logix2-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.logix2-cards { display: contents; }
+.logix2-card { display: grid; grid-template-columns: 28px minmax(0,1fr) 6px; align-items: center; gap: 7px; min-width: 0; border: 1px solid color-mix(in oklab, var(--color-skybrand) 20%, transparent); border-radius: 8px; background: color-mix(in oklab, var(--color-royal) 14%, var(--color-night)); padding: 7px 8px; font: 500 11px/1.2 var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 86%, transparent); opacity: 0; transform: translateY(8px); transition: opacity 450ms var(--ease-standard), transform 300ms var(--ease-enter), border-color 300ms, box-shadow 300ms; outline: none; }
+.logix2-card .logix-node-icon { width: 28px; height: 28px; }
+.logix2-card .logix-node-icon svg { width: 15px; height: 15px; }
+.reveal-item[data-visible="true"] .logix2-card { opacity: 1; transform: none; }
+.logix2-card[data-lit="true"] { border-color: color-mix(in oklab, var(--color-skybrand) 55%, transparent); box-shadow: 0 0 18px -6px color-mix(in oklab, var(--color-skybrand) 45%, transparent); }
+.reveal-item[data-visible="true"] .logix2-card:hover, .reveal-item[data-visible="true"] .logix2-card:focus-visible { border-color: var(--color-skybrand); transform: translateY(-2px); }
+.logix2-card-1 { grid-column: 1; grid-row: 1; } .logix2-card-2 { grid-column: 3; grid-row: 1; }
+.logix2-card-3 { grid-column: 1; grid-row: 2; } .logix2-card-4 { grid-column: 3; grid-row: 2; }
+.logix2-card-5 { grid-column: 1; grid-row: 3; } .logix2-card-6 { grid-column: 3; grid-row: 3; }
+.logix2-copilots { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; max-width: 440px; margin: 24px auto 0; }
+.logix2-copilot { min-height: 46px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 18%, transparent); border-radius: 6px; background: color-mix(in oklab, var(--color-royal) 45%, var(--color-night)); padding: 8px 10px; font: 600 13px/1.25 var(--font-ui); color: var(--color-on-dark); transition: background 250ms, border-color 250ms, transform 250ms; }
+.logix2-copilot:hover { border-color: color-mix(in oklab, var(--color-skybrand) 55%, transparent); }
+.logix2-copilot[aria-checked="true"] { background: var(--color-royal); border-color: var(--color-skybrand); box-shadow: inset 0 -2px 0 var(--color-amber); }
+.logix2-pause { display: flex; align-items: center; gap: 6px; margin: 12px auto 0; font: 500 11px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 60%, transparent); border-radius: 4px; padding: 4px 6px; }
+.logix2-pause svg { width: 12px; height: 12px; }
+.logix2-pause:hover { color: var(--color-on-dark); }
+.logix2-badge { border: 1px solid color-mix(in oklab, var(--color-on-dark) 18%, transparent); border-radius: 999px; padding: 3px 10px; font: 500 11px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 65%, transparent); }
+.logix2-swap { min-height: 228px; transition: opacity 300ms var(--ease-standard); }
+.logix2-swap[data-fading="true"] { opacity: 0; }
+.logix2-action { border: 1px solid color-mix(in oklab, var(--color-on-dark) 14%, transparent); border-radius: 6px; background: color-mix(in oklab, var(--color-on-dark) 6%, transparent); padding: 8px 14px; font: 400 12px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 78%, transparent); transition: border-color 200ms, color 200ms; }
+.logix2-action:hover, .logix2-action[aria-pressed="true"] { border-color: var(--color-skybrand); color: var(--color-on-dark); }
+.logix2-action-detail { margin-top: 10px; min-height: 20px; font: 400 13px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 65%, transparent); }
+@media (max-width: 767px) {
+  .logix2-cluster { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .logix2-avatar { grid-column: 1 / -1; grid-row: 1; width: 170px; margin-inline: auto; }
+  .logix2-card { grid-row: auto !important; grid-column: auto !important; }
+  .logix2-swap { min-height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logix2-avatar, .logix2-card { opacity: 1 !important; transform: none !important; transition: none; }
+  .logix2-avatar img { animation: none !important; }
+  .logix2-swap { transition: none; }
+}
+.logix2-grid { display: grid; gap: 32px; grid-template-areas: "head" "left" "main"; }
+.logix2-head { grid-area: head; } .logix2-left { grid-area: left; } .logix2-main { grid-area: main; }
+@media (min-width: 1024px) {
+  .logix2-grid { grid-template-columns: minmax(0,32%) minmax(0,1fr); column-gap: 40px; row-gap: 0; grid-template-areas: "left head" "left main"; align-items: start; }
+  .logix2-left { align-self: center; }
+  .logix2-main { margin-top: 32px; }
+  .logix2-cluster { grid-template-columns: minmax(0,1fr) 120px minmax(0,1fr); }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .logix2-cluster { grid-template-columns: minmax(0,1fr) 96px minmax(0,1fr); gap: 12px 6px; }
+  .logix2-card { grid-template-columns: 22px minmax(0,1fr) 5px; gap: 6px; padding: 6px; font-size: 10.5px; }
+  .logix2-card .logix-node-icon { width: 22px; height: 22px; }
+  .logix2-card .logix-node-icon svg { width: 13px; height: 13px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) { .logix2-grid { grid-template-columns: minmax(0,40%) minmax(0,1fr); } }
