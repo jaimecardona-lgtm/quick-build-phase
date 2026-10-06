@@ -5,8 +5,8 @@ import { fragmentation } from "@/lib/fragmentation";
 
 const icons = [FileSpreadsheet, FileText, Users, ClipboardList, FileBadge, FolderOpen, Route, Receipt];
 // Card i sits in row floor(i/2); left column cards are a half-row higher than right ones.
-const startY = [40, 70, 140, 170, 240, 270, 340, 370];
-const paths = startY.map((y) => `M0 ${y} C 90 ${y}, 120 205, 200 205`);
+const startY = [32, 62, 110, 140, 188, 218, 266, 296];
+const paths = startY.map((y) => `M0 ${y} C 90 ${y}, 120 205, 200 164`);
 
 export function Problem() {
   const { locale } = useLanguage();
@@ -46,11 +46,11 @@ export function Problem() {
 
           <div className="frag-zone frag-link" aria-hidden="true">
             <p className="frag-step"><span>02</span>{t.steps[1]}</p>
-            <svg className="frag-svg" viewBox="0 0 260 410" preserveAspectRatio="none">
+            <svg className="frag-svg" viewBox="0 0 260 328" preserveAspectRatio="none">
               {paths.map((d, i) => (
                 <path key={i} id={`frag-p${i}`} d={d} className={`frag-line ${active === i ? "is-active" : ""}`} pathLength={1} style={{ ["--d" as string]: `${900 + i * 60}ms` }} vectorEffect="non-scaling-stroke" />
               ))}
-              <path d="M200 205 L250 205" className="frag-arrow" pathLength={1} vectorEffect="non-scaling-stroke" />
+              <path d="M200 164 L258 164" className="frag-arrow" pathLength={1} vectorEffect="non-scaling-stroke" />
               {paths.map((_, i) => (
                 <circle key={i} r="2.4" className="frag-dot">
                   <animateMotion dur={`${3.2 + (i % 4) * 0.5}s`} begin={`${1.6 + i * 0.25}s`} repeatCount="indefinite">
