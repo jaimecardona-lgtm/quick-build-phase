@@ -882,3 +882,28 @@ body {
 .wa-float::after { content: attr(data-tooltip); position: absolute; right: calc(100% + 10px); top: 50%; translate: 0 -50%; white-space: nowrap; padding: .4rem .7rem; border-radius: 8px; background: var(--color-night); color: var(--color-on-dark); font-family: var(--font-ui); font-size: .8rem; opacity: 0; pointer-events: none; transition: opacity .2s; }
 .wa-float:hover::after, .wa-float:focus-visible::after { opacity: 1; }
 @media (max-width: 640px) { .wa-float { right: 16px; bottom: 16px; width: 50px; height: 50px; } .wa-float svg { width: 26px; height: 26px; } }
+
+/* Flow section v2: capture + results left, stage menu right */
+.flow2-layout { display: grid; gap: 28px; grid-template-areas: "media" "menu" "results"; }
+.flow2-media { grid-area: media; }
+.flow2-menu { grid-area: menu; position: relative; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+.flow2-results { grid-area: results; }
+.flow2-stage { cursor: pointer; flex: 0 0 auto; min-width: 150px; }
+.flow2-stage:hover { opacity: .9; background: color-mix(in oklab, var(--color-on-dark) 6%, transparent); }
+.flow2-stage[data-on="true"] { background: color-mix(in oklab, var(--color-skybrand) 12%, transparent); }
+.flow2-image { animation: flow2-fade 300ms var(--ease-standard) both; }
+@keyframes flow2-fade { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+.flow2-results { background: color-mix(in oklab, var(--color-night) 70%, black); border-radius: 12px; padding: 28px; }
+.flow2-metrics { margin-top: 22px; display: grid; gap: 20px; }
+.flow2-metric { border-left: 2px solid var(--color-skybrand); padding-left: 16px; }
+.flow2-number { font-family: var(--font-display, inherit); font-weight: 600; color: var(--color-on-dark); font-size: clamp(40px, 5vw, 60px); line-height: 1; font-variant-numeric: tabular-nums; }
+@media (min-width: 640px) { .flow2-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 768px) {
+  .flow2-layout { grid-template-columns: minmax(0, 1fr) minmax(220px, 34%); grid-template-areas: "media menu" "results menu"; grid-template-rows: auto 1fr; align-items: start; column-gap: 40px; row-gap: 28px; }
+  .flow2-menu { flex-direction: column; overflow: visible; gap: 6px; }
+  .flow2-menu::before { content: ""; position: absolute; top: 22px; bottom: 22px; left: 0; width: 1px; background: color-mix(in oklab, var(--color-on-dark) 14%, transparent); }
+  .flow2-stage { min-width: 0; }
+  .flow2-number { font-size: clamp(36px, 4.4vw, 64px); }
+}
+@media (max-width: 767px) { .flow2-stage:not([data-on="true"]) > span:last-child { display: none; } .flow2-stage { max-width: 240px; } }
+@media (prefers-reduced-motion: reduce) { .flow2-image { animation: none; } }
