@@ -67,7 +67,7 @@ export function LogixAI() {
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.15 });
+    const io = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -90,12 +90,12 @@ export function LogixAI() {
     const map: Record<string, number> = { ArrowRight: 1, ArrowDown: 2, ArrowLeft: -1, ArrowUp: -2 };
     if (!(e.key in map)) return;
     e.preventDefault();
-    const n = (i + map[e.key] + 4) % 4;
+    const n = (i + (map[e.key] ?? 0) + 4) % 4;
     btns.current[n]?.focus();
     choose(n);
   };
 
-  const current = t.copilots[shown];
+  const current = t.copilots[shown] ?? t.copilots[0]!;
   const motionOn = inView && !paused;
 
   return (
@@ -114,7 +114,7 @@ export function LogixAI() {
             </div>
             <ul aria-label={ui.logixSources} className="logix2-cards">
               {t.cards.map((label, i) => {
-                const Icon = cardIcons[i];
+                const Icon = cardIcons[i] ?? FileText;
                 return (
                   <li key={label} tabIndex={0} className={`logix2-card logix2-card-${i + 1}`} data-lit={motionOn && lit === i ? "true" : undefined} style={{ transitionDelay: `${300 + i * 80}ms` }}>
                     <span className="logix-node-icon"><Icon aria-hidden="true" /></span>
