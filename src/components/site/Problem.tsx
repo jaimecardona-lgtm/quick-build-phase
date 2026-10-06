@@ -27,7 +27,7 @@ export function Problem() {
             <p className="frag-step"><span>01</span>{t.steps[0]}</p>
             <ul className="frag-cards">
               {t.cards.map((label, i) => {
-                const Icon = icons[i];
+                const Icon = icons[i] ?? FileText;
                 return (
                   <li
                     key={i}
