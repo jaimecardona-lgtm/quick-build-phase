@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { Layers } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
@@ -64,6 +63,9 @@ export function Flow() {
   const [active, setActive] = useState(0);
   const [hovering, setHovering] = useState(false);
   const [manual, setManual] = useState(false);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hoverTimer = useRef<number | undefined>(undefined);
   const resultsRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const progress = useCountUp(resultsRef);
@@ -71,10 +73,23 @@ export function Flow() {
   const total = flow.stages.length;
 
   useEffect(() => {
-    if (hovering || manual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => setActive((i) => (i + 1) % total), 5000);
-    return () => window.clearInterval(id);
-  }, [hovering, manual, total]);
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.25 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    flow.stages.forEach((s) => { if (s.image) { const img = new Image(); img.src = s.image; } });
+  }, [flow.stages]);
+
+  const running = inView && !hovering && !manual;
+  useEffect(() => {
+    if (!running || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setTimeout(() => setActive((i) => (i + 1) % total), 4000);
+    return () => window.clearTimeout(id);
+  }, [running, active, total]);
 
   if (!stage) return null;
 
@@ -86,8 +101,14 @@ export function Flow() {
     track("flow_stage_select", { stage: selected.label, section_id: "plataforma" });
   };
 
+  const hoverStage = (index: number) => {
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setActive(index), 180);
+  };
+
   const onKey = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const delta = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(index); return; }
     if (!delta) return;
     e.preventDefault();
     const next = (index + delta + total) % total;
@@ -99,8 +120,8 @@ export function Flow() {
     <section
       id="plataforma"
       aria-labelledby="plataforma-title"
+      ref={sectionRef}
       className="section-shell surface-deep"
-      onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => { setHovering(false); setManual(false); }}
     >
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
@@ -110,7 +131,7 @@ export function Flow() {
         </div>
 
         <div className="flow2-layout mt-10">
-          <div className="flow2-media">
+          <div className="flow2-media" onMouseEnter={() => setHovering(true)}>
             <figure className="product-frame flow-product-frame">
               <div className="flex h-10 items-center justify-between border-b border-on-dark/10 px-4">
                 <span className="font-ui text-[10px] tracking-[0.16em] text-on-dark/55 uppercase">Logixtic® · {stage.label}</span>
@@ -120,8 +141,7 @@ export function Flow() {
                 {stage.image ? (
                   <img key={stage.image} src={stage.image} alt={stage.alt ?? ""} loading="lazy" className="flow2-image absolute inset-0 h-full w-full object-contain" />
                 ) : (
-                  <div key="empty" className="flow2-image absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-dark/60">
-                    <Layers className="h-7 w-7 text-skybrand" aria-hidden="true" />
+                  <div key="empty" className="flow2-image absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-dark/70">
                     <p className="max-w-xs px-6 text-center font-ui text-sm">{stage.body}</p>
                   </div>
                 )}
@@ -129,7 +149,7 @@ export function Flow() {
             </figure>
           </div>
 
-          <div className="flow2-menu" role="tablist" aria-orientation="vertical" aria-label={t.stagesLabel}>
+          <div className="flow2-menu" onMouseEnter={() => setHovering(true)} onMouseLeave={() => window.clearTimeout(hoverTimer.current)} role="tablist" aria-orientation="vertical" aria-label={t.stagesLabel}>
             {flow.stages.map((item, index) => (
               <button
                 key={item.label}
@@ -141,22 +161,24 @@ export function Flow() {
                 tabIndex={active === index ? 0 : -1}
                 onClick={() => select(index)}
                 onKeyDown={(e) => onKey(e, index)}
+                onMouseEnter={() => hoverStage(index)}
                 className="focus-ring stage-button flow2-stage"
                 data-on={active === index}
               >
                 <span className="stage-signal" aria-hidden="true" />
                 <span className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand">{String(index + 1).padStart(2, "0")}</span>
                 <span className="mt-1 block font-display text-base font-semibold text-on-dark">{item.label}</span>
-                <span className="mt-1 block font-ui text-sm leading-relaxed text-on-dark/70">{item.body}</span>
+                <span className="mt-1 block font-ui text-sm leading-relaxed text-on-dark/75">{item.body}</span>
+                {active === index && <span key={`p${active}`} className="flow2-progress" data-run={running} aria-hidden="true" />}
               </button>
             ))}
           </div>
 
-          <div ref={resultsRef} className="flow2-results">
+          <div ref={resultsRef} className="flow2-results" data-lit={progress > 0}>
             <h3 className="font-display text-2xl font-semibold text-on-dark md:text-3xl">{t.resultsTitle}</h3>
             <dl className="flow2-metrics">
               {metrics.map((m, i) => (
-                <div key={i} className="flow2-metric">
+                <div key={i} className="flow2-metric" data-accent={i === 1}>
                   <dt className="sr-only">{t.results[i]}</dt>
                   <dd className="flow2-number" aria-label={`${m.value}${m.suffix}`}>
                     <span aria-hidden="true">{Math.round(m.value * progress)}{m.suffix}</span>
