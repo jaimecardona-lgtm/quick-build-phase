@@ -1,93 +1,120 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { ClipboardCheck, FileText, MonitorSmartphone, Pause, Play, Search, Settings2, UserRoundSearch, UsersRound } from "lucide-react";
+import {
+  ArrowRight, BarChart3, ChevronRight, ClipboardCheck, FileText, MonitorSmartphone, Pause, PieChart, Play,
+  Settings, Settings2, UserRound, UserRoundSearch, UsersRound,
+} from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 
-const cardIcons = [UsersRound, UserRoundSearch, Settings2, FileText, ClipboardCheck, MonitorSmartphone];
+const moduleIcons = [UsersRound, UserRoundSearch, Settings2, FileText, ClipboardCheck, MonitorSmartphone];
+const copilotIcons = [BarChart3, FileText, Settings, PieChart];
+// Módulos relacionados por copiloto (índices: Clientes, Prospectos, Operaciones, Documentos, DO, Portal)
+const related = [[0, 1], [0, 2], [2, 3, 4], [2, 4]];
+const STEP_MS = 7000;
 
-type Copilot = { name: string; label: string; query: string; answer: string; items: string[] };
+type Copilot = { name: string; label: string; query: string; answer: string; items: string[]; actions: string[]; details: string[] };
 type Copy = {
-  cards: string[]; copilotsLabel: string; illustrative: string; pause: string; play: string;
-  copilots: Copilot[]; actionDetails: string[];
+  kicker: string; title: string; body: string; choose: string; modules: string[];
+  pause: string; resume: string; copilots: Copilot[];
 };
 
 const copy: Record<"es" | "en" | "pt-BR", Copy> = {
   es: {
-    cards: ["Clientes", "Prospectos", "Operaciones", "Documentos", "DO", "Portal cliente"],
-    copilotsLabel: "Selecciona un copiloto", illustrative: "Ejemplo ilustrativo",
-    pause: "Pausar movimiento", play: "Reanudar movimiento",
+    kicker: "Logix aplicado", title: "Pregúntale a Logix sobre tu operación.",
+    body: "Consulta la información de tu operación según los permisos de tu equipo.",
+    choose: "Elige tu copiloto",
+    modules: ["Clientes", "Prospectos", "Operaciones", "Documentos", "DO", "Portal cliente"],
+    pause: "Pausar movimiento", resume: "Reanudar",
     copilots: [
-      { name: "Copiloto Comercial", label: "Consulta comercial", query: "¿Qué actividad tiene el prospecto registrado esta semana?", answer: "Logix consulta la información comercial registrada según los permisos del usuario.", items: ["Prospecto y empresa", "Responsable asignado", "Actividad registrada", "Historial comercial"] },
-      { name: "Copiloto Pricing · Rates", label: "Consulta de cotización", query: "¿Qué costos tiene la cotización de esta operación?", answer: "Logix consulta los costos registrados en la cotización según los permisos del usuario.", items: ["Cotización relacionada", "Costos por servicio", "Cliente asociado", "Operación vinculada"] },
-      { name: "Copiloto Operativo", label: "Consulta operativa", query: "¿Dónde está el pedido 4587?", answer: "Logix consulta la información registrada según los permisos del usuario.", items: ["Pedido 4587", "Estado disponible en la operación", "Operación relacionada", "Documentos disponibles para ese usuario"] },
-      { name: "Copiloto KPI", label: "Consulta de indicadores", query: "¿Cuál es el margen de esta operación?", answer: "Logix consulta los indicadores registrados en la operación según los permisos del usuario.", items: ["Costos presupuestados", "Costos reales", "Margen presupuestado", "Margen real"] },
+      { name: "Comercial", label: "Consulta comercial", query: "¿Qué actividad tiene el prospecto registrado esta semana?", answer: "Consulto la información comercial disponible según tus permisos.", items: ["Prospecto y empresa", "Responsable asignado", "Actividad registrada", "Historial comercial"], actions: ["Ver prospecto", "Historial", "Cliente"], details: ["Se abriría la ficha del prospecto con su actividad registrada.", "Se mostraría el historial comercial disponible.", "Se mostraría el expediente del cliente asociado."] },
+      { name: "Pricing · Rates", label: "Consulta de cotización", query: "¿Qué costos tiene la cotización de esta operación?", answer: "Consulto los costos registrados en la cotización según tus permisos.", items: ["Cotización relacionada", "Costos por servicio", "Cliente asociado", "Operación vinculada"], actions: ["Ver cotización", "Operación", "Cliente"], details: ["Se abriría la cotización con sus costos por servicio.", "Se abriría la operación vinculada a la cotización.", "Se mostraría el expediente del cliente asociado."] },
+      { name: "Operativo", label: "Consulta operativa", query: "¿Dónde está el pedido 4587?", answer: "Consulto los registros disponibles según tus permisos.", items: ["Pedido 4587", "Estado de la operación", "Operación relacionada", "Documentos disponibles"], actions: ["Ver operación", "Documentos", "Cliente"], details: ["Se abriría la operación relacionada con su seguimiento por pasos.", "Se mostrarían los documentos asociados que puedes consultar.", "Se mostraría el expediente del cliente con su historial."] },
+      { name: "KPI", label: "Consulta de indicadores", query: "¿Cuál es el margen de esta operación?", answer: "Consulto los indicadores registrados en la operación según tus permisos.", items: ["Costos presupuestados", "Costos reales", "Margen presupuestado", "Margen real"], actions: ["Ver indicadores", "Operación", "Costos"], details: ["Se mostrarían los indicadores registrados de la operación.", "Se abriría la operación relacionada.", "Se mostrarían los costos presupuestados y reales."] },
     ],
-    actionDetails: ["Se abriría la operación relacionada con su seguimiento por pasos.", "Se mostrarían los documentos asociados que el usuario puede consultar.", "Se mostraría el expediente del cliente con su historial."],
   },
   en: {
-    cards: ["Customers", "Prospects", "Operations", "Documents", "DO", "Customer portal"],
-    copilotsLabel: "Select a copilot", illustrative: "Illustrative example",
-    pause: "Pause motion", play: "Resume motion",
+    kicker: "Logix in action", title: "Ask Logix about your operation.",
+    body: "Search your operation's information according to your team's permissions.",
+    choose: "Choose your copilot",
+    modules: ["Customers", "Prospects", "Operations", "Documents", "DO", "Customer portal"],
+    pause: "Pause motion", resume: "Resume",
     copilots: [
-      { name: "Sales Copilot", label: "Sales query", query: "What activity does this week's prospect have?", answer: "Logix searches the recorded sales information according to the user's permissions.", items: ["Prospect and company", "Assigned owner", "Recorded activity", "Sales history"] },
-      { name: "Pricing · Rates Copilot", label: "Quotation query", query: "What costs does this operation's quotation include?", answer: "Logix searches the costs recorded in the quotation according to the user's permissions.", items: ["Related quotation", "Costs by service", "Associated customer", "Linked operation"] },
-      { name: "Operations Copilot", label: "Operational query", query: "Where is order 4587?", answer: "Logix searches the recorded information according to the user's permissions.", items: ["Order 4587", "Status available in the operation", "Related operation", "Documents available to that user"] },
-      { name: "KPI Copilot", label: "Indicators query", query: "What is the margin of this operation?", answer: "Logix searches the indicators recorded in the operation according to the user's permissions.", items: ["Budgeted costs", "Actual costs", "Budgeted margin", "Actual margin"] },
+      { name: "Sales", label: "Sales query", query: "What activity does this week's prospect have?", answer: "I search the available sales information according to your permissions.", items: ["Prospect and company", "Assigned owner", "Recorded activity", "Sales history"], actions: ["View prospect", "History", "Customer"], details: ["The prospect record with its recorded activity would open.", "The available sales history would be shown.", "The associated customer record would be shown."] },
+      { name: "Pricing · Rates", label: "Quotation query", query: "What costs does this operation's quotation include?", answer: "I search the costs recorded in the quotation according to your permissions.", items: ["Related quotation", "Costs by service", "Associated customer", "Linked operation"], actions: ["View quotation", "Operation", "Customer"], details: ["The quotation with its costs by service would open.", "The operation linked to the quotation would open.", "The associated customer record would be shown."] },
+      { name: "Operations", label: "Operational query", query: "Where is order 4587?", answer: "I search the available records according to your permissions.", items: ["Order 4587", "Operation status", "Related operation", "Available documents"], actions: ["View operation", "Documents", "Customer"], details: ["The related operation would open with its step-by-step tracking.", "The associated documents you can access would be shown.", "The customer record and its history would be shown."] },
+      { name: "KPI", label: "Indicators query", query: "What is the margin of this operation?", answer: "I search the indicators recorded in the operation according to your permissions.", items: ["Budgeted costs", "Actual costs", "Budgeted margin", "Actual margin"], actions: ["View indicators", "Operation", "Costs"], details: ["The operation's recorded indicators would be shown.", "The related operation would open.", "Budgeted and actual costs would be shown."] },
     ],
-    actionDetails: ["The related operation would open with its step-by-step tracking.", "The associated documents the user can access would be shown.", "The customer record and its history would be shown."],
   },
   "pt-BR": {
-    cards: ["Clientes", "Prospects", "Operações", "Documentos", "DO", "Portal do cliente"],
-    copilotsLabel: "Selecione um copiloto", illustrative: "Exemplo ilustrativo",
-    pause: "Pausar movimento", play: "Retomar movimento",
+    kicker: "Logix aplicado", title: "Pergunte ao Logix sobre sua operação.",
+    body: "Consulte as informações da sua operação de acordo com as permissões da sua equipe.",
+    choose: "Escolha seu copiloto",
+    modules: ["Clientes", "Prospects", "Operações", "Documentos", "DO", "Portal do cliente"],
+    pause: "Pausar movimento", resume: "Retomar",
     copilots: [
-      { name: "Copiloto Comercial", label: "Consulta comercial", query: "Que atividade tem o prospect registrado esta semana?", answer: "Logix consulta as informações comerciais registradas de acordo com as permissões do usuário.", items: ["Prospect e empresa", "Responsável atribuído", "Atividade registrada", "Histórico comercial"] },
-      { name: "Copiloto Pricing · Rates", label: "Consulta de cotação", query: "Quais custos tem a cotação desta operação?", answer: "Logix consulta os custos registrados na cotação de acordo com as permissões do usuário.", items: ["Cotação relacionada", "Custos por serviço", "Cliente associado", "Operação vinculada"] },
-      { name: "Copiloto Operacional", label: "Consulta operacional", query: "Onde está o pedido 4587?", answer: "Logix consulta as informações registradas de acordo com as permissões do usuário.", items: ["Pedido 4587", "Status disponível na operação", "Operação relacionada", "Documentos disponíveis para esse usuário"] },
-      { name: "Copiloto KPI", label: "Consulta de indicadores", query: "Qual é a margem desta operação?", answer: "Logix consulta os indicadores registrados na operação de acordo com as permissões do usuário.", items: ["Custos orçados", "Custos reais", "Margem orçada", "Margem real"] },
+      { name: "Comercial", label: "Consulta comercial", query: "Que atividade tem o prospect registrado esta semana?", answer: "Consulto as informações comerciais disponíveis de acordo com suas permissões.", items: ["Prospect e empresa", "Responsável atribuído", "Atividade registrada", "Histórico comercial"], actions: ["Ver prospect", "Histórico", "Cliente"], details: ["Seria aberta a ficha do prospect com sua atividade registrada.", "Seria exibido o histórico comercial disponível.", "Seria exibido o cadastro do cliente associado."] },
+      { name: "Pricing · Rates", label: "Consulta de cotação", query: "Quais custos tem a cotação desta operação?", answer: "Consulto os custos registrados na cotação de acordo com suas permissões.", items: ["Cotação relacionada", "Custos por serviço", "Cliente associado", "Operação vinculada"], actions: ["Ver cotação", "Operação", "Cliente"], details: ["Seria aberta a cotação com seus custos por serviço.", "Seria aberta a operação vinculada à cotação.", "Seria exibido o cadastro do cliente associado."] },
+      { name: "Operacional", label: "Consulta operacional", query: "Onde está o pedido 4587?", answer: "Consulto os registros disponíveis de acordo com suas permissões.", items: ["Pedido 4587", "Status da operação", "Operação relacionada", "Documentos disponíveis"], actions: ["Ver operação", "Documentos", "Cliente"], details: ["A operação relacionada seria aberta com seu acompanhamento por etapas.", "Seriam exibidos os documentos associados que você pode consultar.", "Seria exibido o cadastro do cliente com seu histórico."] },
+      { name: "KPI", label: "Consulta de indicadores", query: "Qual é a margem desta operação?", answer: "Consulto os indicadores registrados na operação de acordo com suas permissões.", items: ["Custos orçados", "Custos reais", "Margem orçada", "Margem real"], actions: ["Ver indicadores", "Operação", "Custos"], details: ["Seriam exibidos os indicadores registrados da operação.", "Seria aberta a operação relacionada.", "Seriam exibidos os custos orçados e reais."] },
     ],
-    actionDetails: ["A operação relacionada seria aberta com seu acompanhamento por etapas.", "Seriam exibidos os documentos associados que o usuário pode consultar.", "Seria exibido o cadastro do cliente com seu histórico."],
   },
 };
 
 export function LogixAI() {
-  const { content, locale } = useLanguage();
-  const { logix, ui } = content;
+  const { locale } = useLanguage();
   const t = copy[locale] ?? copy.es;
   const [active, setActive] = useState(2);
   const [shown, setShown] = useState(2);
   const [fading, setFading] = useState(false);
   const [action, setAction] = useState<number | null>(null);
-  const [paused, setPaused] = useState(false);
+  const [stopped, setStopped] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [focus, setFocus] = useState(false);
   const [inView, setInView] = useState(false);
-  const [lit, setLit] = useState(0);
+  const [reduced, setReduced] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const btns = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const on = () => setReduced(mq.matches);
+    mq.addEventListener("change", on);
     const el = ref.current;
-    if (!el || !("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.15 });
+    if (!el || !("IntersectionObserver" in window)) return () => mq.removeEventListener("change", on);
+    const io = new IntersectionObserver(([e]) => setInView(!!e?.isIntersecting), { threshold: 0.2 });
     io.observe(el);
-    return () => io.disconnect();
+    return () => { io.disconnect(); mq.removeEventListener("change", on); };
   }, []);
 
-  useEffect(() => {
-    if (!inView || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => setLit((v) => (v + 1) % 6), 1800);
-    return () => window.clearInterval(id);
-  }, [inView, paused]);
-
-  const choose = (i: number) => {
-    if (i === active) return;
+  const go = (i: number) => {
     setActive(i);
     setAction(null);
+    setElapsed(0);
     setFading(true);
-    window.setTimeout(() => { setShown(i); setFading(false); }, 150);
+    window.setTimeout(() => { setShown(i); setFading(false); }, 160);
+  };
+
+  const running = inView && !stopped && !hover && !focus && !reduced;
+
+  useEffect(() => {
+    if (!running) return;
+    const id = window.setInterval(() => setElapsed((v) => v + 100), 100);
+    return () => window.clearInterval(id);
+  }, [running]);
+
+  useEffect(() => {
+    if (elapsed >= STEP_MS) go((active + 1) % 4);
+  }, [elapsed, active]);
+
+  const choose = (i: number) => {
+    setStopped(true);
+    if (i !== active) go(i);
   };
 
   const onKey = (e: KeyboardEvent, i: number) => {
-    const map: Record<string, number> = { ArrowRight: 1, ArrowDown: 2, ArrowLeft: -1, ArrowUp: -2 };
+    const map: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
     if (!(e.key in map)) return;
     e.preventDefault();
     const n = (i + (map[e.key] ?? 0) + 4) % 4;
@@ -96,91 +123,99 @@ export function LogixAI() {
   };
 
   const current = t.copilots[shown] ?? t.copilots[0]!;
-  const motionOn = inView && !paused;
+  const rel = related[active] ?? [];
+  const progress = reduced ? 0 : Math.min(elapsed / STEP_MS, 1);
 
   return (
     <section ref={ref} id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
-      <div className="logix3 mx-auto max-w-[1320px] px-5 md:px-8">
-        <div data-reveal className="reveal-item logix3-head">
-          <p className="section-kicker">{ui.logixKicker}</p>
-          <h2 id="logix-title" className="section-title-dark">{logix.title}</h2>
-          <p className="section-lead-dark">{logix.body}</p>
+      <div className="mx-auto max-w-[1320px] px-5 md:px-8">
+        <div data-reveal className="reveal-item lx4-head">
+          <p className="section-kicker">{t.kicker}</p>
+          <h2 id="logix-title" className="lx4-title">{t.title}</h2>
+          <p className="lx4-lead">{t.body}</p>
         </div>
 
-        <div className="logix3-row">
-          <div data-reveal className="reveal-item logix2-cluster" data-motion={motionOn ? "on" : "off"}>
-            <div className="logix2-avatar">
+        <div
+          data-reveal
+          className="reveal-item lx4-panel"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onFocus={() => setFocus(true)}
+          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocus(false); }}
+        >
+          <div className="lx4-left">
+            <p className="lx4-label" id="lx4-choose">{t.choose}</p>
+            <div role="radiogroup" aria-labelledby="lx4-choose" className="lx4-copilots">
+              {t.copilots.map((c, i) => {
+                const Icon = copilotIcons[i] ?? Settings;
+                const on = active === i;
+                return (
+                  <button
+                    key={i}
+                    ref={(el) => { btns.current[i] = el; }}
+                    type="button" role="radio" aria-checked={on} tabIndex={on ? 0 : -1}
+                    onClick={() => choose(i)} onKeyDown={(e) => onKey(e, i)}
+                    className="lx4-copilot focus-ring" data-active={on ? "true" : undefined}
+                  >
+                    <Icon className="lx4-copilot-icon" aria-hidden="true" />
+                    <span className="min-w-0 flex-1 text-left">{c.name}</span>
+                    <ChevronRight className="lx4-chev" aria-hidden="true" />
+                    {on && <span className="lx4-progress" aria-hidden="true" style={{ transform: `scaleX(${progress})` }} />}
+                  </button>
+                );
+              })}
+            </div>
+            <button type="button" onClick={() => setStopped((s) => !s)} className="lx4-pause focus-ring" aria-pressed={stopped}>
+              {stopped ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
+              {stopped ? t.resume : t.pause}
+            </button>
+          </div>
+
+          <div className="lx4-center">
+            <div className="lx4-avatar">
               <img src={logixAsset.url} alt="Logix" width={1254} height={1254} loading="lazy" />
             </div>
-            <ul aria-label={ui.logixSources} className="logix2-cards">
-              {t.cards.map((label, i) => {
-                const Icon = cardIcons[i] ?? FileText;
+            <ul className="lx4-modules" aria-label={t.modules.join(", ")}>
+              {t.modules.map((m, i) => {
+                const Icon = moduleIcons[i] ?? FileText;
                 return (
-                  <li key={label} tabIndex={0} className={`logix2-card logix2-card-${i + 1}`} data-lit={motionOn && lit === i ? "true" : undefined} style={{ transitionDelay: `${300 + i * 80}ms` }}>
-                    <span className="logix-node-icon"><Icon aria-hidden="true" /></span>
-                    <span>{label}</span>
-                    <span className="logix-node-status" aria-hidden="true" />
+                  <li key={i} className="lx4-module" data-lit={rel.includes(i) ? "true" : undefined} style={{ transitionDelay: `${200 + i * 70}ms` }}>
+                    <Icon aria-hidden="true" />
+                    <span>{m}</span>
                   </li>
                 );
               })}
             </ul>
           </div>
 
-          <div data-reveal className="reveal-item logix3-main">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">{current.label}</p>
-              <span className="logix2-badge">{t.illustrative}</span>
-            </div>
-            <div className="logix-console" aria-live="polite">
-              <div className="logix2-swap" data-fading={fading ? "true" : undefined}>
-                <p className="flex items-start gap-3 font-ui text-sm text-on-dark">
-                  <Search className="mt-0.5 h-4 w-4 shrink-0 text-skybrand" aria-hidden="true" />
-                  <span><span className="font-semibold">{ui.query}</span> {current.query}</span>
-                </p>
-                <p className="logix3-answer font-ui text-sm leading-relaxed text-on-dark/70">{current.answer}</p>
-                <ul className="logix-answer-details">
-                  {current.items.map((item) => (
-                    <li key={item} className="logix-result-row" style={{ opacity: 1, transform: "none" }}>
-                      <FileText className="h-4 w-4 text-skybrand" aria-hidden="true" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+          <div className="lx4-right">
+            <div className="lx4-swap" data-fading={fading ? "true" : undefined} aria-live="polite">
+              <p className="lx4-label">{current.label}</p>
+              <div className="lx4-q">
+                <span className="lx4-user"><UserRound aria-hidden="true" /></span>
+                <p className="lx4-bubble">{current.query}</p>
               </div>
+              <div className="lx4-a">
+                <img src={logixAsset.url} alt="" width={40} height={40} className="lx4-mini" loading="lazy" />
+                <p>{current.answer}</p>
+              </div>
+              <ul className="lx4-results">
+                {current.items.map((item) => (
+                  <li key={item}><FileText aria-hidden="true" />{item}</li>
+                ))}
+              </ul>
+              <div className="lx4-actions">
+                {current.actions.map((a, i) => (
+                  <button key={a} type="button" aria-pressed={action === i} onClick={() => setAction(action === i ? null : i)}
+                    className={`lx4-action focus-ring${i === 0 ? " lx4-action-primary" : ""}`}>
+                    {a}{i === 0 && <ArrowRight aria-hidden="true" />}
+                  </button>
+                ))}
+              </div>
+              <p className="lx4-detail">{action !== null ? current.details[action] : "\u00a0"}</p>
             </div>
           </div>
         </div>
-
-        <div role="radiogroup" aria-label={t.copilotsLabel} className="logix3-copilots">
-          {t.copilots.map((c, i) => (
-            <button
-              key={c.name}
-              ref={(el) => { btns.current[i] = el; }}
-              type="button" role="radio" aria-checked={active === i} tabIndex={active === i ? 0 : -1}
-              onClick={() => choose(i)} onKeyDown={(e) => onKey(e, i)}
-              className="logix2-copilot focus-ring"
-            >
-              {c.name}
-            </button>
-          ))}
-        </div>
-
-        <div className="logix3-controls">
-          <button type="button" onClick={() => setPaused((p) => !p)} className="logix2-pause focus-ring" aria-pressed={paused}>
-            {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
-            {paused ? t.play : t.pause}
-          </button>
-          <ul className="logix3-actions">
-            {logix.actions.map((chip, i) => (
-              <li key={chip}>
-                <button type="button" aria-pressed={action === i} onClick={() => setAction(action === i ? null : i)} className="logix2-action focus-ring">
-                  {chip}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <p className="logix2-action-detail" aria-live="polite">{action !== null ? t.actionDetails[action] : "\u00a0"}</p>
       </div>
     </section>
   );
