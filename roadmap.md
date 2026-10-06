@@ -19,3 +19,8 @@
 # Clientes
 
 - [x] 12 logos guardados en la carpeta de logos de clientes y franja animada de clientes justo después de la portada (es/en/pt).
+
+# Desafíos operativos
+
+- [ ] Añadir la nueva sección después de clientes con textos ES/EN/PT y tres fotografías reales.
+- [ ] Verificar ubicación, imágenes, movimiento reducido y cinco anchos sin desbordamiento.
