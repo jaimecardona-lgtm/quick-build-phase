@@ -893,7 +893,7 @@ body {
 .flow2-stage[data-on="true"] { background: color-mix(in oklab, var(--color-skybrand) 12%, transparent); }
 .flow2-image { animation: flow2-fade 300ms var(--ease-standard) both; }
 @keyframes flow2-fade { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
-.flow2-results { background: color-mix(in oklab, var(--color-skybrand) 7%, transparent); border-radius: 12px; padding: 28px; }
+.flow2-results { background: color-mix(in oklab, var(--color-skybrand) 7%, transparent); border-radius: 12px; padding: 28px; margin-top: 24px; }
 .flow2-metrics { margin-top: 22px; display: grid; gap: 20px; }
 .flow2-metric { position: relative; padding-left: 20px; }
 .flow2-metric::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: color-mix(in oklab, var(--color-skybrand) 45%, transparent); transition: background 1.1s ease, box-shadow 1.1s ease; }
@@ -914,6 +914,7 @@ body {
   .flow2-menu::before { content: ""; position: absolute; top: 22px; bottom: 22px; left: 0; width: 1px; background: color-mix(in oklab, var(--color-on-dark) 14%, transparent); }
   .flow2-stage { min-width: 0; }
   .flow2-number { font-size: clamp(52px, 4.6vw, 68px); }
+  .flow2-results { margin-top: 32px; }
 }
 @media (max-width: 767px) { .flow2-stage:not([data-on="true"]) > span:last-child { display: none; } .flow2-stage { max-width: 240px; } }
 @media (prefers-reduced-motion: reduce) { .flow2-image, .flow2-progress { animation: none !important; } }
