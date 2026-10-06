@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { DemoButton } from "@/components/site/DemoButton";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
+import { WHATSAPP_URL, whatsappCopy } from "@/lib/whatsapp";
 import controlCenterAsset from "@/assets/logixtic-control-center.png.asset.json";
 
 export function Hero() {
-  const { content } = useLanguage();
+  const { content, locale } = useLanguage();
   const { hero } = content;
   const heroRef = useRef<HTMLElement>(null);
 
@@ -96,7 +97,7 @@ export function Hero() {
           {hero.body}
         </p>
         <div className="hero-reveal hero-delay-3 mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">
-          <DemoButton sectionId="hero" size="lg" className="w-full sm:w-auto" />
+          <DemoButton sectionId="hero" size="lg" className="w-full sm:w-auto" href={WHATSAPP_URL} ariaLabel={whatsappCopy[locale].heroLabel} />
           <Button
             asChild
             size="lg"

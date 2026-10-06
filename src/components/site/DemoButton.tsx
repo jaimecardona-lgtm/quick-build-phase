@@ -10,9 +10,11 @@ type Props = {
   size?: "default" | "lg";
   className?: string;
   label?: string;
+  href?: string;
+  ariaLabel?: string;
 };
 
-export function DemoButton({ sectionId, size = "default", className, label }: Props) {
+export function DemoButton({ sectionId, size = "default", className, label, href, ariaLabel }: Props) {
   const demoUrl = useDemoUrl();
   const { content } = useLanguage();
 
@@ -26,7 +28,8 @@ export function DemoButton({ sectionId, size = "default", className, label }: Pr
       )}
     >
       <a
-        href={demoUrl}
+        href={href ?? demoUrl}
+        aria-label={ariaLabel}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => track("demo_cta_click", { section_id: sectionId })}

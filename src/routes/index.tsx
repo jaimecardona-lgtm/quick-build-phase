@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Problem } from "@/components/site/Problem";
-import { Transformation } from "@/components/site/Transformation";
+import { SuccessStories } from "@/components/site/SuccessStories";
 import { Flow } from "@/components/site/Flow";
 import { LogixAI } from "@/components/site/LogixAI";
 import { Portal } from "@/components/site/Portal";
@@ -90,7 +90,7 @@ function Index() {
         <ClientsReel />
         <OperationalChallenges />
         <Problem />
-        <Transformation />
+        <SuccessStories />
         <Flow />
         <LogixAI />
         <Portal />
