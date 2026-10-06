@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the Hero photograph static; its ambient motion lives in the lightweight inline SVG overlay so content and imagery remain stable.
+- Keep operational challenges in a dedicated site component with its own translated content; reuse the existing reveal hook to avoid changing other sections or adding dependencies.

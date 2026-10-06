@@ -7,6 +7,7 @@ import { Flow } from "@/components/site/Flow";
 import { LogixAI } from "@/components/site/LogixAI";
 import { Portal } from "@/components/site/Portal";
 import { ClientsReel } from "@/components/site/ClientsReel";
+import { OperationalChallenges } from "@/components/site/OperationalChallenges";
 import { Evidence } from "@/components/site/Evidence";
 import { Implementation } from "@/components/site/Implementation";
 import { Faq } from "@/components/site/Faq";
@@ -87,6 +88,7 @@ function Index() {
       <main id="contenido">
         <Hero />
         <ClientsReel />
+        <OperationalChallenges />
         <Problem />
         <Transformation />
         <Flow />
