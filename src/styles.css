@@ -899,7 +899,7 @@ body {
 .flow2-number { font-family: var(--font-display, inherit); font-weight: 600; color: var(--color-on-dark); font-size: clamp(40px, 5vw, 60px); line-height: 1; font-variant-numeric: tabular-nums; }
 @media (min-width: 640px) { .flow2-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 768px) {
-  .flow2-layout { grid-template-columns: minmax(0, 1fr) minmax(220px, 34%); grid-template-areas: "media menu" "results menu"; align-items: start; column-gap: 40px; row-gap: 28px; }
+  .flow2-layout { grid-template-columns: minmax(0, 1fr) minmax(220px, 34%); grid-template-areas: "media menu" "results menu"; grid-template-rows: auto 1fr; align-items: start; column-gap: 40px; row-gap: 28px; }
   .flow2-menu { flex-direction: column; overflow: visible; gap: 6px; }
   .flow2-menu::before { content: ""; position: absolute; top: 22px; bottom: 22px; left: 0; width: 1px; background: color-mix(in oklab, var(--color-on-dark) 14%, transparent); }
   .flow2-stage { min-width: 0; }
