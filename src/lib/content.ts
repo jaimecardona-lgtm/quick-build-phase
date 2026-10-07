@@ -258,7 +258,7 @@ export const faqs = [
 ];
 
 export const closing = {
-  title: "Tu operación puede trabajar con más control, visibilidad e inteligencia.",
-  body: "Conoce cómo Logixtic® puede conectar la información y los procesos de tu operación en una sola plataforma.",
+  title: "Una vista 360° de tu operación logística, controlada y más rentable con Logixtic",
+  body: "Centraliza, Automatiza y Escala tu negocio",
   note: "Después de la demo y del análisis de la operación, podrá realizarse el Diagnóstico de Madurez Operativa y Digital cuando aplique.",
 };
