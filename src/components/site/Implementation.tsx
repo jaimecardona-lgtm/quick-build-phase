@@ -60,7 +60,6 @@ export function Implementation() {
   const { locale } = useLanguage();
   const t = copy[locale === "pt-BR" ? "pt" : locale === "en" ? "en" : "es"];
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [inView, setInView] = useState(false);
   const [tabVisible, setTabVisible] = useState(true);
@@ -88,14 +87,14 @@ export function Implementation() {
     return () => { mq.removeEventListener("change", onMq); document.removeEventListener("visibilitychange", onVis); io?.disconnect(); };
   }, []);
 
-  const running = !paused && !hovering && inView && tabVisible && !reduced;
+  const running = !hovering && inView && tabVisible && !reduced;
   useEffect(() => {
     if (!running) return;
     const id = window.setTimeout(() => setActive((a) => (a + 1) % 6), INTERVAL);
     return () => window.clearTimeout(id);
   }, [running, active]);
 
-  const select = useCallback((i: number) => { setActive(i); setPaused(true); }, []);
+  const select = useCallback((i: number) => { setActive(i); }, []);
   const onKey = (e: React.KeyboardEvent, i: number) => {
     let n = -1;
     if (e.key === "ArrowDown" || e.key === "ArrowRight") n = (i + 1) % 6;
@@ -140,10 +139,6 @@ export function Implementation() {
             <p className="im2-stage">{t.stage} {String(active + 1).padStart(2, "0")}</p>
             <h3 className="im2-panel-title">{activeLabel}</h3>
             <p className="im2-panel-body">{activeBody}</p>
-            <button type="button" className="im2-toggle focus-ring" onClick={() => setPaused((p) => !p)} aria-pressed={paused}>
-              <span className="im2-toggle-icon">{paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}</span>
-              <span>{paused ? t.resume : t.pause}</span>
-            </button>
           </div>
 
           <div className="im2-track">
