@@ -27,6 +27,7 @@
   --color-neutralbrand: oklch(0.577 0.033 259.1);
   --color-mist: oklch(0.968 0.005 247.9);
   --color-skybrand: oklch(0.79 0.13 238);
+  --color-tab-active: #25486B;
   --color-on-dark: oklch(0.985 0.004 247);
   --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-ui: "Inter", ui-sans-serif, system-ui, sans-serif;
