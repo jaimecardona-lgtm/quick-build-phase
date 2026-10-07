@@ -87,7 +87,7 @@ export function Implementation() {
       io = new IntersectionObserver(([e]) => {
         if (!e) return;
         setInView(e.isIntersecting);
-        if (e.isIntersecting && !started.current) { started.current = true; setActive(0); }
+       
       }, { threshold: 0.3 });
       io.observe(node);
     }

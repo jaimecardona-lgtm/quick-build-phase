@@ -1177,7 +1177,7 @@ body {
 .im2-line-base { stroke: color-mix(in oklab, var(--color-skybrand) 35%, transparent); }
 .im2-line-progress { stroke: var(--color-skybrand); filter: drop-shadow(0 0 4px color-mix(in oklab, var(--color-skybrand) 60%, transparent)); transition: stroke-dasharray .5s ease; }
 .im2-list { display: grid; grid-template-rows: repeat(6, 1fr); flex: 1; }
-.im2-step { position: relative; display: grid; grid-template-columns: 56px 40px 1fr; align-items: center; gap: 14px; width: 100%; min-height: 76px; padding: 8px 16px 8px 34px; border-radius: 22px; border: 1px solid transparent; text-align: left; transition: background .4s, border-color .4s; }
+.im2-step { position: relative; display: grid; grid-template-columns: 56px 30px 1fr; align-items: center; gap: 16px; width: 100%; min-height: 76px; padding: 8px 16px 8px 34px; border-radius: 22px; border: 1px solid transparent; text-align: left; transition: background .4s, border-color .4s; }
 .im2-step:hover { background: color-mix(in oklab, var(--color-skybrand) 6%, transparent); }
 .im2-step[data-active="true"] { background: color-mix(in oklab, var(--color-skybrand) 10%, transparent); border-color: color-mix(in oklab, var(--color-skybrand) 22%, transparent); }
 .im2-dot { position: absolute; left: 4px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; border: 2px solid var(--color-skybrand); background: var(--color-night); transition: background .4s, border-color .4s, box-shadow .4s; }
