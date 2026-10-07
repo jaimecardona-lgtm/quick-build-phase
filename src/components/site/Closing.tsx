@@ -13,7 +13,7 @@ export function Closing() {
         <h2 id="demo-title" className="closing-title mx-auto mt-4 max-w-[760px] text-balance font-display text-[1.7rem] leading-[1.16] font-semibold text-on-dark md:text-[2.3rem]">
           {closing.title}
         </h2>
-        <p className="mx-auto mt-4 max-w-xl font-ui text-base leading-relaxed font-medium text-on-dark/85 md:text-lg">{closing.body}</p>
+        <p className="mx-auto mt-4 max-w-xl text-balance font-ui text-base leading-relaxed font-medium text-on-dark/85 md:text-lg">{closing.body}</p>
         <div className="mt-7 flex justify-center">
           <DemoButton sectionId="cierre" size="lg" />
         </div>
