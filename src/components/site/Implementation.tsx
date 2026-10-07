@@ -63,8 +63,8 @@ const copy = {
 } as const;
 
 export function Implementation() {
-  const { language } = useLanguage() as { language?: string };
-  const t = copy[(String(language ?? "es").startsWith("pt") ? "pt" : String(language ?? "es").startsWith("en") ? "en" : "es") as keyof typeof copy];
+  const { locale } = useLanguage();
+  const t = copy[locale === "pt-BR" ? "pt" : locale === "en" ? "en" : "es"];
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hovering, setHovering] = useState(false);

@@ -1156,3 +1156,54 @@ body {
   .ev3-map { opacity: 1; transform: none; transition: none; }
   .ev3-map[data-on="true"] .ev3-pulse, .ev3-panel-in { animation: none; }
 }
+
+/* Implementation — im2 */
+.im2-head { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.im2-head .section-title-dark { margin-inline: auto; }
+.im2-grid { display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); gap: clamp(28px, 4vw, 56px); margin-top: 44px; align-items: stretch; }
+.im2-panel { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 28px; border-radius: 28px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 26%, transparent); background: linear-gradient(160deg, color-mix(in oklab, var(--color-skybrand) 14%, var(--color-night)), color-mix(in oklab, var(--color-night) 92%, transparent)); box-shadow: 0 24px 60px -30px color-mix(in oklab, var(--color-skybrand) 45%, transparent); }
+.im2-orb { display: grid; place-items: center; width: clamp(140px, 16vw, 200px); aspect-ratio: 1; border-radius: 50%; color: var(--color-skybrand); border: 2px solid color-mix(in oklab, var(--color-skybrand) 70%, transparent); background: radial-gradient(circle at 40% 35%, color-mix(in oklab, var(--color-skybrand) 30%, var(--color-night)), var(--color-night) 70%); box-shadow: 0 0 0 18px color-mix(in oklab, var(--color-skybrand) 7%, transparent), 0 0 46px -6px color-mix(in oklab, var(--color-skybrand) 55%, transparent); animation: im2-in .45s var(--ease-enter, ease) both; }
+.im2-orb svg { width: 42%; height: 42%; }
+.im2-stage { margin-top: 30px; font: 700 13px var(--font-ui); letter-spacing: .16em; text-transform: uppercase; color: var(--color-amber); }
+.im2-panel-title { margin-top: 6px; font: 600 clamp(1.6rem, 2.8vw, 2.4rem)/1.15 var(--font-display); color: var(--color-on-dark); }
+.im2-panel-body { margin-top: 10px; max-width: 420px; min-height: 3.4em; font: 400 clamp(.98rem, 1.3vw, 1.15rem)/1.6 var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 70%, transparent); }
+.im2-toggle { margin-top: 24px; display: inline-flex; align-items: center; gap: 14px; min-height: 48px; padding: 5px 22px 5px 5px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 30%, transparent); background: color-mix(in oklab, var(--color-night) 70%, transparent); color: var(--color-on-dark); font: 500 14px var(--font-ui); transition: border-color .3s; }
+.im2-toggle:hover { border-color: var(--color-skybrand); }
+.im2-toggle-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: color-mix(in oklab, var(--color-skybrand) 30%, var(--color-night)); }
+.im2-toggle-icon svg { width: 16px; height: 16px; }
+.im2-track { position: relative; display: flex; flex-direction: column; }
+.im2-line { position: absolute; left: 0; top: 0; width: 20px; height: calc(100% - 28px); overflow: visible; pointer-events: none; }
+.im2-line path { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.im2-line-base { stroke: color-mix(in oklab, var(--color-skybrand) 35%, transparent); }
+.im2-line-progress { stroke: var(--color-skybrand); filter: drop-shadow(0 0 4px color-mix(in oklab, var(--color-skybrand) 60%, transparent)); transition: stroke-dasharray .5s ease; }
+.im2-list { display: grid; grid-template-rows: repeat(6, 1fr); flex: 1; }
+.im2-step { position: relative; display: grid; grid-template-columns: 56px 40px 1fr; align-items: center; gap: 14px; width: 100%; min-height: 76px; padding: 8px 16px 8px 34px; border-radius: 22px; border: 1px solid transparent; text-align: left; transition: background .4s, border-color .4s; }
+.im2-step:hover { background: color-mix(in oklab, var(--color-skybrand) 6%, transparent); }
+.im2-step[data-active="true"] { background: color-mix(in oklab, var(--color-skybrand) 10%, transparent); border-color: color-mix(in oklab, var(--color-skybrand) 22%, transparent); }
+.im2-dot { position: absolute; left: 4px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; border: 2px solid var(--color-skybrand); background: var(--color-night); transition: background .4s, border-color .4s, box-shadow .4s; }
+.im2-step[data-active="true"] .im2-dot { background: var(--color-amber); border-color: var(--color-amber); box-shadow: 0 0 10px color-mix(in oklab, var(--color-amber) 70%, transparent); }
+.im2-icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid color-mix(in oklab, var(--color-skybrand) 55%, transparent); color: var(--color-skybrand); background: var(--color-night); transition: color .4s, border-color .4s, box-shadow .4s; }
+.im2-icon svg { width: 22px; height: 22px; }
+.im2-step[data-active="true"] .im2-icon { color: var(--color-amber); border-color: var(--color-amber); box-shadow: 0 0 18px -4px color-mix(in oklab, var(--color-amber) 60%, transparent); }
+.im2-num { font: 600 15px var(--font-ui); color: var(--color-skybrand); transition: color .4s; }
+.im2-step[data-active="true"] .im2-num { color: var(--color-amber); }
+.im2-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.im2-label { font: 600 1rem/1.3 var(--font-display); color: var(--color-on-dark); }
+.im2-body { font: 400 .9rem/1.5 var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 68%, transparent); }
+.im2-note { margin-top: 10px; text-align: right; font: 400 12px var(--font-ui); color: color-mix(in oklab, var(--color-on-dark) 60%, transparent); }
+@keyframes im2-in { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@media (max-width: 1023px) {
+  .im2-grid { grid-template-columns: 1fr; }
+  .im2-panel { padding: 28px 20px; }
+}
+@media (max-width: 520px) {
+  .im2-step { grid-template-columns: 44px 1fr; grid-template-areas: "icon text"; padding-left: 28px; gap: 12px; }
+  .im2-icon { width: 44px; height: 44px; grid-area: icon; }
+  .im2-num { display: none; }
+  .im2-text { grid-area: text; }
+  .im2-note { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .im2-orb { animation: none; }
+  .im2 * { transition: none !important; }
+}
