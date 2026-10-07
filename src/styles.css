@@ -1197,9 +1197,9 @@ body {
   .im2-panel { padding: 28px 20px; }
 }
 @media (max-width: 520px) {
-  .im2-step { grid-template-columns: 44px 1fr; grid-template-areas: "icon text"; padding-left: 28px; gap: 12px; }
+  .im2-step { grid-template-columns: 44px 1fr; grid-template-areas: "icon num" "icon text"; padding-left: 28px; column-gap: 12px; row-gap: 2px; }
   .im2-icon { width: 44px; height: 44px; grid-area: icon; }
-  .im2-num { display: none; }
+  .im2-num { grid-area: num; font-size: 12px; }
   .im2-text { grid-area: text; }
   .im2-note { text-align: left; }
 }
