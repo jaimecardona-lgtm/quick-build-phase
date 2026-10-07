@@ -1,3 +1,4 @@
+import { ArrowRight, Building2, FileClock, FileText, Route, Users } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
@@ -59,7 +60,8 @@ function useCountUp(ref: React.RefObject<HTMLElement | null>) {
 
 export function Flow() {
   const { content, locale } = useLanguage();
-  const { flow } = content;
+  const { flow, portal } = content;
+  const portalIcons = [Building2, Route, FileText, FileClock];
   const t = copy[(locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es") as keyof typeof copy];
   const [active, setActive] = useState(0);
   const [hovering, setHovering] = useState(false);
@@ -142,8 +144,28 @@ export function Flow() {
                 {stage.image ? (
                   <img key={stage.image} src={stage.image} alt={stage.alt ?? ""} loading="lazy" className="flow2-image absolute inset-0 h-full w-full object-contain" />
                 ) : (
-                  <div key="empty" className="flow2-image absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-dark/70">
-                    <p className="max-w-xs px-6 text-center font-ui text-sm">{stage.body}</p>
+                  <div key="portal" className="flow-portal absolute inset-0 flex flex-col justify-center gap-2 overflow-hidden p-3 sm:gap-4 md:p-8">
+                    <div className="flow-portal-in" style={{ animationDelay: "0ms" }}>
+                      <h3 className="font-display text-sm font-semibold text-on-dark sm:text-lg md:text-2xl">{portal.title}</h3>
+                      <p className="mt-2 hidden max-w-2xl font-ui text-xs sm:block leading-relaxed text-on-dark/75 md:text-sm">{portal.body}</p>
+                    </div>
+                    <ol className="flow-portal-in flex flex-nowrap items-center gap-1 sm:gap-2" style={{ animationDelay: "150ms" }}>
+                      {portal.diagram.map((node, i) => (
+                        <li key={node} className="flex min-w-0 items-center gap-1 sm:gap-2">
+                          <span className="diagram-node !gap-1 !px-2 !py-1 text-[10px] sm:!px-3 sm:!py-2 sm:text-xs">
+                            {i === 1 ? <Building2 className="h-4 w-4 text-amber" aria-hidden="true" /> : <Users className="h-4 w-4 text-skybrand" aria-hidden="true" />}
+                            {node}
+                          </span>
+                          {i < portal.diagram.length - 1 && <ArrowRight className="h-3 w-3 shrink-0 text-on-dark/40" aria-hidden="true" />}
+                        </li>
+                      ))}
+                    </ol>
+                    <ul className="flow-portal-in grid grid-cols-2 gap-x-2 gap-y-0 sm:gap-2" style={{ animationDelay: "300ms" }}>
+                      {portal.benefits.map((b, i) => {
+                        const Icon = portalIcons[i] ?? FileText;
+                        return <li key={b} className="portal-proof-item !py-1 text-[10px] sm:!py-2 sm:text-xs md:text-sm"><Icon aria-hidden="true" /><span>{b}</span></li>;
+                      })}
+                    </ul>
                   </div>
                 )}
               </div>

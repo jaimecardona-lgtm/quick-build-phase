@@ -1106,3 +1106,9 @@ body {
   .lx4-avatar { animation: none; }
   .lx4-module, .lx4-swap { transition: none; opacity: 1; transform: none; }
 }
+
+/* Portal stage inside Flow viewer */
+.flow-portal { background: radial-gradient(120% 90% at 80% 20%, hsl(215 60% 22% / .55), transparent 70%); }
+.flow-portal-in { opacity: 0; transform: translateY(8px); animation: flowPortalIn 300ms ease-out forwards; }
+@keyframes flowPortalIn { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .flow-portal-in { animation: none; opacity: 1; transform: none; } }
