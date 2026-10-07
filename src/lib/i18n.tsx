@@ -9,7 +9,7 @@ type Dictionary = Widen<{
   demoLabel: string;
   nav: Array<{ label: string; href: string }>;
   resourceLinks: Array<{ label: string; href: string; description: string; available: boolean }>;
-  companyLink: { label: string; href: string; available: boolean };
+  companyLink: { label: string; href: string; available: boolean }; diagnosticLink: { label: string; href: string; newTab: string };
   hero: typeof esContent.hero;
   problem: typeof esContent.problem;
   challenges: typeof operationalChallenges.es;
@@ -41,7 +41,7 @@ const sharedImages = {
 const es: Dictionary = {
   challenges: operationalChallenges.es,
   demoLabel: esContent.DEMO_LABEL,
-  nav: [...esContent.nav], resourceLinks: [...esContent.resourceLinks], companyLink: esContent.companyLink,
+  nav: [...esContent.nav], resourceLinks: [...esContent.resourceLinks], companyLink: esContent.companyLink, diagnosticLink: { label: "Diagnóstico ROI", href: "https://diagnosticoroilogixtic.lovable.app", newTab: "abre en una pestaña nueva" },
   hero: esContent.hero, problem: esContent.problem, transformation: esContent.transformation, flow: esContent.flow,
   logix: esContent.logix, portal: esContent.portal, evidence: esContent.evidence,
   implementation: esContent.implementation, faqs: [...esContent.faqs], closing: esContent.closing,
@@ -66,7 +66,7 @@ const en: Dictionary = {
     { label: "Webinars", href: "", description: "Coming soon", available: false },
     { label: "Glossary", href: "", description: "Coming soon", available: false },
   ],
-  companyLink: { label: "About us", href: "", available: false },
+  companyLink: { label: "About us", href: "", available: false }, diagnosticLink: { label: "ROI Assessment", href: "https://diagnosticoroilogixtic.lovable.app", newTab: "opens in a new tab" },
   hero: { eyebrow: "Exclusively for international freight forwarders in Latam.", title: ["You don't need another software.", "You need an AI-powered operating system."], body: "Logixtic® connects your entire operation, automates processes and helps you grow with greater control, productivity and profitability with the help of AI.", secondaryCta: "Explore the platform", ...sharedImages.hero, imageAlt: "Real Logixtic screen showing the freight management platform's services menu." },
   problem: { title: "Your operation loses time when information is scattered.", body: "Spreadsheets, emails, messages, calls and separate documents force the team to search, duplicate and confirm information before moving forward.", sources: [{ label: "Spreadsheets", icon: "sheet" }, { label: "Email", icon: "mail" }, { label: "Messaging", icon: "message" }, { label: "Calls", icon: "phone" }, { label: "Documents", icon: "doc" }], outcome: "Your entire operation, in one place." },
   transformation: { title: "A smarter way to operate.", body: "Information stops moving between isolated tools and follows every stage of the operation.", before: ["Scattered information", "Manual processes and rework", "Limited visibility", "Delayed decisions"], after: ["Centralized information", "Connected processes", "Traceability and indicators", "Greater operational control"], moments: ["Centralize", "Automate", "Decide"], ...sharedImages.transformation, imageAlt: "Real Logixtic screen showing cost control for an operation." },
@@ -114,7 +114,7 @@ const pt: Dictionary = {
   demoLabel: "Agende uma demonstração personalizada",
   nav: [{ label: "Plataforma", href: "#plataforma" }, { label: "Logix", href: "#logix-ai" }, { label: "Clientes", href: "#clientes" }, { label: "Implementação", href: "#implementacion" }],
   resourceLinks: [{ label: "Blog", href: "https://logixtic.co/blog-logixtic/", description: "Artigos e tendências", available: true }, { label: "Guias", href: "", description: "Em breve", available: false }, { label: "Webinars", href: "", description: "Em breve", available: false }, { label: "Glossário", href: "", description: "Em breve", available: false }],
-  companyLink: { label: "Sobre nós", href: "", available: false },
+  companyLink: { label: "Sobre nós", href: "", available: false }, diagnosticLink: { label: "Diagnóstico de ROI", href: "https://diagnosticoroilogixtic.lovable.app", newTab: "abre em uma nova aba" },
   hero: { eyebrow: "Exclusivo para agentes de carga internacional na Latam.", title: ["Você não precisa de outro software.", "Você precisa de um sistema operacional potencializado com IA."], body: "Logixtic® conecta toda a sua operação, automatiza processos e faz você crescer com mais controle, produtividade e rentabilidade com a ajuda da IA.", secondaryCta: "Conheça a plataforma", ...sharedImages.hero, imageAlt: "Tela real do Logixtic com o menu de serviços da plataforma de gestão de cargas." },
   problem: { title: "Sua operação perde tempo quando as informações estão dispersas.", body: "Planilhas, e-mails, mensagens, chamadas e documentos separados obrigam a equipe a buscar, duplicar e confirmar informações antes de avançar.", sources: [{ label: "Planilhas", icon: "sheet" }, { label: "E-mail", icon: "mail" }, { label: "Mensagens", icon: "message" }, { label: "Chamadas", icon: "phone" }, { label: "Documentos", icon: "doc" }], outcome: "Toda a sua operação, em um só lugar." },
   transformation: { title: "Uma forma mais inteligente de operar.", body: "As informações deixam de passar por ferramentas isoladas e acompanham cada etapa da operação.", before: ["Informações dispersas", "Processos manuais e retrabalho", "Pouca visibilidade", "Decisões tardias"], after: ["Informações centralizadas", "Processos conectados", "Rastreabilidade e indicadores", "Maior controle da operação"], moments: ["Centralize", "Automatize", "Decida"], ...sharedImages.transformation, imageAlt: "Tela real do Logixtic com o controle de custos de uma operação." },
