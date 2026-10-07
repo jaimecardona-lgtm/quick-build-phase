@@ -1,7 +1,7 @@
 import { useLanguage } from "@/lib/i18n";
-import costPhoto from "@/assets/operational-challenges/cost-analysis.jpg.asset.json";
-import teamPhoto from "@/assets/operational-challenges/team-collaboration.jpg.asset.json";
-import paperworkPhoto from "@/assets/operational-challenges/fragmented-paperwork.jpg.asset.json";
+import costPhoto from "@/assets/operational-challenges/shipment-profitability.webp.asset.json";
+import teamPhoto from "@/assets/operational-challenges/transport-quotes.webp.asset.json";
+import paperworkPhoto from "@/assets/operational-challenges/disconnected-documents.webp.asset.json";
 
 const photos = [costPhoto.url, teamPhoto.url, paperworkPhoto.url];
 

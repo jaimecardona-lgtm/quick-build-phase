@@ -743,7 +743,7 @@ body {
 /* Operational challenges: scoped so the existing sections remain unchanged. */
 :root {
   --challenge-surface: var(--color-night);
-  --challenge-overlay: linear-gradient(180deg, color-mix(in oklab, var(--color-night) 8%, transparent) 0%, color-mix(in oklab, var(--color-night) 45%, transparent) 40%, color-mix(in oklab, var(--color-night) 96%, transparent) 74%, var(--color-night) 100%);
+  --challenge-overlay: linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--color-night) 12%, transparent) 32%, color-mix(in oklab, var(--color-night) 88%, transparent) 65%, color-mix(in oklab, var(--color-night) 97%, transparent) 82%, var(--color-night) 100%);
   --challenge-shadow: 0 12px 28px -18px color-mix(in oklab, var(--color-night) 80%, transparent);
 }
 .operational-challenges { background: var(--challenge-surface); padding-block: 64px 80px; }
@@ -758,6 +758,9 @@ body {
 .challenge-card-media { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; background: var(--challenge-surface); }
 .challenge-card-media::after { content: ""; position: absolute; inset: 0; background: var(--challenge-overlay); }
 .challenge-card img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; transition: transform 520ms var(--ease-standard); }
+.challenge-card:nth-child(1) img { object-position: 48% center; }
+.challenge-card:nth-child(2) img { object-position: 48% center; }
+.challenge-card:nth-child(3) img { object-position: 53% center; }
 .challenge-card-copy { position: absolute; inset: auto 0 0; padding: 28px 30px; color: var(--color-on-dark); }
 .challenge-number { display: block; margin-bottom: 10px; font: 600 14px/1.4 var(--font-ui); color: var(--color-skybrand); letter-spacing: 0; }
 .challenge-card h3 { font: 600 23px/1.3 var(--font-display); letter-spacing: 0; text-wrap: pretty; }
@@ -780,6 +783,9 @@ body {
   .challenge-kicker { font-size: 11px; }
   .challenge-card { height: 420px; }
   .challenge-card-copy { padding: 24px 20px; }
+  .challenge-card:nth-child(1) img { object-position: 43% center; }
+  .challenge-card:nth-child(2) img { object-position: 44% center; }
+  .challenge-card:nth-child(3) img { object-position: 52% center; }
   .challenge-card h3 { font-size: 21px; }
   .challenge-card p { font-size: 15px; }
   .challenge-list { gap: 20px; }
