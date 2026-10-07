@@ -7,7 +7,7 @@ import { track } from "@/lib/analytics";
 
 export function Header() {
   const { content } = useLanguage();
-  const { companyLink, nav, resourceLinks, ui } = content;
+  const { companyLink, diagnosticLink, nav, resourceLinks, ui } = content;
   const [scrolled, setScrolled] = useState(false);
   const [openResources, setOpenResources] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -113,6 +113,15 @@ export function Header() {
           >
             {companyLink.label}
           </span>
+          <a
+            href={diagnosticLink.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-ring rounded-md py-2 font-ui text-sm text-on-dark/70 transition-colors hover:text-on-dark"
+          >
+            {diagnosticLink.label}
+            <span className="sr-only">, {diagnosticLink.newTab}</span>
+          </a>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -167,6 +176,16 @@ export function Header() {
               >
                 {companyLink.label}
               </span>
+              <a
+                href={diagnosticLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpenMenu(false)}
+                className="focus-ring border-b border-on-dark/10 py-4 font-display text-lg text-on-dark"
+              >
+                {diagnosticLink.label}
+                <span className="sr-only">, {diagnosticLink.newTab}</span>
+              </a>
               <p className="mt-6 font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">
                 {ui.resources}
               </p>
