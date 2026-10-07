@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ClipboardList, GraduationCap, Pause, Play, Rocket, ShieldCheck, SlidersHorizontal, UsersRound } from "lucide-react";
+import { ClipboardList, GraduationCap, Rocket, ShieldCheck, SlidersHorizontal, UsersRound } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 
 const stepIcons = [ClipboardList, SlidersHorizontal, GraduationCap, ShieldCheck, Rocket, UsersRound];
@@ -11,8 +11,6 @@ const copy = {
     title: ["Tu operación conectada.", "Tu equipo acompañado."],
     body: "Desde la configuración hasta la operación real, avanzamos contigo.",
     stage: "Etapa",
-    pause: "Pausar recorrido",
-    resume: "Reanudar recorrido",
     note: "La duración depende del alcance de cada operación.",
     list: "Etapas de implementación",
     steps: [
@@ -29,8 +27,6 @@ const copy = {
     title: ["Your operation, connected.", "Your team, supported."],
     body: "From setup to real-world operation, we move forward with you.",
     stage: "Stage",
-    pause: "Pause journey",
-    resume: "Resume journey",
     note: "Timing depends on the scope of each operation.",
     list: "Implementation stages",
     steps: [
@@ -47,8 +43,6 @@ const copy = {
     title: ["Sua operação conectada.", "Sua equipe acompanhada."],
     body: "Da configuração à operação real, avançamos com você.",
     stage: "Etapa",
-    pause: "Pausar percurso",
-    resume: "Retomar percurso",
     note: "A duração depende do escopo de cada operação.",
     list: "Etapas de implementação",
     steps: [
