@@ -49,7 +49,7 @@ export function Header() {
         scrolled ? "border-b border-on-dark/10 bg-night/94 backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-full max-w-[1320px] items-center justify-between gap-6 px-5 md:px-8">
+      <div className="mx-auto flex h-full max-w-[1320px] items-center justify-between gap-4 px-5 md:px-8 xl:gap-6">
         <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
           <a href="#inicio" className="focus-ring flex min-w-0 items-center rounded-md" aria-label={`Logixtic, ${ui.home}`}>
             <img src="/assets/logixtic-logo-negativo-transparente.png" alt="Logixtic" width={1520} height={465} className="h-6 w-auto md:h-7" />
@@ -57,7 +57,7 @@ export function Header() {
           <div className="hidden lg:block"><LanguageSelector /></div>
         </div>
 
-        <nav aria-label={ui.mainNavigation} className="hidden items-center gap-7 lg:flex">
+        <nav aria-label={ui.mainNavigation} className="hidden items-center gap-4 whitespace-nowrap lg:flex xl:gap-7">
           {nav.map((link) => (
             <a
               key={link.label}
@@ -109,7 +109,7 @@ export function Header() {
           <span
             aria-disabled="true"
             title={ui.pendingRoute}
-            className="rounded-md py-2 font-ui text-sm text-on-dark/34"
+            className="hidden rounded-md py-2 font-ui text-sm text-on-dark/34 xl:inline-block"
           >
             {companyLink.label}
           </span>
