@@ -24,3 +24,8 @@
 
 - [x] Añadir la nueva sección después de clientes con textos ES/EN/PT y tres fotografías reales.
 - [x] Verificar ubicación, imágenes, movimiento reducido y cinco anchos sin desbordamiento.
+
+# Menú de navegación
+
+- [x] Añadir "Diagnóstico ROI" / "ROI Assessment" / "Diagnóstico de ROI" antes del botón del encabezado, escritorio y móvil, con apertura en pestaña nueva.
+- [x] Comprobar que la barra del encabezado no se corta ni se superpone entre 1024 y 1920 px.
