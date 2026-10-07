@@ -113,7 +113,7 @@ export const flow: { title: string; body: string; stages: FlowStage[] } = {
     },
     {
       label: "Portal",
-      body: "El cliente consulta el estado de sus operaciones y sus documentos.",
+      body: "Comparte con cada cliente la información disponible de sus operaciones, documentos y seguimiento.",
     },
     {
       label: "Indicadores",
