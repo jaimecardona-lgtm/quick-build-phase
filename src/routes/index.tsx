@@ -5,7 +5,6 @@ import { Problem } from "@/components/site/Problem";
 import { SuccessStories } from "@/components/site/SuccessStories";
 import { Flow } from "@/components/site/Flow";
 import { LogixAI } from "@/components/site/LogixAI";
-import { Portal } from "@/components/site/Portal";
 import { ClientsReel } from "@/components/site/ClientsReel";
 import { OperationalChallenges } from "@/components/site/OperationalChallenges";
 import { Evidence } from "@/components/site/Evidence";
@@ -93,7 +92,6 @@ function Index() {
         <SuccessStories />
         <Flow />
         <LogixAI />
-        <Portal />
         <Evidence />
         <Implementation />
         <Faq />
