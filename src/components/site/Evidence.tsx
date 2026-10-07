@@ -38,7 +38,7 @@ const copy = {
   },
 } as const;
 
-const highlighted = new Set(["USA", "PAN", "COL"]);
+const highlighted = new Set(["PAN", "COL"]);
 
 function CountUp({ target, locale }: { target: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);

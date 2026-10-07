@@ -1123,10 +1123,10 @@ body {
 .ev3-label { margin-top: 10px; font-size: .95rem; line-height: 1.4; color: color-mix(in oklab, var(--color-on-dark) 82%, transparent); }
 .ev3-map { margin: 0; opacity: 0; transform: translateY(10px); transition: opacity .7s ease, transform .7s ease; }
 .ev3-map[data-on="true"] { opacity: 1; transform: none; }
-.ev3-map figcaption { margin-bottom: 8px; font-size: 1.15rem; font-weight: 600; color: var(--color-on-dark); }
-.ev3-map svg { display: block; width: 100%; height: auto; overflow: visible; }
-.ev3-land { fill: color-mix(in oklab, var(--color-royal) 45%, transparent); stroke: color-mix(in oklab, var(--color-skybrand) 55%, transparent); stroke-width: .6; stroke-linejoin: round; }
-.ev3-land[data-hl="true"] { fill: color-mix(in oklab, var(--color-royal) 75%, transparent); }
+.ev3-map figcaption { margin-bottom: 8px; font-size: 1.15rem; font-weight: 600; color: var(--color-on-dark) !important; }
+.ev3-map svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.ev3-land { fill: color-mix(in oklab, var(--color-royal) 30%, transparent); stroke: color-mix(in oklab, var(--color-skybrand) 45%, transparent); stroke-width: .6; stroke-linejoin: round; }
+.ev3-land[data-hl="true"] { fill: color-mix(in oklab, var(--color-royal) 55%, transparent); }
 .ev3-place { cursor: pointer; outline: none; }
 .ev3-dot { fill: var(--color-amber); stroke: var(--color-night, #0b1730); stroke-width: 2; transition: r .2s; }
 .ev3-pulse { fill: var(--color-amber); opacity: 0; transform-box: fill-box; transform-origin: center; }
