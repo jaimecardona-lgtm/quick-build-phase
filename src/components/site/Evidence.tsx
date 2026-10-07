@@ -1,77 +1,73 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
+import { MAP_H, MAP_W, mapCountries, mapPoints } from "@/lib/americas-map";
+import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
+import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
+import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
 
-function parseCount(value: string) {
-  if (!/^\d[\d.,]*$/.test(value)) return null;
-  return Number(value.replace(/[.,]/g, ""));
-}
+const logos = [rrLogo.url, connectaLogo.url, tradeLogo.url];
 
-function formatCount(value: number, locale: string) {
-  return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
-}
+const copy = {
+  es: {
+    kicker: "Resultados y presencia regional",
+    title: ["Más control por embarque.", "Más capacidad para crecer."],
+    body: "Reduce tareas manuales, recupera tiempo y controla el margen de cada embarque, desde la cotización hasta la liquidación final.",
+    metrics: ["Operaciones globales gestionadas", "Agentes de carga han probado la plataforma"],
+    presence: "Presencia regional",
+    rr: "Más de 20 % de reducción de costos operativos y 35 % de mejora en tiempos de respuesta.",
+    places: { florida: "Florida", panama: "Panamá", colombia: "Colombia" },
+  },
+  en: {
+    kicker: "Results and regional presence",
+    title: ["More control per shipment.", "More capacity to grow."],
+    body: "Reduce manual tasks, recover time and control the margin of every shipment, from quotation to final settlement.",
+    metrics: ["Global operations managed", "Freight forwarders have tried the platform"],
+    presence: "Regional presence",
+    rr: "Over 20% reduction in operating costs and 35% improvement in response times.",
+    places: { florida: "Florida", panama: "Panama", colombia: "Colombia" },
+  },
+  pt: {
+    kicker: "Resultados e presença regional",
+    title: ["Mais controle por embarque.", "Mais capacidade para crescer."],
+    body: "Reduza tarefas manuais, recupere tempo e controle a margem de cada embarque, da cotação à liquidação final.",
+    metrics: ["Operações globais gerenciadas", "Agentes de carga já testaram a plataforma"],
+    presence: "Presença regional",
+    rr: "Mais de 20% de redução nos custos operacionais e 35% de melhoria nos tempos de resposta.",
+    places: { florida: "Flórida", panama: "Panamá", colombia: "Colômbia" },
+  },
+} as const;
 
-function CountUpValue({ value, locale }: { value: string; locale: string }) {
-  const target = parseCount(value);
-  const ref = useRef<HTMLElement>(null);
-  const hasRun = useRef(false);
-  const [display, setDisplay] = useState(target === null ? value : "0");
+const highlighted = new Set(["PAN", "COL"]);
 
+function CountUp({ target, locale }: { target: number; locale: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [n, setN] = useState(0);
+  const fmt = (v: number) => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(v);
   useEffect(() => {
-    if (target === null) return;
-    const node = ref.current;
-    if (!node) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced || !("IntersectionObserver" in window)) {
-      setDisplay(value);
-      hasRun.current = true;
-      return;
-    }
-
-    let frame = 0;
-    const run = () => {
-      if (hasRun.current) return;
-      hasRun.current = true;
-      const duration = target > 1000 ? 1500 : 1250;
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) { setN(target); return; }
+    let raf = 0;
+    const obs = new IntersectionObserver(([e]) => {
+      if (!e?.isIntersecting) return;
+      obs.disconnect();
       const start = performance.now();
+      const dur = target > 1000 ? 1500 : 1250;
       const tick = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setDisplay(formatCount(Math.round(target * eased), locale));
-        if (progress < 1) {
-          frame = requestAnimationFrame(tick);
-        } else {
-          setDisplay(value);
-        }
+        const p = Math.min(1, (now - start) / dur);
+        setN(p < 1 ? Math.round(target * (1 - Math.pow(1 - p, 3))) : target);
+        if (p < 1) raf = requestAnimationFrame(tick);
       };
-      frame = requestAnimationFrame(tick);
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          run();
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.18 },
-    );
-    observer.observe(node);
-
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(frame);
-    };
-  }, [locale, target, value]);
-
-  if (target === null) {
-    return <span>{value}</span>;
-  }
-
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => { obs.disconnect(); cancelAnimationFrame(raf); };
+  }, [target]);
   return (
-    <span ref={ref} aria-label={value}>
-      <span className="sr-only">{value}</span>
-      <span aria-hidden="true">{display}</span>
+    <span ref={ref}>
+      <span className="sr-only">{fmt(target)}</span>
+      <span aria-hidden="true">{fmt(n)}</span>
     </span>
   );
 }
@@ -79,80 +75,129 @@ function CountUpValue({ value, locale }: { value: string; locale: string }) {
 export function Evidence() {
   const { content, locale } = useLanguage();
   const { evidence, ui } = content;
+  const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
+  const numLocale = locale.startsWith("pt") ? "pt-BR" : locale.startsWith("en") ? "en-US" : "es-CO";
   const [active, setActive] = useState(0);
-  const current = evidence.cases[active] ?? evidence.cases[0];
+  const [hot, setHot] = useState<string | null>(null);
+  const [mapOn, setMapOn] = useState(false);
+  const mapRef = useRef<HTMLElement>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
+  useEffect(() => {
+    const el = mapRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => setMapOn(!!e?.isIntersecting), { threshold: 0.15 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const cases = evidence.cases.map((c, i) => (i === 0 ? { ...c, result: t.rr } : c));
+  const current = cases[active] ?? cases[0];
   if (!current) return null;
+
+  const select = (i: number) => {
+    setActive(i);
+    track("case_select", { company: cases[i]?.company ?? "", section_id: "clientes" });
+  };
+  const onKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!d) return;
+    e.preventDefault();
+    const n = (i + d + cases.length) % cases.length;
+    select(n);
+    tabs.current[n]?.focus();
+  };
+
+  const places = [
+    { key: "florida", side: "r" },
+    { key: "panama", side: "l" },
+    { key: "colombia", side: "r" },
+  ] as const;
 
   return (
     <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
-        <div data-reveal className="reveal-item max-w-3xl">
-          <p className="section-kicker">{ui.evidenceKicker}</p>
-          <h2 id="clientes-title" className="section-title-dark mt-4">
-            {evidence.title}
-          </h2>
-          <p className="section-lead-dark mt-5">{evidence.body}</p>
-        </div>
+        <div className="ev3-main">
+          <div data-reveal className="reveal-item ev3-content">
+            <p className="section-kicker">{t.kicker}</p>
+            <h2 id="clientes-title" className="section-title-dark mt-4">
+              {t.title[0]}<br />{t.title[1]}
+            </h2>
+            <p className="section-lead-dark mt-5">{t.body}</p>
+            <dl className="ev3-metrics mt-8">
+              {[17543, 699].map((v, i) => (
+                <div key={v} className="ev3-metric">
+                  <dt className="sr-only">{t.metrics[i]}</dt>
+                  <dd className="ev3-number font-display"><CountUp target={v} locale={numLocale} /></dd>
+                  <dd className="ev3-label font-ui" aria-hidden="true">{t.metrics[i]}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
 
-
-        <div data-reveal className="reveal-item evidence-impact mt-12">
-          <dl className="evidence-metrics">
-            {evidence.metrics.slice(0, 2).map((metric) => (
-              <div key={metric.label} className="evidence-metric">
-                <dt className="font-display font-semibold text-on-dark">
-                   <CountUpValue value={metric.value} locale={locale === "pt-BR" ? "pt-BR" : locale === "en" ? "en-US" : "es-CO"} />
-                </dt>
-                <dd className="mt-3 font-ui text-sm leading-relaxed text-on-dark/62">{metric.label}</dd>
-              </div>
-            ))}
-          </dl>
-          <figure className="presence-map">
-            <figcaption>{ui.regionalPresence}</figcaption>
-            <svg viewBox="0 0 520 330" role="img" aria-label={ui.mapLabel}>
-              <path className="map-land" d="M94 36 128 22l54 7 28 21 29 8 19 31-10 21-25 4-10 18-25 6-17 21-21-8-14-21-25-5-16-25-21-12 6-19-15-17 15-13Z" />
-              <path className="map-land" d="m188 145 23 4 17 16 24 4 18 17-8 15-18-1-10 15-20-8-15-17-20-5-8-15Z" />
-              <path className="map-land" d="m261 197 26-11 38 13 28 30-2 34-19 22-16 30-29-9-18-31-6-29-18-28Z" />
-              <path className="map-land map-florida" d="m258 112 18 5 9 25-8 22-8-19-15-12Z" />
-              <circle className="map-point" cx="277" cy="142" r="5" />
-              <circle className="map-point" cx="226" cy="186" r="5" />
-              <circle className="map-point" cx="276" cy="217" r="5" />
-              <text x="290" y="140">Florida</text>
-              <text x="184" y="181">{locale === "en" ? "Panama" : "Panamá"}</text>
-              <text x="290" y="221">{locale === "pt-BR" ? "Colômbia" : "Colombia"}</text>
+          <figure ref={mapRef} className="ev3-map" data-on={mapOn}>
+            <figcaption className="font-display">{t.presence}</figcaption>
+            <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} role="img" aria-label={ui.mapLabel}>
+              {mapCountries.map((c) => (
+                <path key={c.id} d={c.d} className="ev3-land" data-hl={highlighted.has(c.id)} />
+              ))}
+              {places.map(({ key, side }) => {
+                const [x, y] = mapPoints[key];
+                const label = t.places[key];
+                const w = label.length * 7.4 + 20;
+                const lx = side === "r" ? x + 12 : x - 12 - w;
+                return (
+                  <g
+                    key={key}
+                    className="ev3-place"
+                    data-hot={hot === key}
+                    tabIndex={0}
+                    role="img"
+                    aria-label={label}
+                    onMouseEnter={() => setHot(key)}
+                    onMouseLeave={() => setHot(null)}
+                    onFocus={() => setHot(key)}
+                    onBlur={() => setHot(null)}
+                    onTouchStart={() => setHot(key)}
+                  >
+                    <circle className="ev3-pulse" cx={x} cy={y} r="6" />
+                    <circle className="ev3-dot" cx={x} cy={y} r="6" />
+                    <rect x={lx} y={y - 12} width={w} height="24" rx="12" className="ev3-tag" />
+                    <text x={lx + w / 2} y={y + 4.5} textAnchor="middle">{label}</text>
+                  </g>
+                );
+              })}
             </svg>
           </figure>
         </div>
 
-        <div data-reveal className="reveal-item mt-12">
-          <div role="tablist" aria-label={ui.successCases} className="flex flex-wrap gap-2">
-            {evidence.cases.map((item, index) => (
+        <div data-reveal className="reveal-item ev3-cases mt-10">
+          <div role="tablist" aria-label={ui.successCases} className="ev3-tabs">
+            {cases.map((item, index) => (
               <button
                 key={item.company}
+                ref={(el) => { tabs.current[index] = el; }}
                 type="button"
                 role="tab"
                 id={`caso-tab-${index}`}
                 aria-selected={active === index}
-                aria-controls={`caso-panel-${index}`}
-                onClick={() => {
-                  setActive(index);
-                  track("case_select", { company: item.company, section_id: "clientes" });
-                }}
-                className="focus-ring tab-button"
+                aria-controls="caso-panel"
+                tabIndex={active === index ? 0 : -1}
+                onClick={() => select(index)}
+                onKeyDown={(e) => onKey(e, index)}
+                className="focus-ring ev3-tab"
                 data-on={active === index}
               >
-                {item.company}
+                <img src={logos[index]} alt="" className="ev3-logo" loading="lazy" />
+                <span>{item.company}</span>
               </button>
             ))}
           </div>
-          <div
-            role="tabpanel"
-            id={`caso-panel-${active}`}
-            aria-labelledby={`caso-tab-${active}`}
-            className="panel-dark mt-5"
-          >
-            <h3 className="font-display text-lg font-semibold text-on-dark">{current.company}</h3>
-            <p className="mt-3 max-w-2xl font-ui text-sm leading-relaxed text-on-dark/72">{current.result}</p>
+          <div role="tabpanel" id="caso-panel" aria-labelledby={`caso-tab-${active}`} className="ev3-panel">
+            <div key={active} className="ev3-panel-in">
+              <h3 className="font-display text-lg font-semibold text-on-dark">{current.company}</h3>
+              <p className="mt-2 font-ui text-sm leading-relaxed text-on-dark/80 md:text-base">{current.result}</p>
+            </div>
           </div>
         </div>
       </div>

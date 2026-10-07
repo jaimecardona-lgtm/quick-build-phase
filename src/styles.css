@@ -1112,3 +1112,47 @@ body {
 .flow-portal-in { opacity: 0; transform: translateY(8px); animation: flowPortalIn 300ms ease-out forwards; }
 @keyframes flowPortalIn { to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .flow-portal-in { animation: none; opacity: 1; transform: none; } }
+
+/* Evidence v3: results + regional presence */
+.ev3-main { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 900px) { .ev3-main { grid-template-columns: 58fr 42fr; gap: 40px; } }
+.ev3-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ev3-metric { min-width: 0; border-left: 3px solid var(--color-skybrand); padding: 4px 0 4px 18px; }
+.ev3-number { font-size: clamp(44px, 6vw, 76px); line-height: 1; font-weight: 700; color: var(--color-on-dark); font-variant-numeric: tabular-nums; }
+.ev3-number::after { content: ""; display: block; width: 36px; height: 3px; margin-top: 10px; border-radius: 2px; background: var(--color-amber); }
+.ev3-label { margin-top: 10px; font-size: .95rem; line-height: 1.4; color: color-mix(in oklab, var(--color-on-dark) 82%, transparent); }
+.ev3-map { margin: 0; opacity: 0; transform: translateY(10px); transition: opacity .7s ease, transform .7s ease; }
+.ev3-map[data-on="true"] { opacity: 1; transform: none; }
+.ev3-map figcaption { margin-bottom: 8px; font-size: 1.15rem; font-weight: 600; color: var(--color-on-dark) !important; }
+.ev3-map svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.ev3-land { fill: color-mix(in oklab, var(--color-royal) 30%, transparent); stroke: color-mix(in oklab, var(--color-skybrand) 45%, transparent); stroke-width: .6; stroke-linejoin: round; }
+.ev3-land[data-hl="true"] { fill: color-mix(in oklab, var(--color-royal) 55%, transparent); }
+.ev3-place { cursor: pointer; outline: none; }
+.ev3-dot { fill: var(--color-amber); stroke: var(--color-night, #0b1730); stroke-width: 2; transition: r .2s; }
+.ev3-pulse { fill: var(--color-amber); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.ev3-map[data-on="true"] .ev3-pulse { animation: ev3Pulse 3.2s ease-out infinite; }
+.ev3-place:nth-of-type(2) .ev3-pulse { animation-delay: 1s; }
+.ev3-place:nth-of-type(3) .ev3-pulse { animation-delay: 2s; }
+@keyframes ev3Pulse { 0% { opacity: .45; transform: scale(1); } 100% { opacity: 0; transform: scale(3); } }
+.ev3-tag { fill: color-mix(in oklab, var(--color-night, #0b1730) 88%, transparent); stroke: color-mix(in oklab, var(--color-skybrand) 40%, transparent); stroke-width: 1; transition: stroke .2s; }
+.ev3-place text { fill: var(--color-on-dark); font: 600 12px var(--font-ui); }
+.ev3-place[data-hot="true"] .ev3-tag, .ev3-place:focus-visible .ev3-tag { stroke: var(--color-amber); stroke-width: 1.5; }
+.ev3-place[data-hot="true"] .ev3-dot, .ev3-place:focus-visible .ev3-dot { r: 8; }
+.ev3-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ev3-tab { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 64px; padding: 10px 14px; border-radius: 12px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 22%, transparent); border-bottom: 3px solid transparent; background: color-mix(in oklab, var(--color-royal) 14%, transparent); color: color-mix(in oklab, var(--color-on-dark) 78%, transparent); font: 600 .95rem var(--font-display); transition: background .25s, border-color .25s, color .25s; }
+.ev3-tab:hover { color: var(--color-on-dark); border-color: color-mix(in oklab, var(--color-skybrand) 45%, transparent); }
+.ev3-tab[data-on="true"] { background: var(--color-royal); color: var(--color-on-dark); border-color: var(--color-skybrand); border-bottom-color: var(--color-amber); }
+.ev3-logo { height: 30px; width: auto; max-width: 70px; object-fit: contain; }
+.ev3-panel { margin-top: 12px; min-height: 104px; padding: 20px 24px; border-radius: 14px; border: 1px solid color-mix(in oklab, var(--color-skybrand) 28%, transparent); background: color-mix(in oklab, var(--color-royal) 12%, transparent); }
+.ev3-panel-in { animation: ev3Fade 300ms ease both; }
+@keyframes ev3Fade { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 640px) {
+  .ev3-tabs { grid-template-columns: 1fr; }
+  .ev3-tab { justify-content: flex-start; min-height: 56px; }
+  .ev3-metric { padding-left: 12px; }
+  .ev3-label { font-size: .82rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ev3-map { opacity: 1; transform: none; transition: none; }
+  .ev3-map[data-on="true"] .ev3-pulse, .ev3-panel-in { animation: none; }
+}
