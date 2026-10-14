@@ -751,6 +751,8 @@ body {
 .clients-reel-item[data-logo="bsp"] { --client-logo-width: 100%; }
 .clients-reel-item[data-logo="navis"] { --client-logo-width: 100%; }
 .clients-reel-item[data-logo="global"] { --client-logo-width: 88%; }
+/* These official files use white lettering; retain contrast until color variants are supplied. */
+.clients-reel-item[data-logo="rr"], .clients-reel-item[data-logo="connecta"] { background: var(--color-night); border-color: color-mix(in oklab, var(--color-on-dark) 14%, transparent); }
 @media (max-width: 1023px) { .clients-reel-item { width: calc((100vw - 40px) / 3.5); } }
 @media (max-width: 639px) { .clients-reel-item { width: calc((100vw - 40px) / 2.2); height: 88px; padding: 8px 10px; } }
 @keyframes clients-marquee { to { transform: translateX(-50%); } }

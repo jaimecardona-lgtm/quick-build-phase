@@ -19,7 +19,8 @@
 # Clientes
 
 - [x] 12 logos guardados en la carpeta de logos de clientes y franja animada de clientes justo después de la portada (es/en/pt).
-- [ ] Cambiar únicamente tarjetas a blanco, equilibrar los 12 logos oficiales sin recortes y verificar escritorio/móvil.
+- [x] Cambiar únicamente tarjetas a blanco, equilibrar los 12 logos oficiales sin recortes y verificar escritorio/móvil; R&R y Connecta conservan fondo oscuro por letras blancas.
+- [ ] Sustituir rr-logistics-hd.png y connecta-global-logistics-hd.png por variantes oficiales con letras a color para fondo blanco — bloqueado: no hay variantes adecuadas disponibles.
 
 # Desafíos operativos
 
