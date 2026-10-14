@@ -38,4 +38,5 @@
 
 - [x] Acercar globo y texto en proporción 60/40, sin cambiar títulos ni CTA.
 - [x] Reemplazar OEA y BASC borrosos; presentar ISO 28000 como referencia textual y conservar Paperless/Zero Waste.
+- [x] Sustituir la referencia textual de ISO 28000 por el sello circular rojo oficial (ISO-2.jpg recortado y con fondo normalizado a blanco), etiqueta "ISO 28000", sin la etiqueta "NORMA"; verificado en 1440 y 390 en es/en/pt-BR.
 - [x] Verificar cierre y cinco elementos completos en 1440/1024/768/390/360 px, sin desbordamientos ni errores.

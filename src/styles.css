@@ -1296,5 +1296,5 @@ body {
 .footer-badge-img { display: flex; height: 44px; width: 100%; max-width: 64px; align-items: center; justify-content: center; border-radius: 8px; background: var(--color-client-card); padding: 3px; }
 .footer-badge-img img { display: block; width: 100%; height: 100%; object-fit: contain; opacity: 1; filter: none; }
 .footer-badge[data-badge="oea"] .footer-badge-img { max-width: 88px; }
-.footer-standard { color: var(--color-night); font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; }
+.footer-badge[data-badge="iso"] .footer-badge-img { max-width: 50px; }
 .footer-badge > span:last-child { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
