@@ -36,6 +36,6 @@
 
 # Cierre y Operación LATAM
 
-- [ ] Acercar globo y texto en proporción 60/40, sin cambiar títulos ni CTA.
-- [ ] Reemplazar OEA y BASC borrosos; presentar ISO 28000 como referencia textual y conservar Paperless/Zero Waste.
-- [ ] Verificar cierre y cinco elementos completos en escritorio y móvil.
+- [x] Acercar globo y texto en proporción 60/40, sin cambiar títulos ni CTA.
+- [x] Reemplazar OEA y BASC borrosos; presentar ISO 28000 como referencia textual y conservar Paperless/Zero Waste.
+- [x] Verificar cierre y cinco elementos completos en 1440/1024/768/390/360 px, sin desbordamientos ni errores.
