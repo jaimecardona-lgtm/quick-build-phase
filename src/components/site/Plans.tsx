@@ -1,5 +1,5 @@
 
-import { ArrowRight, CircleCheck, Layers, Settings, TrendingUp } from "lucide-react";
+import { ArrowRight, Check, Layers, Settings, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
@@ -72,7 +72,7 @@ export function Plans() {
           {t.plans.map((plan) => {
             const PlanIcon = planIcons[plan.id] ?? Layers;
             return (
-              <article key={plan.id} data-reveal className="reveal-item plans-card" data-featured={!!plan.featured}>
+              <article key={plan.id} data-reveal className="reveal-item plans-card" data-plan={plan.id} data-featured={!!plan.featured}>
                 <div className="plans-head">
                   <span className="plans-icon" aria-hidden="true">
                     <PlanIcon className="h-5 w-5" />
@@ -89,7 +89,7 @@ export function Plans() {
                 <ul className="plans-list">
                   {plan.items.map((item) => (
                     <li key={item} className="font-ui">
-                      <CircleCheck aria-hidden="true" />
+                      <span className="plans-check" aria-hidden="true"><Check /></span>
                       <span>{item}</span>
                     </li>
                   ))}
