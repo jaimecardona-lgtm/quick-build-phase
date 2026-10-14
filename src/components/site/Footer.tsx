@@ -93,8 +93,8 @@ export function Footer() {
                   <span className="footer-badge-img">
                     <img src={b.src} alt={b.label} loading="lazy" />
                   </span>
-                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.label}</span>
                   {b.id === "iso" && <span className="sr-only">{latam.standardLabel}</span>}
+                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.label}</span>
                 </li>
               ))}
             </ul>
