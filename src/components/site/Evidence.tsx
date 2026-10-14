@@ -197,7 +197,7 @@ export function Evidence() {
           </div>
           <div role="tabpanel" id="caso-panel" aria-labelledby={`caso-tab-${active}`} className="ev3-panel">
             <div key={active} className="ev3-panel-in">
-              <h3 className="font-display text-lg font-semibold text-on-dark">{current.company}</h3>
+              <h3 className="title-h3 text-on-dark">{current.company}</h3>
               <p className="mt-2 font-ui text-sm leading-relaxed text-on-dark/80 md:text-base">{current.result}</p>
             </div>
           </div>

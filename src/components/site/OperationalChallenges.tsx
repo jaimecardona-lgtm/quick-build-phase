@@ -1,9 +1,7 @@
+import { TrendingDown, Users, FileSpreadsheet } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import costPhoto from "@/assets/operational-challenges/shipment-profitability.webp.asset.json";
-import teamPhoto from "@/assets/operational-challenges/transport-quotes.webp.asset.json";
-import paperworkPhoto from "@/assets/operational-challenges/disconnected-documents.webp.asset.json";
 
-const photos = [costPhoto.url, teamPhoto.url, paperworkPhoto.url];
+const icons = [TrendingDown, Users, FileSpreadsheet];
 
 export function OperationalChallenges() {
   const { content } = useLanguage();
@@ -11,26 +9,22 @@ export function OperationalChallenges() {
 
   return (
     <section id="desafios-operativos" aria-labelledby="challenges-title" className="operational-challenges">
-      <div className="challenge-layout mx-auto max-w-[1320px] px-5 md:px-8">
-        <div className="challenge-heading">
-          <div data-reveal className="reveal-item">
-            <p className="challenge-kicker">{challenges.kicker}</p>
-            <h2 id="challenges-title" className="challenge-title">{challenges.title}</h2>
-          </div>
+      <div className="mx-auto max-w-[1320px] px-5 md:px-8">
+        <div data-reveal className="reveal-item challenge-heading">
+          <p className="section-kicker">{challenges.kicker}</p>
+          <h2 id="challenges-title" className="section-title-dark mt-4">{challenges.title}</h2>
         </div>
         <div className="challenge-list">
-          {challenges.challenges.map((challenge, index) => (
-            <article key={index} data-reveal className="challenge-card reveal-item" aria-labelledby={`challenge-${index + 1}`}>
-              <div className="challenge-card-media">
-                <img src={photos[index]} alt={challenge.alt} loading="lazy" decoding="async" />
-              </div>
-              <div className="challenge-card-copy">
-                <span className="challenge-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                <h3 id={`challenge-${index + 1}`}>{challenge.title}</h3>
-                <p>{challenge.before}{challenge.emphasis ? <strong>{challenge.emphasis}</strong> : null}{challenge.after}</p>
-              </div>
-            </article>
-          ))}
+          {challenges.challenges.map((challenge, index) => {
+            const Icon = icons[index] ?? FileSpreadsheet;
+            return (
+              <article key={index} data-reveal tabIndex={0} className="challenge-card reveal-item focus-ring" aria-labelledby={`challenge-${index + 1}`}>
+                <span className="challenge-icon" aria-hidden="true"><Icon /></span>
+                <h3 id={`challenge-${index + 1}`} className="title-h3 text-on-dark">{challenge.title}</h3>
+                <p>{challenge.body}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

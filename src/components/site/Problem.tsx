@@ -16,10 +16,10 @@ export function Problem() {
   return (
     <section id="problema" aria-labelledby="problema-title" className="section-shell surface-deep frag">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
-        <div data-reveal className="reveal-item max-w-4xl">
+        <div data-reveal className="reveal-item mx-auto max-w-[1050px] text-center">
           <p className="section-kicker">{t.kicker}</p>
-          <h2 id="problema-title" className="section-title-dark mt-4">{t.title}</h2>
-          <p className="section-lead-dark mt-5">{t.body}</p>
+          <h2 id="problema-title" className="section-title-dark mx-auto mt-4">{t.title}</h2>
+          <p className="section-lead-dark mx-auto mt-5 max-w-[850px]">{t.body}</p>
         </div>
 
         <div data-reveal className="frag-stage mt-10 md:mt-14">
