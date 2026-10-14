@@ -16,7 +16,7 @@ const copy = {
     metrics: ["Operaciones globales gestionadas", "Agentes de carga han probado la plataforma"],
     presence: "Presencia regional",
     rr: "Más de 20 % de reducción de costos operativos y 35 % de mejora en tiempos de respuesta.",
-    places: { florida: "Florida", panama: "Panamá", colombia: "Colombia" },
+    places: { florida: "Florida", panama: "Panamá", colombia: "Colombia", venezuela: "Venezuela" },
   },
   en: {
     kicker: "Results and regional presence",
@@ -25,7 +25,7 @@ const copy = {
     metrics: ["Global operations managed", "Freight forwarders have tried the platform"],
     presence: "Regional presence",
     rr: "Over 20% reduction in operating costs and 35% improvement in response times.",
-    places: { florida: "Florida", panama: "Panama", colombia: "Colombia" },
+    places: { florida: "Florida", panama: "Panama", colombia: "Colombia", venezuela: "Venezuela" },
   },
   pt: {
     kicker: "Resultados e presença regional",
@@ -34,11 +34,11 @@ const copy = {
     metrics: ["Operações globais gerenciadas", "Agentes de carga já testaram a plataforma"],
     presence: "Presença regional",
     rr: "Mais de 20% de redução nos custos operacionais e 35% de melhoria nos tempos de resposta.",
-    places: { florida: "Flórida", panama: "Panamá", colombia: "Colômbia" },
+    places: { florida: "Flórida", panama: "Panamá", colombia: "Colômbia", venezuela: "Venezuela" },
   },
 } as const;
 
-const highlighted = new Set(["PAN", "COL"]);
+const highlighted = new Set(["PAN", "COL", "VEN"]);
 
 function CountUp({ target, locale }: { target: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -112,6 +112,7 @@ export function Evidence() {
     { key: "florida", side: "r" },
     { key: "panama", side: "l" },
     { key: "colombia", side: "r" },
+    { key: "venezuela", side: "t" },
   ] as const;
 
   return (
@@ -145,7 +146,8 @@ export function Evidence() {
                 const [x, y] = mapPoints[key];
                 const label = t.places[key];
                 const w = label.length * 7.4 + 20;
-                const lx = side === "r" ? x + 12 : x - 12 - w;
+                const lx = side === "r" ? x + 12 : side === "t" ? x - w / 2 : x - 12 - w;
+                const ly = side === "t" ? y - 26 : y;
                 return (
                   <g
                     key={key}
@@ -162,8 +164,8 @@ export function Evidence() {
                   >
                     <circle className="ev3-pulse" cx={x} cy={y} r="6" />
                     <circle className="ev3-dot" cx={x} cy={y} r="6" />
-                    <rect x={lx} y={y - 12} width={w} height="24" rx="12" className="ev3-tag" />
-                    <text x={lx + w / 2} y={y + 4.5} textAnchor="middle">{label}</text>
+                    <rect x={lx} y={ly - 12} width={w} height="24" rx="12" className="ev3-tag" />
+                    <text x={lx + w / 2} y={ly + 4.5} textAnchor="middle">{label}</text>
                   </g>
                 );
               })}

@@ -112,14 +112,14 @@ export const flow: { title: string; body: string; stages: FlowStage[] } = {
       alt: "Checklist de tareas de una operación en Logixtic.",
     },
     {
-      label: "Portal",
-      body: "Comparte con cada cliente la información disponible de sus operaciones, documentos y seguimiento.",
-    },
-    {
       label: "Indicadores",
       body: "Costos presupuestados, costos reales y margen se consultan en la operación.",
       image: "/assets/07-rentabilidad-margen.webp",
       alt: "Margen presupuestado y margen real de una operación en Logixtic.",
+    },
+    {
+      label: "Portal",
+      body: "Comparte con cada cliente la información disponible de sus operaciones, documentos y seguimiento.",
     },
   ],
 };
