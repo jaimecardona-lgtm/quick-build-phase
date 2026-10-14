@@ -33,3 +33,9 @@
 
 - [x] Añadir "Diagnóstico ROI" / "ROI Assessment" / "Diagnóstico de ROI" antes del botón del encabezado, escritorio y móvil, con apertura en pestaña nueva.
 - [x] Comprobar que la barra del encabezado no se corta ni se superpone entre 1024 y 1920 px.
+
+# Cierre y Operación LATAM
+
+- [ ] Acercar globo y texto en proporción 60/40, sin cambiar títulos ni CTA.
+- [ ] Reemplazar OEA y BASC borrosos; presentar ISO 28000 como referencia textual y conservar Paperless/Zero Waste.
+- [ ] Verificar cierre y cinco elementos completos en escritorio y móvil.
