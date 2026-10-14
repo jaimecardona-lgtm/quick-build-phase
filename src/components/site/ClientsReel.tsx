@@ -13,18 +13,18 @@ import navis from "@/assets/client-logos/navis.png.asset.json";
 import globalFreight from "@/assets/client-logos/global-freight.png.asset.json";
 
 const logos = [
-  { name: "Swift Cargo", src: swift.url },
-  { name: "CLM Cargo", src: clm.url },
-  { name: "Transmares USA", src: transmares.url },
-  { name: "SC iTrading", src: scit.url },
-  { name: "Logistics Solutions", src: logsol.url },
-  { name: "Trade & Business SAS", src: trade.url },
-  { name: "Transinternational Cargo LTDA", src: transint.url },
-  { name: "R&R Logistics", src: rr.url },
-  { name: "Connecta Global Logistics", src: connecta.url },
-  { name: "Grupo BSP", src: bsp.url },
-  { name: "Navis Logistics", src: navis.url },
-  { name: "Global Freight SAS", src: globalFreight.url },
+  { name: "Swift Cargo", src: swift.url, sizing: "swift" },
+  { name: "CLM Cargo", src: clm.url, sizing: "clm" },
+  { name: "Transmares USA", src: transmares.url, sizing: "transmares" },
+  { name: "SC iTrading", src: scit.url, sizing: "scit" },
+  { name: "Logistics Solutions", src: logsol.url, sizing: "logsol" },
+  { name: "Trade & Business SAS", src: trade.url, sizing: "trade" },
+  { name: "Transinternational Cargo LTDA", src: transint.url, sizing: "transint" },
+  { name: "R&R Logistics", src: rr.url, sizing: "rr" },
+  { name: "Connecta Global Logistics", src: connecta.url, sizing: "connecta" },
+  { name: "Grupo BSP", src: bsp.url, sizing: "bsp" },
+  { name: "Navis Logistics", src: navis.url, sizing: "navis" },
+  { name: "Global Freight SAS", src: globalFreight.url, sizing: "global" },
 ];
 
 export function ClientsReel() {
@@ -42,7 +42,7 @@ export function ClientsReel() {
           {[0, 1].map((copy) => (
             <ul key={copy} className="clients-reel-group" aria-hidden={copy === 1 ? true : undefined}>
               {logos.map((logo) => (
-                <li key={logo.name} className="clients-reel-item">
+                <li key={logo.name} className="clients-reel-item" data-logo={logo.sizing}>
                   <img src={logo.src} alt={copy === 0 ? logo.name : ""} loading="lazy" decoding="async" />
                 </li>
               ))}
