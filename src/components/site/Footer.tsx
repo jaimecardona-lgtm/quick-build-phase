@@ -1,14 +1,34 @@
 import { useLanguage } from "@/lib/i18n";
+import oea from "@/assets/compliance/oea.png.asset.json";
+import basc from "@/assets/compliance/basc.png.asset.json";
+import iso from "@/assets/compliance/iso.png.asset.json";
+import paperless from "@/assets/compliance/paperless.png.asset.json";
+import zerowaste from "@/assets/compliance/zerowaste.png.asset.json";
+
+const badges = [
+  { id: "oea", src: oea.url, label: "OEA" },
+  { id: "basc", src: basc.url, label: "BASC" },
+  { id: "iso", src: iso.url, label: "ISO 28000" },
+  { id: "paperless", src: paperless.url, label: "Paperless" },
+  { id: "zerowaste", src: zerowaste.url, label: "Zero Waste" },
+];
+
+const latamCopy = {
+  es: { kicker: "Operación LATAM", body: "Apoyamos la operación y los procesos de cumplimiento de empresas en LATAM." },
+  en: { kicker: "LATAM operations", body: "We support the operations and compliance processes of companies in LATAM." },
+  "pt-BR": { kicker: "Operação LATAM", body: "Apoiamos a operação e os processos de conformidade de empresas na LATAM." },
+} as const;
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const { content } = useLanguage();
+  const { content, locale } = useLanguage();
+  const latam = latamCopy[locale as keyof typeof latamCopy] ?? latamCopy.es;
   const { companyLink, nav, resourceLinks, ui } = content;
 
   return (
-    <footer className="surface-deep border-t border-on-dark/10 py-16">
+    <footer className="surface-deep border-t border-on-dark/10 py-12">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_auto_auto] lg:grid-cols-[minmax(0,1fr)_auto_auto_minmax(0,430px)] md:gap-x-12">
           <div>
             <img
               src="/assets/logixtic-logo-negativo-transparente.png"
@@ -64,8 +84,20 @@ export function Footer() {
               ))}
             </ul>
           </nav>
+          <div className="footer-latam md:col-span-3 lg:col-span-1 lg:self-start">
+            <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-skybrand uppercase">{latam.kicker}</p>
+            <p className="mt-1.5 font-ui text-sm text-on-dark/75">{latam.body}</p>
+            <ul className="footer-badges">
+              {badges.map((b) => (
+                <li key={b.id} className="footer-badge" data-badge={b.id}>
+                  <span className="footer-badge-img"><img src={b.src} alt={b.label} loading="lazy" /></span>
+                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="mt-12 flex flex-col gap-3 border-t border-on-dark/10 pt-6 font-ui text-xs text-on-dark/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-on-dark/10 pt-6 font-ui text-xs text-on-dark/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Logixtic®. {ui.rights}</p>
           <div className="flex gap-6">
             <a
