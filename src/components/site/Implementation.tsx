@@ -137,7 +137,7 @@ export function Implementation() {
               <ActiveIcon aria-hidden="true" strokeWidth={1.4} />
             </div>
             <p className="im2-stage">{t.stage} {String(active + 1).padStart(2, "0")}</p>
-            <h3 className="im2-panel-title">{activeLabel}</h3>
+            <h3 className="title-panel mt-1.5">{activeLabel}</h3>
             <p className="im2-panel-body">{activeBody}</p>
           </div>
 

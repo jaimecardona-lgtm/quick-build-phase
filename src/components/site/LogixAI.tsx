@@ -131,7 +131,7 @@ export function LogixAI() {
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item lx4-head">
           <p className="section-kicker">{t.kicker}</p>
-          <h2 id="logix-title" className="lx4-title">{t.title}</h2>
+          <h2 id="logix-title" className="section-title-dark">{t.title}</h2>
           <p className="lx4-lead">{t.body}</p>
         </div>
 

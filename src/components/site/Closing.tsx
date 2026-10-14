@@ -9,7 +9,7 @@ export function Closing() {
     <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden">
       <div data-reveal className="reveal-item closing-grid relative z-10 mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="closing-copy">
-          <h2 id="demo-title" className="text-balance font-display text-[1.7rem] leading-[1.14] font-semibold text-on-dark md:text-[2.3rem]">
+          <h2 id="demo-title" className="section-title-dark">
             {closing.title}
           </h2>
           <p className="closing-sub mt-3 font-ui text-base font-medium md:text-xl">{closing.body}</p>

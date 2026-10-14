@@ -78,7 +78,7 @@ export function Plans() {
                     <PlanIcon className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="plans-name font-display text-2xl font-semibold">
+                    <h3 className="plans-name title-h3">
                       {plan.name}
                       {plan.tag && <span className="plans-tag font-ui">{plan.tag}</span>}
                     </h3>

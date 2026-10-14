@@ -198,7 +198,7 @@ export function Flow() {
           </div>
 
           <div ref={resultsRef} className="flow2-results" data-lit={progress > 0}>
-            <h3 className="font-display text-2xl font-semibold text-on-dark md:text-3xl">{t.resultsTitle}</h3>
+            <h3 className="title-panel">{t.resultsTitle}</h3>
             <dl className="flow2-metrics">
               {metrics.map((m, i) => (
                 <div key={i} className="flow2-metric" data-accent={i === 1}>
