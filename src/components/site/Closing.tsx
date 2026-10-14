@@ -17,7 +17,7 @@ export function Closing() {
             <DemoButton sectionId="cierre" size="lg" />
           </div>
         </div>
-        <img className="closing-globe" src={globeAsset.url} alt="" width={740} height={388} loading="lazy" aria-hidden="true" />
+        <img className="closing-globe" src={globeAsset.url} alt="" width={680} height={388} loading="lazy" aria-hidden="true" />
       </div>
     </section>
   );

@@ -1278,7 +1278,7 @@ body {
 .closing-grid { display: grid; align-items: center; gap: 8px; padding-block: 40px 0; }
 .closing-copy { padding-bottom: 8px; }
 .closing-sub { color: var(--color-skybrand); }
-.closing-globe { width: 100%; max-width: 520px; height: auto; justify-self: center; -webkit-mask-image: radial-gradient(ellipse 70% 75% at 55% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(ellipse 70% 75% at 55% 50%, #000 60%, transparent 100%); }
+.closing-globe { width: 100%; max-width: 520px; height: auto; justify-self: center; -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%); }
 @media (min-width: 1024px) {
   .closing-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px; padding-block: 28px; }
   .closing-copy { padding-bottom: 0; }
