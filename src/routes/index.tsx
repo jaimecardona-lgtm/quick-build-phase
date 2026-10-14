@@ -9,6 +9,7 @@ import { ClientsReel } from "@/components/site/ClientsReel";
 import { OperationalChallenges } from "@/components/site/OperationalChallenges";
 import { Evidence } from "@/components/site/Evidence";
 import { Implementation } from "@/components/site/Implementation";
+import { Plans } from "@/components/site/Plans";
 import { Faq } from "@/components/site/Faq";
 import { ResourcesBand } from "@/components/site/ResourcesBand";
 import { Closing } from "@/components/site/Closing";
@@ -94,6 +95,7 @@ function Index() {
         <LogixAI />
         <Evidence />
         <Implementation />
+        <Plans />
         <Faq />
         <ResourcesBand />
         <Closing />
