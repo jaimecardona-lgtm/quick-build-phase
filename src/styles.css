@@ -739,6 +739,18 @@ body {
 .clients-reel-item { flex: 0 0 auto; width: clamp(170px, calc((100vw - 64px) / 5.2), 270px); height: 112px; display: grid; place-items: center; padding: 14px 18px; border-radius: 8px; background: var(--color-client-card); border: 1px solid var(--color-client-card-border); box-shadow: var(--shadow-client-card); }
 .clients-reel-item { overflow: hidden; position: relative; }
 .clients-reel-item img { width: var(--client-logo-width, 100%); height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; transform: none; filter: none; opacity: 1; mix-blend-mode: normal; }
+.clients-reel-item[data-logo="swift"] { --client-logo-width: 96%; }
+.clients-reel-item[data-logo="clm"] { --client-logo-width: 98%; }
+.clients-reel-item[data-logo="transmares"] { --client-logo-width: 88%; }
+.clients-reel-item[data-logo="scit"] { --client-logo-width: 94%; }
+.clients-reel-item[data-logo="logsol"] { --client-logo-width: 96%; }
+.clients-reel-item[data-logo="trade"] { --client-logo-width: 98%; }
+.clients-reel-item[data-logo="transint"] { --client-logo-width: 92%; }
+.clients-reel-item[data-logo="rr"] { --client-logo-width: 94%; }
+.clients-reel-item[data-logo="connecta"] { --client-logo-width: 90%; }
+.clients-reel-item[data-logo="bsp"] { --client-logo-width: 100%; }
+.clients-reel-item[data-logo="navis"] { --client-logo-width: 100%; }
+.clients-reel-item[data-logo="global"] { --client-logo-width: 88%; }
 @media (max-width: 1023px) { .clients-reel-item { width: calc((100vw - 40px) / 3.5); } }
 @media (max-width: 639px) { .clients-reel-item { width: calc((100vw - 40px) / 2.2); height: 88px; padding: 8px 10px; } }
 @keyframes clients-marquee { to { transform: translateX(-50%); } }
