@@ -1,4 +1,3 @@
-// ============= Full file contents =============
 
 import { ArrowRight, CircleCheck, Layers, Settings, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
