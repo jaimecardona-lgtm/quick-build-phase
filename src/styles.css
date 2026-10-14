@@ -1223,11 +1223,52 @@ body {
 /* Plans */
 .plans-grid { display: grid; gap: 20px; grid-template-columns: 1fr; align-items: stretch; }
 @media (min-width: 1024px) { .plans-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.plans-card { display: flex; flex-direction: column; gap: 0; padding: 28px; border-radius: 12px; background: color-mix(in oklab, var(--color-night) 82%, var(--color-royal)); border: 1px solid color-mix(in oklab, var(--color-on-dark) 10%, transparent); }
-.plans-card > a { margin-top: 28px; }
-.plans-card > ul { margin-bottom: auto; }
-.plans-card[data-featured="true"] { border-color: color-mix(in oklab, var(--color-amber) 55%, transparent); }
-.plans-badge { display: inline-block; align-self: flex-start; margin-top: 10px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--color-night); background: var(--color-amber); }
+.plans-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 30px 26px 28px;
+  border-radius: 18px;
+  background: #F8FAFC;
+  border: 1px solid color-mix(in oklab, #0D2A6B 14%, transparent);
+  box-shadow: 0 14px 30px -18px color-mix(in oklab, #0D2A6B 45%, transparent);
+  color: #0D2A6B;
+}
+.plans-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: color-mix(in oklab, var(--color-royal) 55%, white); }
+.plans-card[data-featured="true"] {
+  border: 2px solid #FBBF0B;
+  box-shadow: 0 18px 36px -18px color-mix(in oklab, #0D2A6B 55%, transparent);
+}
+.plans-card[data-featured="true"]::before { background: var(--color-amber); }
+.plans-head { display: flex; align-items: center; gap: 14px; }
+.plans-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px;
+  background: color-mix(in oklab, var(--color-royal) 14%, #F8FAFC); color: var(--color-royal);
+}
+.plans-card[data-featured="true"] .plans-icon { background: color-mix(in oklab, var(--color-amber) 22%, #F8FAFC); color: #B8860B; }
+.plans-name { color: #0D2A6B; }
+.plans-tag { margin-left: 6px; font-size: 14px; font-weight: 500; color: color-mix(in oklab, #0D2A6B 75%, #F8FAFC); }
+.plans-badge {
+  display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; color: #7C4A03;
+  background: color-mix(in oklab, var(--color-amber) 32%, white);
+}
+.plans-desc { margin-top: 16px; font-size: 14px; line-height: 1.55; color: color-mix(in oklab, #0D2A6B 85%, #F8FAFC); }
+.plans-list { margin-top: 18px; margin-bottom: auto; display: grid; gap: 12px; }
+.plans-list li { display: flex; gap: 10px; font-size: 14px; line-height: 1.45; color: #0D2A6B; }
+.plans-list svg { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; color: var(--color-royal); }
+.plans-card[data-featured="true"] .plans-list svg { color: var(--color-amber); }
+.plans-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 26px; min-height: 44px; padding: 0 22px;
+  border-radius: 999px; background: var(--color-royal); color: #FFFFFF;
+  font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+  transition: background 200ms ease;
+}
+.plans-cta:hover { background: color-mix(in oklab, var(--color-royal) 85%, black); }
+.plans-cta-featured { background: var(--color-amber); color: #0D2A6B; }
+.plans-cta-featured:hover { background: color-mix(in oklab, var(--color-amber) 88%, black); }
+
 /* Uniform section divider: a barely-different blue band between main sections, no visible outline */
 #contenido > section + section { position: relative; }
 #contenido > section + section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 16px; background: color-mix(in oklab, var(--color-royal) 20%, transparent); pointer-events: none; }
