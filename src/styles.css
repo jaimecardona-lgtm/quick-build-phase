@@ -1228,5 +1228,7 @@ body {
 .plans-card > ul { margin-bottom: auto; }
 .plans-card[data-featured="true"] { border-color: color-mix(in oklab, var(--color-amber) 55%, transparent); }
 .plans-badge { display: inline-block; align-self: flex-start; margin-top: 10px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--color-night); background: var(--color-amber); }
-/* Uniform section divider: one compact blue band between main sections */
-#contenido > section + section { border-top: 6px solid color-mix(in oklab, var(--color-royal) 55%, var(--color-night)); }
+/* Uniform section divider: a barely-different blue band between main sections, no visible outline */
+#contenido > section + section { position: relative; }
+#contenido > section + section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 16px; background: color-mix(in oklab, var(--color-royal) 20%, transparent); pointer-events: none; }
+@media (max-width: 767px) { #contenido > section + section::before { height: 12px; } }
