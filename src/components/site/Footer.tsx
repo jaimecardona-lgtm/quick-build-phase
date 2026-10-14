@@ -91,13 +91,10 @@ export function Footer() {
               {badges.map((b) => (
                 <li key={b.id} className="footer-badge" data-badge={b.id}>
                   <span className="footer-badge-img">
-                    {b.src ? (
-                      <img src={b.src} alt={b.label} loading="lazy" />
-                    ) : (
-                      <span className="footer-standard font-ui" aria-label={latam.standardLabel}>ISO<br />28000</span>
-                    )}
+                    <img src={b.src} alt={b.label} loading="lazy" />
                   </span>
-                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.id === "iso" ? latam.standard : b.label}</span>
+                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.label}</span>
+                  {b.id === "iso" && <span className="sr-only">{latam.standardLabel}</span>}
                 </li>
               ))}
             </ul>
