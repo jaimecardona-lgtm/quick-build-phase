@@ -1,22 +1,21 @@
 import { useLanguage } from "@/lib/i18n";
-import oea from "@/assets/compliance/oea.png.asset.json";
-import basc from "@/assets/compliance/basc.png.asset.json";
-import iso from "@/assets/compliance/iso.png.asset.json";
+import oea from "@/assets/compliance/oea-colombia.webp.asset.json";
+import basc from "@/assets/compliance/basc-official.svg.asset.json";
 import paperless from "@/assets/compliance/paperless.png.asset.json";
 import zerowaste from "@/assets/compliance/zerowaste.png.asset.json";
 
 const badges = [
-  { id: "oea", src: oea.url, label: "OEA" },
+  { id: "oea", src: oea.url, label: "OEA Colombia" },
   { id: "basc", src: basc.url, label: "BASC" },
-  { id: "iso", src: iso.url, label: "ISO 28000" },
+  { id: "iso", label: "ISO 28000" },
   { id: "paperless", src: paperless.url, label: "Paperless" },
   { id: "zerowaste", src: zerowaste.url, label: "Zero Waste" },
 ];
 
 const latamCopy = {
-  es: { kicker: "Operación LATAM", body: "Apoyamos la operación y los procesos de cumplimiento de empresas en LATAM." },
-  en: { kicker: "LATAM operations", body: "We support the operations and compliance processes of companies in LATAM." },
-  "pt-BR": { kicker: "Operação LATAM", body: "Apoiamos a operação e os processos de conformidade de empresas na LATAM." },
+  es: { kicker: "Operación LATAM", body: "Apoyamos la operación y los procesos de cumplimiento de empresas en LATAM.", standard: "Norma", standardLabel: "Referencia a la norma ISO 28000; no es un sello de certificación" },
+  en: { kicker: "LATAM operations", body: "We support the operations and compliance processes of companies in LATAM.", standard: "Standard", standardLabel: "Reference to the ISO 28000 standard; not a certification seal" },
+  "pt-BR": { kicker: "Operação LATAM", body: "Apoiamos a operação e os processos de conformidade de empresas na LATAM.", standard: "Norma", standardLabel: "Referência à norma ISO 28000; não é um selo de certificação" },
 } as const;
 
 export function Footer() {
@@ -90,8 +89,14 @@ export function Footer() {
             <ul className="footer-badges">
               {badges.map((b) => (
                 <li key={b.id} className="footer-badge" data-badge={b.id}>
-                  <span className="footer-badge-img"><img src={b.src} alt={b.label} loading="lazy" /></span>
-                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.label}</span>
+                  <span className="footer-badge-img">
+                    {b.src ? (
+                      <img src={b.src} alt={b.label} loading="lazy" />
+                    ) : (
+                      <span className="footer-standard font-ui" aria-label={latam.standardLabel}>ISO<br />28000</span>
+                    )}
+                  </span>
+                  <span className="font-ui text-[10px] font-semibold text-on-dark/70 uppercase">{b.id === "iso" ? latam.standard : b.label}</span>
                 </li>
               ))}
             </ul>
