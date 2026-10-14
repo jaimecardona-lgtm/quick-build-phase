@@ -1,8 +1,17 @@
-import { ArrowRight, CircleCheck } from "lucide-react";
+// ============= Full file contents =============
+
+import { ArrowRight, CircleCheck, Layers, Settings, TrendingUp } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
 type Plan = { id: string; name: string; tag?: string; badge?: string; desc: string; items: string[]; featured?: boolean };
+type PlanIcon = typeof Layers;
+
+const planIcons: Record<string, PlanIcon> = {
+  standard: Layers,
+  enterprise: TrendingUp,
+  setup: Settings,
+};
 
 const copy = {
   es: {
@@ -61,33 +70,44 @@ export function Plans() {
           <p className="mx-auto mt-4 font-ui text-base leading-relaxed text-on-dark/75">{t.body}</p>
         </div>
         <div className="plans-grid mt-10">
-          {t.plans.map((plan) => (
-            <article key={plan.id} data-reveal className="reveal-item plans-card" data-featured={!!plan.featured}>
-              <h3 className="font-display text-2xl font-semibold text-on-dark">
-                {plan.name} {plan.tag && <span className="font-ui text-sm font-medium text-on-dark/65">{plan.tag}</span>}
-              </h3>
-              {plan.badge && <p className="plans-badge font-ui">{plan.badge}</p>}
-              <p className="mt-3 font-ui text-sm leading-relaxed text-on-dark/80">{plan.desc}</p>
-              <ul className="mt-6 grid gap-3">
-                {plan.items.map((item) => (
-                  <li key={item} className="flex gap-2.5 font-ui text-sm leading-snug text-on-dark/90">
-                    <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={waLink(t.msg(plan.name))}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => track("plan_info_click", { plan: plan.id, section_id: "planes" })}
-                className="focus-ring group mt-auto inline-flex min-h-11 items-center justify-center gap-1 rounded-md bg-amber px-5 font-ui text-sm font-semibold text-night hover:bg-amber/90"
-              >
-                {t.cta} <span className="sr-only">{plan.name} {t.newTab}</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-              </a>
-            </article>
-          ))}
+          {t.plans.map((plan) => {
+            const PlanIcon = planIcons[plan.id] ?? Layers;
+            return (
+              <article key={plan.id} data-reveal className="reveal-item plans-card" data-featured={!!plan.featured}>
+                <div className="plans-head">
+                  <span className="plans-icon" aria-hidden="true">
+                    <PlanIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="plans-name font-display text-2xl font-semibold">
+                      {plan.name}
+                      {plan.tag && <span className="plans-tag font-ui">{plan.tag}</span>}
+                    </h3>
+                    {plan.badge && <p className="plans-badge font-ui">{plan.badge}</p>}
+                  </div>
+                </div>
+                <p className="plans-desc font-ui">{plan.desc}</p>
+                <ul className="plans-list">
+                  {plan.items.map((item) => (
+                    <li key={item} className="font-ui">
+                      <CircleCheck aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={waLink(t.msg(plan.name))}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track("plan_info_click", { plan: plan.id, section_id: "planes" })}
+                  className={`focus-ring plans-cta${plan.featured ? " plans-cta-featured" : ""}`}
+                >
+                  {t.cta} <span className="sr-only">{plan.name} {t.newTab}</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </a>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
