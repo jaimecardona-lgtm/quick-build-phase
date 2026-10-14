@@ -1273,7 +1273,19 @@ body {
 .closing-grid { display: grid; align-items: center; gap: 24px; padding-block: 40px 0; }
 .closing-copy { min-width: 0; }
 .closing-sub { color: var(--color-skybrand); }
-.closing-globe { display: block; width: 100%; max-width: 520px; height: auto; object-fit: contain; justify-self: center; margin: 0; }
+.closing-globe {
+  --globe-mask-solid: oklch(1 0 0);
+  --globe-mask-horizontal: linear-gradient(to right, transparent, var(--globe-mask-solid) 14%, var(--globe-mask-solid) 84%, transparent);
+  --globe-mask-vertical: linear-gradient(to bottom, transparent, var(--globe-mask-solid) 12%, var(--globe-mask-solid) 88%, transparent);
+  display: block; width: 100%; max-width: 520px; height: auto; object-fit: contain; justify-self: center; margin: 0;
+  background: transparent; border: 0; box-shadow: none; filter: none; opacity: 1;
+  -webkit-mask-image: var(--globe-mask-horizontal), var(--globe-mask-vertical);
+  mask-image: var(--globe-mask-horizontal), var(--globe-mask-vertical);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+}
 @media (min-width: 1024px) {
   .closing-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 24px; padding-block: 28px; }
   .closing-globe { justify-self: start; max-width: 100%; }
