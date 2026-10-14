@@ -20,7 +20,7 @@
 
 - [x] 12 logos guardados en la carpeta de logos de clientes y franja animada de clientes justo después de la portada (es/en/pt).
 - [x] Cambiar todas las tarjetas originales y duplicadas a blanco sin excepciones, conservando tamaños, logos oficiales y movimiento.
-- [ ] Verificar un ciclo completo de 30 segundos en escritorio y móvil, incluidos fondo blanco y hover.
+- [x] Verificar un ciclo completo de 30 segundos en escritorio y móvil: 24 tarjetas blancas, hover blanco, 12 clientes visibles y movimiento intacto; R&R y Connecta siguen pendientes de variantes legibles.
 - [ ] Sustituir rr-logistics-hd.png y connecta-global-logistics-hd.png por variantes oficiales con letras a color para fondo blanco — bloqueado: no hay variantes adecuadas disponibles.
 
 # Desafíos operativos
