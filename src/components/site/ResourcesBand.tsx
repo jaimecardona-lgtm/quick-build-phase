@@ -7,7 +7,7 @@ export function ResourcesBand() {
   const { resourceLinks, ui } = content;
   const icons = [FileText, BookOpen, Video, Library];
   return (
-    <section id="recursos" aria-labelledby="recursos-title" className="surface-deep border-y border-on-dark/10 py-14 md:py-16">
+    <section id="recursos" aria-labelledby="recursos-title" className="surface-deep py-14 md:py-16">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <h2 id="recursos-title" className="font-display text-xl font-semibold text-on-dark md:text-2xl">

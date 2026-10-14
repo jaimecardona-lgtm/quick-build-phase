@@ -1,0 +1,95 @@
+import { ArrowRight, CircleCheck } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
+import { track } from "@/lib/analytics";
+
+type Plan = { id: string; name: string; tag?: string; badge?: string; desc: string; items: string[]; featured?: boolean };
+
+const copy = {
+  es: {
+    titleStart: "Planes diseñados para escalar tu operación",
+    titleEnd: "logística",
+    body: "Nuestro enfoque está en darte control real sobre la operación, trazabilidad de cada proceso, visibilidad del margen por operación y una mejor experiencia para tus clientes.",
+    cta: "Más información",
+    newTab: "(abre WhatsApp en una pestaña nueva)",
+    msg: (n: string) => `Hola, quiero más información sobre el plan ${n} de Logixtic.`,
+    plans: [
+      { id: "standard", name: "Standard", desc: "Ideal para agentes que inician su transformación digital.", items: ["Todas las funcionalidades completas de Logixtic®", "PDF Maker Basic (Módulo Cotizaciones)", "Automatizaciones Básicas (Módulo Operaciones)", "2h de Capacitación por Módulo", "De 3 Hasta 9 Usuarios", "Soporte Técnico 24/7"] },
+      { id: "enterprise", name: "Enterprise", badge: "Ahorra hasta un 15%", featured: true, desc: "Perfecto para agentes en crecimiento y expansión.", items: ["Todas las funcionalidades completas de Logixtic®", "PDF Maker Professional ilimitado por módulo", "Automatizaciones ilimitadas por módulo", "4h de capacitación por módulo", "Para 10+ Usuarios", "Soporte Técnico 24/7"] },
+      { id: "setup", name: "Setup Fee", tag: "(Pago Único)", desc: "Implementación profesional y personalizada.", items: ["Onboarding y Configuración inicial de la plataforma", "Personalización de flujos y documentos (según plan)", "Migración básica de datos (clientes, contactos y agentes o proveedores)", "Capacitación completa al equipo", "Implementación, pruebas y puesta en marcha", "Seguridad y roles de usuarios configurados acordes a certificación Basc e ISO 28000", "Acompañamiento en go-live"] },
+    ] as Plan[],
+  },
+  en: {
+    titleStart: "Plans designed to scale your",
+    titleEnd: "logistics operation",
+    body: "Our focus is on giving you real control over the operation, traceability of every process, visibility of the margin per operation and a better experience for your customers.",
+    cta: "More information",
+    newTab: "(opens WhatsApp in a new tab)",
+    msg: (n: string) => `Hello, I would like more information about the Logixtic ${n} plan.`,
+    plans: [
+      { id: "standard", name: "Standard", desc: "Ideal for agents starting their digital transformation.", items: ["All Logixtic® features included", "PDF Maker Basic (Quotes module)", "Basic automations (Operations module)", "2h of training per module", "From 3 up to 9 users", "24/7 technical support"] },
+      { id: "enterprise", name: "Enterprise", badge: "Save up to 15%", featured: true, desc: "Perfect for growing and expanding agents.", items: ["All Logixtic® features included", "Unlimited PDF Maker Professional per module", "Unlimited automations per module", "4h of training per module", "For 10+ users", "24/7 technical support"] },
+      { id: "setup", name: "Setup Fee", tag: "(One-time payment)", desc: "Professional, customized implementation.", items: ["Onboarding and initial platform configuration", "Customization of workflows and documents (per plan)", "Basic data migration (customers, contacts and agents or suppliers)", "Full team training", "Implementation, testing and go-live", "User security and roles configured according to BASC and ISO 28000 certification", "Go-live support"] },
+    ] as Plan[],
+  },
+  pt: {
+    titleStart: "Planos criados para escalar sua operação",
+    titleEnd: "logística",
+    body: "Nosso foco é dar a você controle real sobre a operação, rastreabilidade de cada processo, visibilidade da margem por operação e uma melhor experiência para seus clientes.",
+    cta: "Mais informações",
+    newTab: "(abre o WhatsApp em uma nova aba)",
+    msg: (n: string) => `Olá, quero mais informações sobre o plano ${n} da Logixtic.`,
+    plans: [
+      { id: "standard", name: "Standard", desc: "Ideal para agentes que estão iniciando sua transformação digital.", items: ["Todas as funcionalidades completas do Logixtic®", "PDF Maker Basic (Módulo Cotações)", "Automações básicas (Módulo Operações)", "2h de treinamento por módulo", "De 3 até 9 usuários", "Suporte técnico 24/7"] },
+      { id: "enterprise", name: "Enterprise", badge: "Economize até 15%", featured: true, desc: "Perfeito para agentes em crescimento e expansão.", items: ["Todas as funcionalidades completas do Logixtic®", "PDF Maker Professional ilimitado por módulo", "Automações ilimitadas por módulo", "4h de treinamento por módulo", "Para 10+ usuários", "Suporte técnico 24/7"] },
+      { id: "setup", name: "Setup Fee", tag: "(Pagamento único)", desc: "Implementação profissional e personalizada.", items: ["Onboarding e configuração inicial da plataforma", "Personalização de fluxos e documentos (conforme o plano)", "Migração básica de dados (clientes, contatos e agentes ou fornecedores)", "Treinamento completo da equipe", "Implementação, testes e entrada em operação", "Segurança e perfis de usuários configurados de acordo com a certificação BASC e ISO 28000", "Acompanhamento no go-live"] },
+    ] as Plan[],
+  },
+};
+
+const waLink = (text: string) => `https://wa.me/573189733174?text=${encodeURIComponent(text)}`;
+
+export function Plans() {
+  const { locale } = useLanguage();
+  const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
+  return (
+    <section id="planes" aria-labelledby="planes-title" className="section-shell surface-deep">
+      <div className="mx-auto max-w-[1180px] px-5 md:px-8">
+        <div data-reveal className="reveal-item mx-auto max-w-3xl text-center">
+          <h2 id="planes-title" className="section-title-dark">
+            {t.titleStart} <span className="text-amber">{t.titleEnd}</span>
+          </h2>
+          <p className="mx-auto mt-4 font-ui text-base leading-relaxed text-on-dark/75">{t.body}</p>
+        </div>
+        <div className="plans-grid mt-10">
+          {t.plans.map((plan) => (
+            <article key={plan.id} data-reveal className="reveal-item plans-card" data-featured={!!plan.featured}>
+              <h3 className="font-display text-2xl font-semibold text-on-dark">
+                {plan.name} {plan.tag && <span className="font-ui text-sm font-medium text-on-dark/65">{plan.tag}</span>}
+              </h3>
+              {plan.badge && <p className="plans-badge font-ui">{plan.badge}</p>}
+              <p className="mt-3 font-ui text-sm leading-relaxed text-on-dark/80">{plan.desc}</p>
+              <ul className="mt-6 grid gap-3">
+                {plan.items.map((item) => (
+                  <li key={item} className="flex gap-2.5 font-ui text-sm leading-snug text-on-dark/90">
+                    <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={waLink(t.msg(plan.name))}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track("plan_info_click", { plan: plan.id, section_id: "planes" })}
+                className="focus-ring group mt-auto inline-flex min-h-11 items-center justify-center gap-1 rounded-md bg-amber px-5 font-ui text-sm font-semibold text-night hover:bg-amber/90"
+              >
+                {t.cta} <span className="sr-only">{plan.name} {t.newTab}</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

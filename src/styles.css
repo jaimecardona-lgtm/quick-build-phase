@@ -1219,3 +1219,14 @@ body {
   .im2-orb { animation: none; }
   .im2 * { transition: none !important; }
 }
+
+/* Plans */
+.plans-grid { display: grid; gap: 20px; grid-template-columns: 1fr; align-items: stretch; }
+@media (min-width: 1024px) { .plans-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.plans-card { display: flex; flex-direction: column; gap: 0; padding: 28px; border-radius: 12px; background: color-mix(in oklab, var(--color-night) 82%, var(--color-royal)); border: 1px solid color-mix(in oklab, var(--color-on-dark) 10%, transparent); }
+.plans-card > a { margin-top: 28px; }
+.plans-card > ul { margin-bottom: auto; }
+.plans-card[data-featured="true"] { border-color: color-mix(in oklab, var(--color-amber) 55%, transparent); }
+.plans-badge { display: inline-block; align-self: flex-start; margin-top: 10px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--color-night); background: var(--color-amber); }
+/* Uniform section divider: one compact blue band between main sections */
+#contenido > section + section { border-top: 6px solid color-mix(in oklab, var(--color-royal) 55%, var(--color-night)); }
