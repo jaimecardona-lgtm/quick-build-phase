@@ -11,7 +11,6 @@ import { Evidence } from "@/components/site/Evidence";
 import { Implementation } from "@/components/site/Implementation";
 import { Plans } from "@/components/site/Plans";
 import { Faq } from "@/components/site/Faq";
-import { ResourcesBand } from "@/components/site/ResourcesBand";
 import { Closing } from "@/components/site/Closing";
 import { Footer } from "@/components/site/Footer";
 import { useReveal } from "@/hooks/use-reveal";
@@ -97,7 +96,6 @@ function Index() {
         <Implementation />
         <Plans />
         <Faq />
-        <ResourcesBand />
         <Closing />
       </main>
       <Footer />
