@@ -1230,7 +1230,7 @@ body {
   border: 2px solid var(--plans-action);
   padding: 29px 25px 27px;
 }
-@media (hover: hover) { .plans-card.reveal-visible:hover { transform: translateY(-3px); } }
+@media (hover: hover) { .plans-card[data-visible="true"]:hover { transform: translateY(-3px); } }
 .plans-head { display: flex; align-items: center; gap: 14px; }
 .plans-head > div { min-width: 0; }
 .plans-icon {
@@ -1262,7 +1262,7 @@ body {
 .plans-cta:hover { background: color-mix(in oklab, var(--plans-action) 92%, var(--plans-text)); }
 @media (prefers-reduced-motion: reduce) {
   .plans-card, .plans-cta { transition: none; }
-  .plans-card.reveal-visible:hover { transform: none; }
+  .plans-card[data-visible="true"]:hover { transform: none; }
 }
 
 /* Uniform section divider: a single faint 1px line between main sections */
