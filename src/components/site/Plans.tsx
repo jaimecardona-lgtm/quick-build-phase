@@ -25,7 +25,7 @@ const copy = {
     plans: [
       { id: "standard", name: "Standard", desc: "Ideal para agentes que inician su transformación digital.", items: ["Todas las funcionalidades completas de Logixtic®", "PDF Maker Basic (Módulo Cotizaciones)", "Automatizaciones Básicas (Módulo Operaciones)", "2h de Capacitación por Módulo", "De 3 Hasta 9 Usuarios", "Soporte Técnico 24/7"] },
       { id: "enterprise", name: "Enterprise", badge: "Ahorra hasta un 15%", featured: true, desc: "Perfecto para agentes en crecimiento y expansión.", items: ["Todas las funcionalidades completas de Logixtic®", "PDF Maker Professional ilimitado por módulo", "Automatizaciones ilimitadas por módulo", "4h de capacitación por módulo", "Para 10+ Usuarios", "Soporte Técnico 24/7"] },
-      { id: "setup", name: "Setup Fee", tag: "(Pago Único)", desc: "Implementación profesional y personalizada.", items: ["Onboarding y Configuración inicial de la plataforma", "Personalización de flujos y documentos (según plan)", "Migración básica de datos (clientes, contactos y agentes o proveedores)", "Capacitación completa al equipo", "Implementación, pruebas y puesta en marcha", "Seguridad y roles de usuarios configurados acordes a certificación Basc e ISO 28000", "Acompañamiento en go-live"] },
+      { id: "setup", name: "Implementación · Setup Fee", tag: "Pago único", desc: "Implementación profesional y personalizada.", items: ["Onboarding y Configuración inicial de la plataforma", "Personalización de flujos y documentos (según plan)", "Migración básica de datos (clientes, contactos y agentes o proveedores)", "Capacitación completa al equipo", "Implementación, pruebas y puesta en marcha", "Seguridad y roles de usuarios configurados acordes a certificación Basc e ISO 28000", "Acompañamiento en go-live"] },
     ] as Plan[],
   },
   en: {
@@ -39,7 +39,7 @@ const copy = {
     plans: [
       { id: "standard", name: "Standard", desc: "Ideal for agents starting their digital transformation.", items: ["All Logixtic® features included", "PDF Maker Basic (Quotes module)", "Basic automations (Operations module)", "2h of training per module", "From 3 up to 9 users", "24/7 technical support"] },
       { id: "enterprise", name: "Enterprise", badge: "Save up to 15%", featured: true, desc: "Perfect for growing and expanding agents.", items: ["All Logixtic® features included", "Unlimited PDF Maker Professional per module", "Unlimited automations per module", "4h of training per module", "For 10+ users", "24/7 technical support"] },
-      { id: "setup", name: "Setup Fee", tag: "(One-time payment)", desc: "Professional, customized implementation.", items: ["Onboarding and initial platform configuration", "Customization of workflows and documents (per plan)", "Basic data migration (customers, contacts and agents or suppliers)", "Full team training", "Implementation, testing and go-live", "User security and roles configured according to BASC and ISO 28000 certification", "Go-live support"] },
+      { id: "setup", name: "Implementation · Setup Fee", tag: "One-time payment", desc: "Professional, customized implementation.", items: ["Onboarding and initial platform configuration", "Customization of workflows and documents (per plan)", "Basic data migration (customers, contacts and agents or suppliers)", "Full team training", "Implementation, testing and go-live", "User security and roles configured according to BASC and ISO 28000 certification", "Go-live support"] },
     ] as Plan[],
   },
   pt: {
@@ -53,7 +53,7 @@ const copy = {
     plans: [
       { id: "standard", name: "Standard", desc: "Ideal para agentes que estão iniciando sua transformação digital.", items: ["Todas as funcionalidades completas do Logixtic®", "PDF Maker Basic (Módulo Cotações)", "Automações básicas (Módulo Operações)", "2h de treinamento por módulo", "De 3 até 9 usuários", "Suporte técnico 24/7"] },
       { id: "enterprise", name: "Enterprise", badge: "Economize até 15%", featured: true, desc: "Perfeito para agentes em crescimento e expansão.", items: ["Todas as funcionalidades completas do Logixtic®", "PDF Maker Professional ilimitado por módulo", "Automações ilimitadas por módulo", "4h de treinamento por módulo", "Para 10+ usuários", "Suporte técnico 24/7"] },
-      { id: "setup", name: "Setup Fee", tag: "(Pagamento único)", desc: "Implementação profissional e personalizada.", items: ["Onboarding e configuração inicial da plataforma", "Personalização de fluxos e documentos (conforme o plano)", "Migração básica de dados (clientes, contatos e agentes ou fornecedores)", "Treinamento completo da equipe", "Implementação, testes e entrada em operação", "Segurança e perfis de usuários configurados de acordo com a certificação BASC e ISO 28000", "Acompanhamento no go-live"] },
+      { id: "setup", name: "Implementação · Setup Fee", tag: "Pagamento único", desc: "Implementação profissional e personalizada.", items: ["Onboarding e configuração inicial da plataforma", "Personalização de fluxos e documentos (conforme o plano)", "Migração básica de dados (clientes, contatos e agentes ou fornecedores)", "Treinamento completo da equipe", "Implementação, testes e entrada em operação", "Segurança e perfis de usuários configurados de acordo com a certificação BASC e ISO 28000", "Acompanhamento no go-live"] },
     ] as Plan[],
   },
 };

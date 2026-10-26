@@ -1253,7 +1253,7 @@ body {
 }
 .plans-card[data-featured="true"] .plans-icon { color: var(--plans-action); }
 .plans-name { color: var(--plans-text); }
-.plans-tag { margin-left: 6px; font-size: 14px; font-weight: 500; color: var(--plans-description); }
+.plans-tag { display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--plans-outline); font-size: 12px !important; vertical-align: middle; } .plans-tag-x { margin-left: 6px; font-size: 14px; font-weight: 500; color: var(--plans-description); }
 .plans-badge {
   display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 999px;
   font-size: 12px; font-weight: 700; color: var(--plans-action-text);
