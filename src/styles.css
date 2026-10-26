@@ -1222,6 +1222,18 @@ body {
   color: var(--plans-text);
   transition: transform 250ms ease;
 }
+.plans-card[data-plan="custom"] { --plans-start: oklch(from #1E5A66 l c h); --plans-end: oklch(from #163E4C l c h); }
+.plans-sub { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--plans-outline); }
+.plans-note { margin-top: 14px; font-size: 12px; line-height: 1.5; color: var(--plans-description); opacity: .85; }
+.plans-check-icon { border-width: 1px; color: var(--plans-outline); }
+.plans-setup { display: grid; gap: 18px; }
+.plans-setup .plans-list { margin-top: 0; }
+.plans-setup-main { display: flex; flex-direction: column; }
+.plans-setup-main .plans-cta { margin-top: 18px; }
+@media (min-width: 768px) {
+  .plans-setup { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 28px; align-items: center; }
+  .plans-setup .plans-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+}
 .plans-card[data-plan="setup"] { --plans-start: var(--plans-setup-start); --plans-end: var(--plans-setup-end); }
 .plans-card::before { content: none; }
 .plans-card[data-featured="true"] {
