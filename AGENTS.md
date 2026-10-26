@@ -14,3 +14,4 @@
 - Scope client-logo sizing to stable data-logo identifiers in the reel CSS; preserve official asset files so presentation adjustments never alter brands.
 - In the footer compliance badge list, ISO 28000 shows the user-supplied seal image under its own label, with a screen-reader-only clarification that it is a standard reference and not a certification mark.
 - Scope plan-card variants through stable data-plan identifiers and local semantic CSS tokens so presentation changes preserve translated content and destinations.
+- Use the uploaded transparent official logo in the closing and unframed, wrapping compliance images in the footer; preserve source files so brand artwork remains intact.
