@@ -1,6 +1,6 @@
 import { DemoButton } from "@/components/site/DemoButton";
 import { useLanguage } from "@/lib/i18n";
-import globeAsset from "@/assets/closing-globe.webp.asset.json";
+import logoAsset from "@/assets/logixtic-closing-official.png.asset.json";
 
 export function Closing() {
   const { content } = useLanguage();
@@ -17,7 +17,7 @@ export function Closing() {
             <DemoButton sectionId="cierre" size="lg" />
           </div>
         </div>
-        <img className="closing-globe" src={globeAsset.url} alt="" width={680} height={388} loading="lazy" aria-hidden="true" />
+        <img className="closing-logo" src={logoAsset.url} alt="Logixtic — Simplify Your Logistics" width={1920} height={610} loading="lazy" />
       </div>
     </section>
   );
