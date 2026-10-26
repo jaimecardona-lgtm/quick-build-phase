@@ -36,7 +36,7 @@
 
 # Cierre y Operación LATAM
 
-- [ ] Actualizar descripción del Hero ES/EN/PT, sustituir globo por logo transparente y retirar recuadros individuales de los sellos; verificar escritorio y móvil.
+- [x] Actualizar descripción del Hero ES/EN/PT, sustituir globo por logo transparente y retirar recuadros individuales de los sellos; verificado en 1440/1024/768/390/360 sin superposiciones ni desbordamientos.
 
 - [x] Acercar globo y texto en proporción 60/40, sin cambiar títulos ni CTA.
 - [x] Reemplazar OEA y BASC borrosos; presentar ISO 28000 como referencia textual y conservar Paperless/Zero Waste.
