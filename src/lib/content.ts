@@ -26,6 +26,11 @@ export const hero = {
   title: ["No necesitas otro software.", "Necesitas un sistema operativo impulsado con IA."],
   body: "Logixtic® conecta tu gestión comercial, operativa y financiera en un solo lugar, automatizando procesos y manteniendo el control de cada operación.",
   secondaryCta: "Conoce la plataforma",
+  panels: {
+    indicators: "Indicadores comerciales y financieros",
+    automation: "Automatización de procesos",
+    docs: "Gestión documental",
+  },
   image: "/assets/01-plataforma-servicios-menu.webp",
   imageAlt:
     "Pantalla real de Logixtic con el menú de servicios de la plataforma de gestión de carga.",
