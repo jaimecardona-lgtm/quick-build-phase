@@ -35,7 +35,7 @@ export function Hero() {
       data-active="true"
       className="hero-shell relative isolate overflow-hidden"
     >
-      <div className="hero-content relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-8">
+      <div className="hero-content relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-2 lg:gap-8">
         <div className="hero-copy flex flex-col items-start text-left">
           <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
             {hero.eyebrow}
