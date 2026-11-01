@@ -3,6 +3,8 @@ import { successCopy } from "@/lib/whatsapp";
 import { TestimonialStage } from "@/components/experience/TestimonialStage";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 
 // Tren en tránsito de fondo: continuidad de la operación detrás del reproductor.
 const SUCCESS_CLIPS = [CINEMATIC_CLIPS.rail];
@@ -16,7 +18,11 @@ export function SuccessStories() {
 
   return (
     <section id="transformacion" aria-labelledby="casos-title" className="success-shell amb bgseq-host">
-      <CinematicBackgroundSequence clips={SUCCESS_CLIPS} className="bgseq-veil-strong" />
+      {FORWARDERS_V2 ? (
+        <DataNetworkLayer variant="network" />
+      ) : (
+        <CinematicBackgroundSequence clips={SUCCESS_CLIPS} className="bgseq-veil-strong" />
+      )}
       <div className="mx-auto max-w-[1150px] px-5 text-center md:px-8">
         <div data-reveal className="reveal-item">
           <p className="section-kicker">{t.kicker}</p>

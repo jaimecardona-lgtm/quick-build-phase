@@ -5,10 +5,17 @@ import { track } from "@/lib/analytics";
 import { DemoButton } from "@/components/site/DemoButton";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { SCENE_SECTIONS, imageSceneFor, videoClipsFor } from "@/lib/visual-scenes";
+import { SceneStill } from "@/components/experience/SceneStill";
+import { FlowTransform } from "@/components/experience/FlowTransform";
 import { DigitalTraceOverlay } from "@/components/experience/DigitalTraceOverlay";
 
 // Operación física (terminal de contenedores) -> registro digital (escaneo) -> control en Logixtic.
-const FLOW_CLIPS = [CINEMATIC_CLIPS.container_operations, CINEMATIC_CLIPS.scan];
+const FLOW_CLIPS = FORWARDERS_V2
+  ? videoClipsFor(SCENE_SECTIONS.flow)
+  : [CINEMATIC_CLIPS.container_operations, CINEMATIC_CLIPS.scan];
+const flowStill = FORWARDERS_V2 ? imageSceneFor(SCENE_SECTIONS.flow) : undefined;
 
 const copy = {
   es: {
@@ -134,12 +141,15 @@ export function Flow() {
       onMouseLeave={() => { setHovering(false); setManual(false); }}
     >
       <CinematicBackgroundSequence clips={FLOW_CLIPS} />
+      {flowStill ? <SceneStill scene={flowStill} className="scene-still-overlay" /> : null}
       <DigitalTraceOverlay />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-4xl">
           <h2 id="plataforma-title" className="section-title-dark">{t.title}</h2>
           <p className="section-lead-dark mt-4 font-semibold !text-skybrand">{t.body}</p>
         </div>
+
+        {FORWARDERS_V2 ? <FlowTransform /> : null}
 
         <div className="flow2-layout mt-10">
           <div className="flow2-media" onMouseEnter={() => setHovering(true)}>

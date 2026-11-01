@@ -1,0 +1,81 @@
+/* Sección "Por qué elegirnos" (WhyChooseUs.tsx, variante V2). Alcance .wcu-*. */
+
+.wcu {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 96px 0;
+  background: linear-gradient(180deg, var(--color-night), color-mix(in oklab, var(--color-royal) 14%, var(--color-night)));
+}
+
+.wcu-head {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.wcu-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Conector horizontal detrás de las tarjetas (desktop). */
+.wcu-grid::before {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-skybrand), transparent);
+  opacity: 0.45;
+}
+
+.wcu-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 160px;
+  padding: 26px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 38%, transparent);
+  background: rgb(15 35 65 / 0.45);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  backdrop-filter: blur(12px) saturate(1.1);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.85);
+  transition: opacity 520ms var(--ease-standard), transform 520ms var(--ease-enter);
+}
+
+.wcu-card:hover {
+  border-color: var(--color-skybrand);
+}
+
+.wcu-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--color-royal) 30%, transparent);
+  color: var(--color-skybrand);
+}
+
+.wcu-card h3 {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .wcu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wcu-grid::before {
+    display: none;
+  }
+}

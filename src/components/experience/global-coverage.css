@@ -165,3 +165,39 @@
     margin-top: 40px;
   }
 }
+
+/* V2: órbitas multimodales alrededor del globo (GlobalCoverage.tsx). Solo SVG; el globo sigue siendo el centro. */
+.gc-orbits {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.gc-orbit-line {
+  fill: none;
+  stroke: var(--color-skybrand);
+  stroke-opacity: 0.42;
+  stroke-width: 1.2;
+  stroke-dasharray: 3 9;
+}
+
+.gc-orbit-line-b {
+  stroke-opacity: 0.3;
+}
+
+.gc-orbit-icon {
+  fill: var(--color-amber);
+  opacity: 0.95;
+}
+
+.gc-orbit-icon-ship {
+  fill: var(--color-skybrand);
+}
+
+.gc-orbit-icon-truck {
+  fill: var(--color-on-dark);
+  opacity: 0.8;
+}

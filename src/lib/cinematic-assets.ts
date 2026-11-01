@@ -8,6 +8,9 @@ import globePlate from "@/assets/closing-globe.webp.asset.json";
 // Activa el sistema visual cinematográfico (hero, trazabilidad, cobertura global, luces). Ver .env.development.
 export const CINEMATIC_ENABLED = import.meta.env["VITE_LOGIXTIC_MOTION_V2"] === "true";
 
+// Variante Motion Forwarders V2 (comprador freight forwarder, sin personas en los planos). Solo con `--mode forwarders-v2`.
+export const FORWARDERS_V2 = import.meta.env["VITE_LOGIXTIC_VARIANT"] === "forwarders-v2";
+
 export const CINEMATIC_PLATES = {
   // Capítulo A: fotografía de puerto nocturno (provisional, procedencia pendiente).
   port: { src: portPlate.url, width: 1672, height: 941 },

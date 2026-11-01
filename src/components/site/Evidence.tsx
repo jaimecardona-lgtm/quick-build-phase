@@ -3,7 +3,8 @@ import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import { LogisticsRoutes } from "@/components/experience/LogisticsRoutes";
 import { GlobalCoverage } from "@/components/experience/GlobalCoverage";
-import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
+import { CINEMATIC_ENABLED, FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { SCENE_SECTIONS, videoClipsFor } from "@/lib/visual-scenes";
 import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
 import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
 import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
@@ -113,7 +114,10 @@ export function Evidence() {
 
   return (
     <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid amb bgseq-host">
-      <CinematicBackgroundSequence clips={EVIDENCE_CLIPS} className="bgseq-veil-strong" />
+      <CinematicBackgroundSequence
+        clips={FORWARDERS_V2 ? videoClipsFor(SCENE_SECTIONS.evidence) : EVIDENCE_CLIPS}
+        className="bgseq-veil-strong"
+      />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="ev3-main">
           <div data-reveal className="reveal-item ev3-content">

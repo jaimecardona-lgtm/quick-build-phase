@@ -1,6 +1,8 @@
 import { useLanguage, type Locale } from "@/lib/i18n";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { SCENE_SECTIONS, videoClipsFor } from "@/lib/visual-scenes";
 import "@/components/experience/multimodal.css";
 
 /*
@@ -39,7 +41,9 @@ const COPY = {
 
 // Secuencia de fondo: marítimo → ferroviario. El aéreo (avion.mp4) se excluye del fondo hasta revisar la marca
 // visible del carguero; el terrestre (camion.mp4) es vertical (9:16) y no se recorta a 16:9.
-const BACKGROUND_CLIPS = [CINEMATIC_CLIPS.sea, CINEMATIC_CLIPS.rail];
+const BACKGROUND_CLIPS = FORWARDERS_V2
+  ? videoClipsFor(SCENE_SECTIONS.tracking)
+  : [CINEMATIC_CLIPS.sea, CINEMATIC_CLIPS.rail];
 
 const SHIPMENTS = [
   {

@@ -5,9 +5,12 @@ import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 
 // Línea de expansión: el tren como metáfora de crecimiento por etapas.
 const PLANS_CLIPS = [CINEMATIC_CLIPS.rail];
+// V2: plataforma en perspectiva como fondo ambiental (interfaz conceptual rotulada DEMO).
 
 type Plan = { id: string; name: string; tag?: string; badge?: string; desc: string; items: string[]; featured?: boolean };
 type PlanIcon = typeof Layers;
@@ -114,7 +117,11 @@ export function Plans() {
   );
   return (
     <section id="planes" aria-labelledby="planes-title" className="section-shell surface-deep amb bgseq-host">
-      <CinematicBackgroundSequence clips={PLANS_CLIPS} className="bgseq-veil-strong" />
+      {FORWARDERS_V2 ? (
+        <DataNetworkLayer variant="rails" />
+      ) : (
+        <CinematicBackgroundSequence clips={PLANS_CLIPS} className="bgseq-veil-strong" />
+      )}
       <div className="mx-auto max-w-[1180px] px-5 md:px-8">
         <div data-reveal className="reveal-item mx-auto max-w-3xl text-center">
           <h2 id="planes-title" className="section-title-dark">

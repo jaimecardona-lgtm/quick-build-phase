@@ -1,12 +1,15 @@
 import { Plus } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 
 export function Faq() {
   const { content } = useLanguage();
   const { faqs, ui } = content;
   return (
     <section id="faq" aria-labelledby="faq-title" className="section-shell surface-mid amb">
+      {FORWARDERS_V2 ? <DataNetworkLayer variant="network" /> : null}
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
           <p className="section-kicker">{ui.faqKicker}</p>

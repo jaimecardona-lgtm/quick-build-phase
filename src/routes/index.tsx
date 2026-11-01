@@ -19,7 +19,8 @@ import { MultimodalTracking } from "@/components/experience/MultimodalTracking";
 import { CinematicHero } from "@/components/experience/CinematicHero";
 import "@/components/experience/home-cinematic.css";
 import "@/components/experience/scene-ambient.css";
-import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
+import { CINEMATIC_ENABLED, FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { WhyChooseUs } from "@/components/experience/WhyChooseUs";
 import { faqs } from "@/lib/content";
 import { useLanguage } from "@/lib/i18n";
 
@@ -101,6 +102,7 @@ function Index() {
         <SuccessStories />
         <Flow />
         <LogixAI />
+        {FORWARDERS_V2 ? <WhyChooseUs /> : null}
         <Evidence />
         <Implementation />
         <Plans />

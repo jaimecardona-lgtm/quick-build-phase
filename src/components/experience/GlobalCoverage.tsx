@@ -1,4 +1,5 @@
 import globeAsset from "@/assets/closing-globe.webp.asset.json";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
 import "@/components/experience/global-coverage.css";
 
 /*
@@ -23,6 +24,35 @@ const NODES = [
   [330, 300],
 ] as const;
 
+/*
+ * V2: aviones, camiones y barcos en órbita alrededor del globo (motion SVG, sin video).
+ * Los videos de avión tienen marcas visibles o derechos sin verificar, y escaneo.mp4 muestra a una persona.
+ * Órbitas: elipses centradas en el globo (340, 194). Los iconos siguen la elipse con animateMotion.
+ */
+const ORBIT_A = "M40 194 A300 110 0 1 0 640 194 A300 110 0 1 0 40 194";
+const ORBIT_B = "M110 194 A230 160 0 1 1 570 194 A230 160 0 1 1 110 194";
+
+function OrbitTraffic() {
+  return (
+    <svg className="gc-orbits" viewBox="0 0 680 388" focusable="false">
+      <path d={ORBIT_A} className="gc-orbit-line" />
+      <path d={ORBIT_B} className="gc-orbit-line gc-orbit-line-b" />
+      <g className="gc-orbit-icon">
+        <g transform="scale(2.6)"><path d="M0 -6 L1 -1 L6 1 L6 2.5 L1 1.5 L1 4.5 L3 6 L3 7 L0 6.2 L-3 7 L-3 6 L-1 4.5 L-1 1.5 L-6 2.5 L-6 1 L-1 -1 Z" /></g>
+        <animateMotion dur="16s" repeatCount="indefinite" path={ORBIT_A} />
+      </g>
+      <g className="gc-orbit-icon gc-orbit-icon-ship">
+        <g transform="scale(2.6)"><path d="M-6 0 L6 0 L4 4 L-4 4 Z M-2 -4 L2 -4 L2 0 L-2 0 Z" /></g>
+        <animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ORBIT_A} />
+      </g>
+      <g className="gc-orbit-icon gc-orbit-icon-truck">
+        <g transform="scale(2.6)"><rect x="-6" y="-4" width="8" height="6" rx="1" /><rect x="2" y="-2" width="4" height="4" rx="1" /></g>
+        <animateMotion dur="24s" repeatCount="indefinite" path={ORBIT_B} />
+      </g>
+    </svg>
+  );
+}
+
 export function GlobalCoverage() {
   return (
     <div className="gc-band" aria-hidden="true">
@@ -46,6 +76,7 @@ export function GlobalCoverage() {
             />
           ))}
         </svg>
+        {FORWARDERS_V2 ? <OrbitTraffic /> : null}
       </div>
     </div>
   );

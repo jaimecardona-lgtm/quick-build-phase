@@ -1,5 +1,7 @@
 import { TrendingDown, Users, FileSpreadsheet } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { FORWARDERS_V2, PRODUCT_SCREENS } from "@/lib/cinematic-assets";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 
 const icons = [TrendingDown, Users, FileSpreadsheet];
 
@@ -9,6 +11,7 @@ export function OperationalChallenges() {
 
   return (
     <section id="desafios-operativos" aria-labelledby="challenges-title" className="operational-challenges">
+      {FORWARDERS_V2 ? <DataNetworkLayer variant="dispersion" /> : null}
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item challenge-heading">
           <p className="section-kicker">{challenges.kicker}</p>
@@ -26,6 +29,11 @@ export function OperationalChallenges() {
             );
           })}
         </div>
+        {FORWARDERS_V2 ? (
+          <figure className="oc-product" aria-hidden="true">
+            <img src={PRODUCT_SCREENS.overview} alt="" loading="lazy" decoding="async" />
+          </figure>
+        ) : null}
       </div>
     </section>
   );

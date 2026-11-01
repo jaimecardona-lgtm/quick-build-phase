@@ -4,9 +4,14 @@ import { useLanguage } from "@/lib/i18n";
 import { fragmentation } from "@/lib/fragmentation";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { SceneStill } from "@/components/experience/SceneStill";
+import { SCENE_SECTIONS, imageSceneFor } from "@/lib/visual-scenes";
 
-// Trabajo manual disperso (personal) que pasa a registro documental (escaneo): el caos que el software organiza.
-const PROBLEM_CLIPS = [CINEMATIC_CLIPS.workers, CINEMATIC_CLIPS.scan];
+// V2: rutas y operaciones dispersas, sin personas en el plano (personal.mp4 y escaneo.mp4 fuera de V2).
+const PROBLEM_CLIPS = FORWARDERS_V2
+  ? [CINEMATIC_CLIPS.rail]
+  : [CINEMATIC_CLIPS.workers, CINEMATIC_CLIPS.scan];
 
 const icons = [FileSpreadsheet, FileText, Users, ClipboardList, FileBadge, FolderOpen, Route, Receipt];
 // Card i sits in row floor(i/2); left column cards are a half-row higher than right ones.
@@ -17,10 +22,15 @@ export function Problem() {
   const { locale } = useLanguage();
   const t = fragmentation[locale];
   const [active, setActive] = useState<number | null>(null);
+  const problemScene = FORWARDERS_V2 ? imageSceneFor(SCENE_SECTIONS.problem) : undefined;
 
   return (
     <section id="problema" aria-labelledby="problema-title" className="section-shell surface-deep frag bgseq-host">
-      <CinematicBackgroundSequence clips={PROBLEM_CLIPS} stockNotice />
+      {problemScene ? (
+        <SceneStill scene={problemScene} />
+      ) : (
+        <CinematicBackgroundSequence clips={PROBLEM_CLIPS} stockNotice={!FORWARDERS_V2} />
+      )}
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item mx-auto max-w-[1050px] text-center">
           <p className="section-kicker">{t.kicker}</p>

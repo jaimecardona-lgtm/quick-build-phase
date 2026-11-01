@@ -4,13 +4,20 @@ import { CinematicBackgroundSequence } from "@/components/experience/CinematicBa
 import { DemoButton } from "@/components/site/DemoButton";
 import { track } from "@/lib/analytics";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2, PRODUCT_SCREENS } from "@/lib/cinematic-assets";
+import { SCENE_SECTIONS, imageSceneFor, videoClipsFor } from "@/lib/visual-scenes";
+import { SceneStill } from "@/components/experience/SceneStill";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 import { useLanguage } from "@/lib/i18n";
 import { WHATSAPP_URL, whatsappCopy } from "@/lib/whatsapp";
 import "@/components/experience/cinematic.css";
 
 // Hero: operación portuaria real (barco) que se encadena con digitalización (escaneo). Sin tablet ni paneles flotantes.
 // Sin scroll pinning: la sección tiene altura normal y la siguiente llega con el scroll habitual.
-const HERO_CLIPS = [CINEMATIC_CLIPS.sea, CINEMATIC_CLIPS.scan];
+// V2: sin clips con personas (escaneo.mp4 muestra una persona hasta aprobación editorial).
+const HERO_CLIPS = FORWARDERS_V2 ? videoClipsFor(SCENE_SECTIONS.hero) : [CINEMATIC_CLIPS.sea, CINEMATIC_CLIPS.scan];
+// V2: el hero es solo imagen (digitalizacion.jpg), sin video encima.
+const heroStill = FORWARDERS_V2 ? imageSceneFor(SCENE_SECTIONS.hero) : undefined;
 
 export function CinematicHero() {
   const { content, locale } = useLanguage();
@@ -23,10 +30,15 @@ export function CinematicHero() {
       className="cinematic-hero hero-shell relative isolate overflow-x-clip"
     >
       <div className="cin-sticky">
-        <CinematicBackgroundSequence clips={HERO_CLIPS} priority className="cin-plate-port" />
+        {heroStill ? (
+          <SceneStill scene={heroStill} eager className="cin-plate-port" />
+        ) : (
+          <CinematicBackgroundSequence clips={HERO_CLIPS} priority className="cin-plate-port" />
+        )}
         <div className="cin-scrim" aria-hidden="true" />
+        {FORWARDERS_V2 ? <DataNetworkLayer variant="routes" /> : null}
 
-        <div className="relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 pt-28 pb-16 md:px-8 md:pt-32 md:pb-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-10">
           <div className="hero-copy flex max-w-[860px] flex-col items-start text-left">
             <p className="hero-reveal hero-delay-1 font-ui text-[11px] font-semibold tracking-[0.18em] text-skybrand uppercase md:text-xs">
               {hero.eyebrow}
@@ -65,6 +77,15 @@ export function CinematicHero() {
               </Button>
             </div>
           </div>
+
+          {/* Captura real del sistema demo de Logixtic: decorativa, no contenido nuevo. Solo escritorio. */}
+          {FORWARDERS_V2 ? (
+            <figure className="hero-product" aria-hidden="true">
+              <div className="hero-product-frame">
+                <img src={PRODUCT_SCREENS.overview} alt="" decoding="async" />
+              </div>
+            </figure>
+          ) : null}
         </div>
       </div>
     </section>

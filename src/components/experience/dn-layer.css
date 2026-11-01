@@ -1,0 +1,93 @@
+/* Capa de datos DataNetworkLayer.tsx (variante V2). Alcance .dn-*. Solo transform/opacity y dash. */
+
+/* Sección que contiene una capa DataNetworkLayer: contexto de apilamiento propio (sin cambiar sus clases). */
+section:has(> .dn-layer) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* z-index 0 dentro de la sección: por encima del fondo (.bgseq) y por debajo del contenido (z 3 en .amb / .bgseq-host).
+ * Doble clase para ganar a `.home-cinematic .amb > :not(.bgseq)` (scene-ambient.css). */
+.dn-layer.dn-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  color: var(--color-skybrand);
+  opacity: 0.6;
+}
+
+.dn-line,
+.dn-route,
+.dn-rail {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: 0.3;
+  stroke-width: 1;
+  stroke-dasharray: 4 10;
+}
+
+.dn-rail {
+  stroke-opacity: 0.22;
+  stroke-width: 1.4;
+}
+
+.dn-route {
+  stroke-opacity: 0.4;
+  stroke-width: 1.2;
+}
+
+.dn-converge {
+  stroke-opacity: 0.35;
+}
+
+.dn-node,
+.dn-stop {
+  fill: currentColor;
+  opacity: 0.7;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.dn-hub {
+  fill: var(--color-amber);
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dn-line,
+  .dn-route,
+  .dn-rail {
+    animation: dn-flow 9s linear infinite;
+  }
+
+  .dn-node,
+  .dn-stop {
+    animation: dn-pulse 3.6s ease-in-out infinite;
+  }
+
+  .dn-hub {
+    animation: dn-pulse 2.8s ease-in-out infinite;
+  }
+}
+
+@keyframes dn-flow {
+  to {
+    stroke-dashoffset: -140;
+  }
+}
+
+@keyframes dn-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.7);
+  }
+}

@@ -3,7 +3,7 @@
  * Luces autónomas que derivan lentamente sobre cada sección. Solo transform y opacity. El hero queda excluido.
  */
 
-.home-cinematic main > section:not(.cinematic-hero)::after {
+main.home-cinematic > section:not(.cinematic-hero)::after {
   content: "";
   position: absolute;
   inset: -8% -4%;
@@ -19,7 +19,7 @@
   will-change: transform, opacity;
 }
 
-.home-cinematic main > section:not(.cinematic-hero) {
+main.home-cinematic > section:not(.cinematic-hero) {
   position: relative;
   overflow: hidden;
 }
@@ -36,7 +36,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-cinematic main > section:not(.cinematic-hero)::after {
+  main.home-cinematic > section:not(.cinematic-hero)::after {
     animation: none;
   }
 }

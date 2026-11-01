@@ -71,7 +71,7 @@
   overflow: hidden;
 }
 
-.home-cinematic .bgseq-host > :not(.bgseq) {
+.home-cinematic .bgseq-host > :not(.bgseq):not(.scene-still):not(.dn-layer):not(.lx-data-layer) {
   position: relative;
   z-index: 3;
 }

@@ -47,7 +47,7 @@
 }
 
 /* Excluye .bgseq: la secuencia de video es absoluta y debe ocupar la sección completa. */
-.home-cinematic .amb > :not(.bgseq) {
+.home-cinematic .amb > :not(.bgseq):not(.scene-still):not(.dn-layer):not(.lx-data-layer) {
   position: relative;
   z-index: 3;
 }

@@ -13,6 +13,8 @@ import navis from "@/assets/client-logos/navis.png.asset.json";
 import globalFreight from "@/assets/client-logos/global-freight.png.asset.json";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
 
 // Terminal desenfocada de fondo: ambiente de escala; los logos conservan el protagonismo.
 const CLIENTS_CLIPS = [CINEMATIC_CLIPS.container_operations];
@@ -38,7 +40,11 @@ export function ClientsReel() {
 
   return (
     <section aria-labelledby="clientes-reel-title" className="clients-reel-section bg-night amb bgseq-host">
-      <CinematicBackgroundSequence clips={CLIENTS_CLIPS} className="bgseq-veil-strong" />
+      {FORWARDERS_V2 ? (
+        <DataNetworkLayer variant="network" />
+      ) : (
+        <CinematicBackgroundSequence clips={CLIENTS_CLIPS} className="bgseq-veil-strong" />
+      )}
       <div className="mx-auto max-w-[1100px] px-5 text-center md:px-8">
         <h2 id="clientes-reel-title" className="section-title-dark mx-auto">{ui.clientsTitle}</h2>
         <p className="section-lead-dark mx-auto mt-5 max-w-[1100px]">{ui.clientsBody}</p>
