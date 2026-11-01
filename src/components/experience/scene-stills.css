@@ -82,3 +82,38 @@
   transform: rotateX(5deg);
   transform-origin: 50% 100%;
 }
+
+/* Imagen de fondo de sección (V2): fondo recortado con velo azul corporativo para legibilidad.
+ * No compite con el video ni con las tarjetas: el velo es más denso donde está el texto. */
+.scene-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.scene-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(15 35 65 / 0.82), rgb(15 35 65 / 0.94));
+}
+
+/* Casos de éxito: póster de carga real (sin logo de marca en el encuadre). */
+.scene-photo-cargo {
+  background-image: url("/media/img/bg/logixtic_cargo_post_sin_logo.webp");
+  background-position: 60% 35%;
+}
+
+/* Dispersa: encuadre del portátil (zona sin texto de la pieza). */
+.scene-photo-carrusel {
+  background-image: url("/media/img/bg/logixtic_carrusel_2.webp");
+  background-size: 190% auto;
+  background-position: 100% 62%;
+}
+
+.scene-photo-carrusel::after {
+  background: linear-gradient(180deg, rgb(15 35 65 / 0.9), rgb(15 35 65 / 0.96));
+}

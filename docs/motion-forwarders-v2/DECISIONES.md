@@ -115,3 +115,11 @@ Captura real del producto: `public/assets/01-plataforma-servicios-menu.webp` (m�
 - avion1: la marca Delta es visible en el fotograma. Derechos sin verificar. No se presenta como socio.
 - personal y escaneo: muestran personas. El uso en estas secciones lo autoriza el encargo, pero la procedencia (si son actores de stock) no está verificada; se mantiene el aviso de stock.
 - aplicacion web.jpg: pendiente de decisión.
+
+## Ajustes finales (V15)
+
+- **Casos de éxito:** `logixtic_cargo_post_sin_logo.png` como fondo de sección (derivado `public/media/img/bg/logixtic_cargo_post_sin_logo.webp`, 1088 px), con velo azul corporativo 0.82–0.94. El video testimonial no cambia.
+- **Hero:** se eliminó la captura flotante del sistema (`.hero-product`). El layout y el fondo digitalizacion.jpg no cambian. El copy no cambia.
+- **"La información dispersa…":** `logixtic_carrusel_2.jpg.jpeg` como fondo (derivado `public/media/img/bg/logixtic_carrusel_2.webp`, 928 px), recortado al área del portátil (`background-size: 190%`, `background-position: 100% 62%`) con velo 0.90–0.96. Las tres tarjetas se mantienen legibles.
+- **Riesgo:** la pieza original trae un titular ("El tiempo se pierde en tareas que se repiten") y etiquetas de tarjetas. El recorte y el velo los ocultan, pero no se eliminan del archivo. Sin embargo, no los presento como copy.
+- **Alcance:** los tres cambios solo aplican en la variante `forwarders-v2`; 8081 no cambia.

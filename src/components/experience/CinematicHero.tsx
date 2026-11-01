@@ -4,7 +4,7 @@ import { CinematicBackgroundSequence } from "@/components/experience/CinematicBa
 import { DemoButton } from "@/components/site/DemoButton";
 import { track } from "@/lib/analytics";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
-import { FORWARDERS_V2, PRODUCT_SCREENS } from "@/lib/cinematic-assets";
+import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
 import { SCENE_SECTIONS, imageSceneFor, videoClipsFor } from "@/lib/visual-scenes";
 import { SceneStill } from "@/components/experience/SceneStill";
 import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
@@ -79,13 +79,6 @@ export function CinematicHero() {
           </div>
 
           {/* Captura real del sistema demo de Logixtic: decorativa, no contenido nuevo. Solo escritorio. */}
-          {FORWARDERS_V2 ? (
-            <figure className="hero-product" aria-hidden="true">
-              <div className="hero-product-frame">
-                <img src={PRODUCT_SCREENS.overview} alt="" decoding="async" />
-              </div>
-            </figure>
-          ) : null}
         </div>
       </div>
     </section>

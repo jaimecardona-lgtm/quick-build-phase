@@ -18,6 +18,7 @@ export function SuccessStories() {
 
   return (
     <section id="transformacion" aria-labelledby="casos-title" className="success-shell amb bgseq-host">
+      {FORWARDERS_V2 ? <div className="scene-photo scene-photo-cargo" aria-hidden="true" /> : null}
       {FORWARDERS_V2 ? (
         <DataNetworkLayer variant="network" />
       ) : (

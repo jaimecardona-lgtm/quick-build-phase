@@ -11,6 +11,7 @@ export function OperationalChallenges() {
 
   return (
     <section id="desafios-operativos" aria-labelledby="challenges-title" className="operational-challenges">
+      {FORWARDERS_V2 ? <div className="scene-photo scene-photo-carrusel" aria-hidden="true" /> : null}
       {FORWARDERS_V2 ? <DataNetworkLayer variant="dispersion" /> : null}
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item challenge-heading">
