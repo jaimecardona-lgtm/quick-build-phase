@@ -6,7 +6,7 @@ export function Faq() {
   const { content } = useLanguage();
   const { faqs, ui } = content;
   return (
-    <section id="faq" aria-labelledby="faq-title" className="section-shell surface-mid">
+    <section id="faq" aria-labelledby="faq-title" className="section-shell surface-mid amb">
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-3xl">
           <p className="section-kicker">{ui.faqKicker}</p>

@@ -1,0 +1,68 @@
+/*
+ * Atmósfera tecnológica para secciones sin vídeo (clase .amb). Rejilla técnica, resplandor y deriva lenta.
+ * Solo transform/opacity en la animación. El contenido queda por encima (z 3).
+ */
+
+.home-cinematic .amb {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.home-cinematic .amb::before {
+  content: "";
+  position: absolute;
+  inset: -12% -6%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--color-skybrand) 8%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-skybrand) 8%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000, transparent 80%);
+  animation: amb-drift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.home-cinematic .amb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 50% at 80% 0%,
+    color-mix(in oklab, var(--color-royal) 22%, transparent),
+    transparent 70%
+  );
+  opacity: 0.8;
+}
+
+/* Excluye .bgseq: la secuencia de video es absoluta y debe ocupar la sección completa. */
+.home-cinematic .amb > :not(.bgseq) {
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes amb-drift {
+  from {
+    transform: translate3d(-1.5%, 0, 0);
+  }
+  to {
+    transform: translate3d(1.5%, -1%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cinematic .amb::before {
+    animation: none;
+  }
+}

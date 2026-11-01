@@ -1,12 +1,18 @@
 import { DemoButton } from "@/components/site/DemoButton";
 import { useLanguage } from "@/lib/i18n";
 import logoAsset from "@/assets/logixtic-closing-official.png.asset.json";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+
+// Cierre: el puerto de noche vuelve a enmarcar la invitación a la demo.
+const CLOSING_CLIPS = [CINEMATIC_CLIPS.sea];
 
 export function Closing() {
   const { content } = useLanguage();
   const { closing } = content;
   return (
-    <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden">
+    <section id="demo" aria-labelledby="demo-title" className="closing-shell relative isolate overflow-hidden amb bgseq-host">
+      <CinematicBackgroundSequence clips={CLOSING_CLIPS} className="bgseq-veil-strong" />
       <div data-reveal className="reveal-item closing-grid relative z-10 mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="closing-copy">
           <h2 id="demo-title" className="section-title-dark">

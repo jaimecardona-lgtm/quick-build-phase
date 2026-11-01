@@ -1,0 +1,83 @@
+/*
+ * Fondos audiovisuales secuenciales (CinematicBackgroundSequence.tsx). Alcance .bgseq.
+ * Poster como respaldo debajo; los clips aparecen con crossfade (opacity). Velo azul noche encima.
+ */
+
+.bgseq {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-night);
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.bgseq-poster,
+.bgseq-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bgseq-poster {
+  z-index: 0;
+}
+
+.bgseq-video {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.bgseq-video[data-active="true"][data-ready="true"] {
+  opacity: 1;
+}
+
+.bgseq-video[data-failed="true"] {
+  display: none;
+}
+
+/* Velo azul noche: unifica el color y mantiene el texto legible. */
+.bgseq-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgb(0 24 59 / 0.38), rgb(0 24 59 / 0.72));
+}
+
+/* Variante para secciones con texto o tarjetas directamente sobre el fondo (clientes, planes, casos). */
+.bgseq-veil-strong .bgseq-scrim {
+  background: linear-gradient(180deg, rgb(0 24 59 / 0.72), rgb(0 24 59 / 0.9));
+}
+
+.bgseq-notice {
+  position: absolute;
+  z-index: 3;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  color: var(--color-on-dark);
+  font: 600 11px/1.3 var(--font-ui);
+  background: linear-gradient(to top, rgb(0 24 59 / 0.9), rgb(0 24 59 / 0));
+  padding-top: 16px;
+}
+
+/* Sección anfitriona: el contenido queda sobre el fondo. */
+.home-cinematic .bgseq-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.home-cinematic .bgseq-host > :not(.bgseq) {
+  position: relative;
+  z-index: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgseq-video {
+    display: none;
+  }
+}

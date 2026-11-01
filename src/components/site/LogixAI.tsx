@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import "@/components/experience/logix-motion.css";
 import {
   ArrowRight, BarChart3, ChevronRight, ClipboardCheck, FileText, MonitorSmartphone, Pause, PieChart, Play,
   Settings, Settings2, UserRound, UserRoundSearch, UsersRound,
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
+import { LogixDataLayer } from "@/components/experience/LogixDataLayer";
 
 const moduleIcons = [UsersRound, UserRoundSearch, Settings2, FileText, ClipboardCheck, MonitorSmartphone];
 const copilotIcons = [BarChart3, FileText, Settings, PieChart];
@@ -127,7 +129,8 @@ export function LogixAI() {
   const progress = reduced ? 0 : Math.min(elapsed / STEP_MS, 1);
 
   return (
-    <section ref={ref} id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid">
+    <section ref={ref} id="logix-ai" aria-labelledby="logix-title" className="section-shell surface-mid amb lx-stage">
+      <LogixDataLayer />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item lx4-head">
           <p className="section-kicker">{t.kicker}</p>

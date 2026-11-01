@@ -1,0 +1,151 @@
+/*
+ * Personaje Logix en la sección de IA (LogixAI.tsx): movimiento autónomo de copiloto.
+ * Solo transform y opacity. Alcance .lx4-avatar.
+ */
+
+.lx4-avatar {
+  position: relative;
+  isolation: isolate;
+}
+
+.lx4-avatar::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-skybrand) 42%, transparent),
+    transparent 70%
+  );
+  filter: blur(14px);
+  animation: lx-halo 5.5s ease-in-out infinite;
+}
+
+.lx4-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  z-index: -1;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--color-amber) 40%, transparent);
+  animation: lx-ring 4s ease-out infinite;
+}
+
+.lx4-avatar img {
+  animation: lx-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes lx-halo {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes lx-ring {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes lx-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx4-avatar::before,
+  .lx4-avatar::after,
+  .lx4-avatar img {
+    animation: none;
+  }
+}
+
+/* Capa de datos de fondo (LogixDataLayer.tsx): nodos, conexiones y paquetes. Alcance .lx-*. */
+.lx-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Doble clase: supera a `.home-cinematic .amb > *` (scene-ambient.css), que pone position: relative a los hijos. */
+.lx-stage > .lx-data-layer.lx-data-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--color-skybrand);
+  opacity: 0.85;
+}
+
+.lx-data-line {
+  stroke: currentColor;
+  stroke-opacity: 0.45;
+  stroke-width: 1;
+  stroke-dasharray: 4 10;
+}
+
+.lx-node {
+  fill: currentColor;
+  opacity: 0.7;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.lx-packet {
+  fill: var(--color-amber);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lx-data-line {
+    animation: lx-flow 9s linear infinite;
+  }
+
+  .lx-node {
+    animation: lx-node-pulse 3.6s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-packet {
+    display: none;
+  }
+}
+
+@keyframes lx-flow {
+  to {
+    stroke-dashoffset: -140;
+  }
+}
+
+@keyframes lx-node-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+}

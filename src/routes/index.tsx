@@ -13,10 +13,18 @@ import { Plans } from "@/components/site/Plans";
 import { Faq } from "@/components/site/Faq";
 import { Closing } from "@/components/site/Closing";
 import { Footer } from "@/components/site/Footer";
+import { AgentWidget } from "@/components/experience/AgentWidget";
 import { useReveal } from "@/hooks/use-reveal";
+import { MultimodalTracking } from "@/components/experience/MultimodalTracking";
+import { CinematicHero } from "@/components/experience/CinematicHero";
+import "@/components/experience/home-cinematic.css";
+import "@/components/experience/scene-ambient.css";
+import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
 import { faqs } from "@/lib/content";
 import { useLanguage } from "@/lib/i18n";
 
+// Hero cinematográfico detrás de feature flag. Desactivado por defecto; el Hero original es el fallback.
+const MOTION_HERO_ENABLED = CINEMATIC_ENABLED;
 const title = "Logixtic® | Software para Agentes de Carga Internacional";
 const description =
   "Logixtic® conecta la gestión comercial, operativa, documental y de clientes de los agentes de carga internacional en una sola plataforma, con automatización e inteligencia artificial aplicada a la operación.";
@@ -84,8 +92,9 @@ function Index() {
         {content.ui.skipContent}
       </a>
       <Header />
-      <main id="contenido">
-        <Hero />
+      <main id="contenido" className={MOTION_HERO_ENABLED ? "home-cinematic" : undefined}>
+        {MOTION_HERO_ENABLED ? <CinematicHero /> : <Hero />}
+        {MOTION_HERO_ENABLED ? <MultimodalTracking /> : null}
         <ClientsReel />
         <OperationalChallenges />
         <Problem />
@@ -99,6 +108,7 @@ function Index() {
         <Closing />
       </main>
       <Footer />
+      <AgentWidget />
     </div>
   );
 }

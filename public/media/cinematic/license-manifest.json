@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "updated": "2026-10-31",
+  "status": "no-approved-video-assets",
+  "note": "Ningún video cinematográfico está aprobado todavía. Los planos en uso son imágenes existentes del proyecto, con procedencia pendiente de confirmar.",
+  "assets": [
+    { "path": "/__l5e/assets-v1/a51a4305-6dc6-40e2-9957-e59be2d67461/logixtic-port-hero.webp", "kind": "still", "usage": "hero plate, capítulo A", "owner": "pendiente", "source": "subido al proyecto de Lovable; procedencia no documentada", "license": "pendiente", "status": "in-use-provisional" },
+    { "path": "/__l5e/assets-v1/ca993a04-3b50-4e70-a3fc-d69804c2a8fb/closing-globe-v2.webp", "kind": "still", "usage": "globo de red, capítulo B", "owner": "pendiente", "source": "subido al proyecto de Lovable", "license": "pendiente", "status": "in-use-provisional" },
+    { "path": "/assets/01-plataforma-servicios-menu.webp", "kind": "product-screenshot", "usage": "pantalla real de Logixtic, capítulo D/E", "owner": "Logixtic", "source": "captura del producto", "license": "propia (confirmar)", "status": "approved-by-site" },
+    { "path": "/assets/06-costos-operacion.webp", "kind": "product-screenshot", "usage": "pantalla real de Logixtic, capítulo E alterno", "owner": "Logixtic", "source": "captura del producto", "license": "propia (confirmar)", "status": "approved-by-site" },
+    { "path": "/media/cinematic/hero-port-1080.mp4", "kind": "video", "status": "missing" },
+    { "path": "/media/cinematic/hero-port-720.mp4", "kind": "video", "status": "missing" },
+    { "path": "/media/cinematic/hero-port-poster.webp", "kind": "poster", "status": "missing" },
+    { "path": "/media/cinematic/cargo-air-1080.mp4", "kind": "video", "status": "missing" },
+    { "path": "/media/cinematic/cargo-air-poster.webp", "kind": "poster", "status": "missing" },
+    { "path": "/media/cinematic/global-network-720.mp4", "kind": "video", "status": "missing" },
+    { "path": "/media/cinematic/global-network-poster.webp", "kind": "poster", "status": "missing" },
+    { "path": "/media/cinematic/tablet-plate.webp", "kind": "plate", "status": "missing" }
+  ]
+}

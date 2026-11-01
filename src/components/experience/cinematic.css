@@ -1,0 +1,142 @@
+/*
+ * Hero cinematográfico (src/components/experience/CinematicHero.tsx).
+ * Alcance: .cinematic-hero. Movimiento solo con transform y opacity.
+ *
+ * - Estático (móvil, tablet, prefers-reduced-motion): plano fotográfico fijo, copy y captura real.
+ * - Animado: deriva lenta del plano (transform) sin scroll pinning.
+ *
+ * overflow-x: clip (no hidden) para no crear un scroll container que rompa position: sticky.
+ */
+
+/* Altura normal de sección: sin track de scroll ni sticky. La siguiente sección llega con el scroll habitual. */
+.cinematic-hero .cin-sticky {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: min(100svh, 920px);
+  overflow: hidden;
+}
+
+/* Deriva lenta del plano (solo transform). Sin movimiento reducido el plano queda fijo. */
+@media (prefers-reduced-motion: no-preference) {
+  .cinematic-hero .cin-plate-port {
+    animation: cin-drift 24s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes cin-drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(-1.2%, -1%, 0);
+  }
+}
+
+/* Planos de fondo a pantalla completa. */
+.cin-plates {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cin-plate-port {
+  position: absolute;
+  inset: -3% 0;
+  width: 100%;
+  height: 106%;
+  object-fit: cover;
+  object-position: 70% 55%;
+  transform-origin: 70% 60%;
+  will-change: transform, opacity;
+}
+
+/* Velo: en escritorio desde la izquierda (copy legible); en móvil desde abajo. */
+.cin-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(0 24 59 / 0.86) 0%,
+      rgb(0 24 59 / 0.5) 42%,
+      rgb(0 24 59 / 0.14) 100%
+    ),
+    linear-gradient(to bottom, rgb(0 24 59 / 0.2), rgb(0 24 59 / 0.75) 85%);
+}
+
+/* El hero usa solo su velo propio: el velo genérico de la secuencia lo apagaría. */
+.cinematic-hero .cin-plate-port .bgseq-scrim {
+  display: none;
+}
+
+/* Columna del dispositivo con perspectiva para la inclinación de la tablet. */
+
+/* Móvil: velo vertical y plano completo; el copy queda legible sobre la parte inferior. */
+@media (max-width: 1023px) {
+  .cinematic-hero .cin-plate-port {
+    height: 100%;
+    inset: 0;
+    object-position: 75% 40%;
+  }
+}
+
+@media (max-width: 640px) {
+}
+
+/* Trazas luminosas aéreas sobre el puerto: rutas de datos, no vehículos. */
+.cin-trails {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cin-trail {
+  fill: none;
+  stroke: var(--color-skybrand);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 5 22;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 5px color-mix(in oklab, var(--color-skybrand) 70%, transparent));
+  animation: cin-trail-flow 6s linear infinite;
+}
+
+.cin-trail-b {
+  stroke: var(--color-amber);
+  animation-duration: 8s;
+  animation-direction: reverse;
+}
+
+.cin-trail-c {
+  animation-duration: 10s;
+}
+
+@keyframes cin-trail-flow {
+  to {
+    stroke-dashoffset: -150;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cin-trail {
+    animation: none;
+  }
+}
+
+/* Vídeo de fondo del hero: ocupa el plano completo y mantiene el encuadre del puerto. */
+.cinematic-hero .cin-plate-port {
+  position: absolute;
+  inset: -3% 0;
+  width: 100%;
+  height: 106%;
+  transform-origin: 70% 60%;
+}
+
+.cinematic-hero .cin-plate-port .bgseq-poster,
+.cinematic-hero .cin-plate-port .bgseq-video {
+  object-position: 70% 55%;
+}

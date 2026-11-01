@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
-import { MAP_H, MAP_W, mapCountries, mapPoints } from "@/lib/americas-map";
+import { LogisticsRoutes } from "@/components/experience/LogisticsRoutes";
+import { GlobalCoverage } from "@/components/experience/GlobalCoverage";
+import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
 import rrLogo from "@/assets/logo-rr-logistics-cfs.png.asset.json";
 import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json";
 import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+
+// Rutas internacionales de fondo: el mapa original y las métricas siguen al frente.
+const EVIDENCE_CLIPS = [CINEMATIC_CLIPS.sea];
 
 const logos = [rrLogo.url, connectaLogo.url, tradeLogo.url];
 
@@ -78,18 +85,7 @@ export function Evidence() {
   const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
   const numLocale = locale.startsWith("pt") ? "pt-BR" : locale.startsWith("en") ? "en-US" : "es-CO";
   const [active, setActive] = useState(0);
-  const [hot, setHot] = useState<string | null>(null);
-  const [mapOn, setMapOn] = useState(false);
-  const mapRef = useRef<HTMLElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-
-  useEffect(() => {
-    const el = mapRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => setMapOn(!!e?.isIntersecting), { threshold: 0.15 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
 
   const cases = evidence.cases.map((c, i) => (i === 0 ? { ...c, result: t.rr } : c));
   const current = cases[active] ?? cases[0];
@@ -116,7 +112,8 @@ export function Evidence() {
   ] as const;
 
   return (
-    <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid">
+    <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid amb bgseq-host">
+      <CinematicBackgroundSequence clips={EVIDENCE_CLIPS} className="bgseq-veil-strong" />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="ev3-main">
           <div data-reveal className="reveal-item ev3-content">
@@ -136,42 +133,19 @@ export function Evidence() {
             </dl>
           </div>
 
-          <figure ref={mapRef} className="ev3-map" data-on={mapOn}>
-            <figcaption className="font-display">{t.presence}</figcaption>
-            <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} role="img" aria-label={ui.mapLabel}>
-              {mapCountries.map((c) => (
-                <path key={c.id} d={c.d} className="ev3-land" data-hl={highlighted.has(c.id)} />
-              ))}
-              {places.map(({ key, side }) => {
-                const [x, y] = mapPoints[key];
-                const label = t.places[key];
-                const w = label.length * 7.4 + 20;
-                const lx = side === "r" ? x + 12 : side === "t" ? x - w / 2 : x - 12 - w;
-                const ly = side === "t" ? y - 26 : y;
-                return (
-                  <g
-                    key={key}
-                    className="ev3-place"
-                    data-hot={hot === key}
-                    tabIndex={0}
-                    role="img"
-                    aria-label={label}
-                    onMouseEnter={() => setHot(key)}
-                    onMouseLeave={() => setHot(null)}
-                    onFocus={() => setHot(key)}
-                    onBlur={() => setHot(null)}
-                    onTouchStart={() => setHot(key)}
-                  >
-                    <circle className="ev3-pulse" cx={x} cy={y} r="6" />
-                    <circle className="ev3-dot" cx={x} cy={y} r="6" />
-                    <rect x={lx} y={ly - 12} width={w} height="24" rx="12" className="ev3-tag" />
-                    <text x={lx + w / 2} y={ly + 4.5} textAnchor="middle">{label}</text>
-                  </g>
-                );
-              })}
-            </svg>
-          </figure>
+          <LogisticsRoutes
+            caption={t.presence}
+            places={places}
+            placeLabels={t.places}
+            highlighted={highlighted}
+            mapLabel={ui.mapLabel}
+            locale={locale}
+          />
         </div>
+
+        {CINEMATIC_ENABLED ? <GlobalCoverage /> : null}
+
+
 
         <div data-reveal className="reveal-item ev3-cases mt-10">
           <div role="tablist" aria-label={ui.successCases} className="ev3-tabs">

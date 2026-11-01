@@ -2,6 +2,11 @@ import { useState } from "react";
 import { Check, FileSpreadsheet, FileText, Users, ClipboardList, FileBadge, FolderOpen, Route, Receipt } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { fragmentation } from "@/lib/fragmentation";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+
+// Trabajo manual disperso (personal) que pasa a registro documental (escaneo): el caos que el software organiza.
+const PROBLEM_CLIPS = [CINEMATIC_CLIPS.workers, CINEMATIC_CLIPS.scan];
 
 const icons = [FileSpreadsheet, FileText, Users, ClipboardList, FileBadge, FolderOpen, Route, Receipt];
 // Card i sits in row floor(i/2); left column cards are a half-row higher than right ones.
@@ -14,7 +19,8 @@ export function Problem() {
   const [active, setActive] = useState<number | null>(null);
 
   return (
-    <section id="problema" aria-labelledby="problema-title" className="section-shell surface-deep frag">
+    <section id="problema" aria-labelledby="problema-title" className="section-shell surface-deep frag bgseq-host">
+      <CinematicBackgroundSequence clips={PROBLEM_CLIPS} stockNotice />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item mx-auto max-w-[1050px] text-center">
           <p className="section-kicker">{t.kicker}</p>

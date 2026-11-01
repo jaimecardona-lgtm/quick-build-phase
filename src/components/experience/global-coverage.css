@@ -1,0 +1,167 @@
+/*
+ * Cobertura global (src/components/experience/GlobalCoverage.tsx).
+ * Bucles autónomos: flotación, halo, anillos y arcos que fluyen. Solo transform, opacity y dashoffset.
+ */
+
+.gc-band {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  margin-top: 56px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      60% 70% at 50% 50%,
+      color-mix(in oklab, var(--color-royal) 28%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--color-night), color-mix(in oklab, var(--color-night) 60%, #000));
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 14%, transparent);
+}
+
+.gc-halo {
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--color-skybrand) 35%, transparent),
+    transparent 70%
+  );
+  filter: blur(20px);
+  animation: gc-breathe 6s ease-in-out infinite;
+}
+
+.gc-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 22%, transparent);
+  animation: gc-spin 40s linear infinite;
+}
+
+.gc-ring-a {
+  width: 74%;
+  aspect-ratio: 1;
+}
+.gc-ring-b {
+  width: 92%;
+  aspect-ratio: 1;
+  border-style: dashed;
+  border-color: color-mix(in oklab, var(--color-amber) 18%, transparent);
+  animation-duration: 60s;
+  animation-direction: reverse;
+}
+
+.gc-globe {
+  position: relative;
+  width: min(92%, 560px);
+  aspect-ratio: 680 / 388;
+  animation: gc-float 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+.gc-globe img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* El WebP no tiene transparencia: la máscara radial funde los bordes con el fondo. */
+  mask-image: radial-gradient(closest-side, #000 64%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 64%, transparent 100%);
+}
+
+.gc-arcs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gc-arc {
+  fill: none;
+  stroke: var(--color-amber);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 3 12;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 5px color-mix(in oklab, var(--color-amber) 70%, transparent));
+  animation: gc-flow 4.2s linear infinite;
+}
+
+.gc-node {
+  fill: var(--color-amber);
+  filter: drop-shadow(0 0 6px var(--color-amber));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gc-pulse 2.8s ease-out infinite;
+}
+
+@keyframes gc-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes gc-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes gc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gc-flow {
+  to {
+    stroke-dashoffset: -60;
+  }
+}
+
+@keyframes gc-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-halo,
+  .gc-ring,
+  .gc-globe,
+  .gc-arc,
+  .gc-node {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .gc-band {
+    min-height: 300px;
+    margin-top: 40px;
+  }
+}

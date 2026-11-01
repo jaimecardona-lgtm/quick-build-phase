@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ClipboardList, GraduationCap, Rocket, ShieldCheck, SlidersHorizontal, UsersRound } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+
+// Acompañamiento humano en la puesta en marcha: personal de operación con el sistema.
+const IMPLEMENTATION_CLIPS = [CINEMATIC_CLIPS.workers];
 
 const stepIcons = [ClipboardList, SlidersHorizontal, GraduationCap, ShieldCheck, Rocket, UsersRound];
 const INTERVAL = 5000;
@@ -116,12 +121,13 @@ export function Implementation() {
       ref={ref}
       id="implementacion"
       aria-labelledby="implementacion-title"
-      className="section-shell surface-deep im2"
+      className="section-shell surface-deep im2 bgseq-host"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
       onFocus={() => setHovering(true)}
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHovering(false); }}
     >
+      <CinematicBackgroundSequence clips={IMPLEMENTATION_CLIPS} stockNotice />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <header data-reveal className="reveal-item im2-head">
           <p className="section-kicker">{t.kicker}</p>

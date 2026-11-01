@@ -1,0 +1,316 @@
+/*
+ * Mapa logístico de presencia regional (src/components/experience/LogisticsRoutes.tsx).
+ * Alcance: .lr-*. Solo transform y opacity para el movimiento; el resto son colores de tokens existentes.
+ */
+
+.lr-figure {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.lr-figure > figcaption {
+  color: var(--color-on-dark);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.lr-demo-chip {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  z-index: 2;
+  border-radius: 999px;
+  padding: 4px 10px;
+  border: 1px dashed color-mix(in oklab, var(--color-amber) 60%, transparent);
+  color: var(--color-amber);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: color-mix(in oklab, var(--color-night) 80%, transparent);
+}
+
+.lr-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 18%, transparent);
+  background:
+    radial-gradient(
+      120% 90% at 35% 40%,
+      color-mix(in oklab, var(--color-royal) 22%, transparent),
+      transparent 70%
+    ),
+    var(--color-night);
+  box-shadow:
+    inset 0 0 60px rgb(0 0 0 / 0.35),
+    0 30px 60px -40px rgb(0 0 0 / 0.7);
+}
+
+.lr-grid-dot {
+  fill: color-mix(in oklab, var(--color-skybrand) 28%, transparent);
+}
+.lr-ocean {
+  opacity: 0.9;
+}
+
+.lr-land {
+  fill: color-mix(in oklab, var(--color-on-dark) 9%, transparent);
+  stroke: color-mix(in oklab, var(--color-skybrand) 22%, transparent);
+  stroke-width: 0.6;
+}
+
+.lr-land[data-hl="true"] {
+  fill: color-mix(in oklab, var(--color-royal) 34%, transparent);
+  stroke: color-mix(in oklab, var(--color-skybrand) 60%, transparent);
+}
+
+/* Rutas: línea discontinua que fluye. Solo cambia el offset del trazo, sin layout. */
+.lr-route {
+  fill: none;
+  stroke: var(--color-skybrand);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 2 9;
+  opacity: 0.85;
+  animation: lr-flow 2.4s linear infinite;
+}
+
+@keyframes lr-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+.lr-traveler {
+  will-change: transform;
+}
+
+.lr-glyph {
+  fill: var(--color-amber);
+  filter: drop-shadow(0 0 5px color-mix(in oklab, var(--color-amber) 80%, transparent));
+}
+
+.lr-hop-ring {
+  fill: none;
+  stroke: var(--color-amber);
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lr-ping 2.6s ease-out infinite;
+}
+
+.lr-hop-dot {
+  fill: var(--color-amber);
+}
+
+@keyframes lr-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.lr-origin-pulse,
+.lr-pulse {
+  fill: color-mix(in oklab, var(--color-amber) 40%, transparent);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lr-ping 2.2s ease-out infinite;
+}
+
+.lr-origin-dot,
+.lr-dot {
+  fill: var(--color-amber);
+  stroke: var(--color-night);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--color-amber) 90%, transparent));
+}
+
+.lr-tag,
+.lr-place-tag {
+  fill: color-mix(in oklab, var(--color-night) 88%, transparent);
+  stroke: color-mix(in oklab, var(--color-skybrand) 35%, transparent);
+  stroke-width: 1;
+}
+
+.lr-tag-text,
+.lr-place text {
+  fill: var(--color-on-dark);
+  font: 600 19px var(--font-ui);
+}
+
+.lr-place {
+  cursor: default;
+  outline: none;
+}
+.lr-place:focus-visible .lr-place-tag {
+  stroke: var(--color-amber);
+  stroke-width: 2;
+}
+.lr-place[data-hot="true"] .lr-place-tag {
+  fill: var(--color-royal);
+}
+
+.lr-cards-title {
+  margin-top: 6px;
+  color: var(--color-skybrand);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lr-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lr-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid color-mix(in oklab, var(--color-on-dark) 12%, transparent);
+  background: color-mix(in oklab, var(--color-night) 70%, var(--color-on-dark));
+  box-shadow: 0 16px 30px -22px rgb(0 0 0 / 0.8);
+  color: var(--color-on-dark);
+}
+
+.lr-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.lr-code {
+  font-size: 10px;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--color-on-dark) 60%, transparent);
+}
+
+.lr-chip {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: color-mix(in oklab, var(--color-skybrand) 18%, transparent);
+  color: var(--color-skybrand);
+}
+
+.lr-card[data-status="stop"] .lr-chip {
+  background: color-mix(in oklab, var(--color-amber) 18%, transparent);
+  color: var(--color-amber);
+}
+.lr-card[data-status="control"] .lr-chip {
+  background: color-mix(in oklab, var(--color-royal) 30%, transparent);
+  color: var(--color-on-dark);
+}
+
+.lr-route-line {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.lr-bar {
+  height: 4px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--color-on-dark) 12%, transparent);
+}
+
+.lr-bar > span {
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-royal), var(--color-amber));
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lr-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: color-mix(in oklab, var(--color-on-dark) 70%, transparent);
+}
+
+@media (max-width: 720px) {
+  .lr-cards {
+    grid-template-columns: 1fr;
+  }
+  .lr-tag,
+  .lr-tag-text {
+    display: none;
+  }
+  .lr-place-tag {
+    display: none;
+  }
+  .lr-place text {
+    font-size: 15px;
+  }
+  .lr-demo-chip {
+    position: static;
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lr-route,
+  .lr-hop-ring,
+  .lr-origin-pulse,
+  .lr-pulse {
+    animation: none;
+  }
+  .lr-bar > span {
+    transition: none;
+  }
+}
+
+/* Halo que respira detrás del mapa de presencia regional (autónomo, sin ratón). */
+.lr-figure::before {
+  content: "";
+  position: absolute;
+  inset: 8% 6% 30%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--color-royal) 45%, transparent), transparent 72%);
+  filter: blur(22px);
+  pointer-events: none;
+  animation: lr-halo 7s ease-in-out infinite;
+}
+
+.lr-figure {
+  isolation: isolate;
+}
+
+@keyframes lr-halo {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lr-figure::before {
+    animation: none;
+  }
+}

@@ -1,0 +1,437 @@
+{
+  "version": "multi-2026-10-31",
+  "entries": [
+    {
+      "id": "faq-01",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[0]",
+      "question": "¿Qué es Logixtic® y cómo ayuda a los agentes de carga internacional?",
+      "answer": "Logixtic® es software para agentes de carga internacional: una plataforma de gestión e inteligencia operativa que conecta la gestión comercial, operativa, documental y de clientes en un solo sistema, para que la información se registre una vez y acompañe toda la operación."
+    },
+    {
+      "id": "faq-02",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[1]",
+      "question": "¿Para qué tipo de Freight Forwarders está diseñado Logixtic®?",
+      "answer": "Está diseñado para agentes de carga internacional y freight forwarders que gestionan operaciones de comercio internacional con equipos comerciales, operativos y documentales trabajando sobre las mismas operaciones."
+    },
+    {
+      "id": "faq-03",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[2]",
+      "question": "¿Qué problemas operativos ayuda a resolver Logixtic®?",
+      "answer": "Resuelve la dispersión de la información. Evita que el equipo busque, duplique y confirme datos en hojas de cálculo, correos, mensajes y carpetas separadas antes de avanzar con una operación."
+    },
+    {
+      "id": "faq-04",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[3]",
+      "question": "¿En qué se diferencia Logixtic® de un sistema tradicional para agentes de carga?",
+      "answer": "Conecta el proceso completo en una sola fuente de información, desde el prospecto hasta los indicadores de la operación, e incorpora consulta conversacional con Logix sobre la información ya registrada."
+    },
+    {
+      "id": "faq-05",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[4]",
+      "question": "¿Qué procesos puede centralizar Logixtic®?",
+      "answer": "Centraliza la gestión comercial, la operación, la documentación, la trazabilidad, la consulta del cliente y los indicadores de costos y margen de cada operación."
+    },
+    {
+      "id": "faq-06",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[5]",
+      "question": "¿Cómo ayuda Logixtic® a reducir la dependencia de Excel, correos y procesos manuales?",
+      "answer": "La información se registra una vez en la plataforma y queda disponible para las demás etapas, con tareas, documentos y responsables asociados a cada operación, en lugar de archivos y conversaciones separadas."
+    },
+    {
+      "id": "faq-07",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[6]",
+      "question": "¿Cómo funciona Logix y la inteligencia artificial en Logixtic®?",
+      "answer": "Logix es una consulta conversacional sobre la información ya registrada en Logixtic®. Permite buscar clientes, prospectos, DO's, pedidos y operaciones respetando los permisos de cada usuario."
+    },
+    {
+      "id": "faq-08",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[7]",
+      "question": "¿Cómo ayuda Logixtic® a automatizar y mejorar la productividad?",
+      "answer": "Al conectar las etapas de la operación, el equipo deja de repetir capturas y búsquedas de información. El avance queda visible en tareas y seguimiento, lo que reduce el trabajo manual de coordinación."
+    },
+    {
+      "id": "faq-09",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[8]",
+      "question": "¿Cómo funciona la gestión documental integrada?",
+      "answer": "Cada documento queda asociado al cliente y a la operación correspondiente, con responsable y fecha, y puede consultarse desde el expediente del cliente o desde la operación."
+    },
+    {
+      "id": "faq-10",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[9]",
+      "question": "¿Qué información puede ver el cliente en el Portal de Clientes?",
+      "answer": "El cliente consulta sus operaciones, su trazabilidad, los documentos disponibles para él, su historial y la comunicación habilitada por el agente de carga."
+    },
+    {
+      "id": "faq-11",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[10]",
+      "question": "¿Cómo se manejan los usuarios y permisos?",
+      "answer": "El acceso a la información depende de los permisos de cada usuario. Logix y el Portal de Clientes muestran únicamente lo que ese usuario está autorizado a consultar."
+    },
+    {
+      "id": "faq-12",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[11]",
+      "question": "¿Logixtic® se adapta a diferentes tipos de operación y carga?",
+      "answer": "Sí. La plataforma se parametriza durante la implementación según los servicios, procesos y tipos de operación de cada agente de carga."
+    },
+    {
+      "id": "faq-13",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[12]",
+      "question": "¿Cuánto tiempo toma implementar Logixtic®?",
+      "answer": "La implementación tiene seis etapas: levantamiento, parametrización, capacitación, pruebas, salida y acompañamiento. La duración depende del alcance de la operación y se define con el equipo comercial."
+    },
+    {
+      "id": "faq-14",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[13]",
+      "question": "¿Qué planes ofrece Logixtic®?",
+      "answer": "La propuesta depende del número de usuarios y del alcance de la operación. Se define en la demo personalizada, junto con el equipo de Logixtic®."
+    },
+    {
+      "id": "faq-15",
+      "locale": "es",
+      "kind": "faq",
+      "source": "src/lib/content.ts#faqs[14]",
+      "question": "¿Cómo puedo saber si Logixtic® es adecuado para mi operación?",
+      "answer": "Agenda una demo personalizada: revisamos cómo trabaja tu equipo hoy y qué procesos podrían conectarse en la plataforma."
+    },
+    {
+      "id": "logix-01",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#logix",
+      "question": "Pregúntale a Logix sobre tu operación.",
+      "answer": "Logix consulta la información disponible en Logixtic® para agilizar búsquedas de clientes, prospectos, DO's, pedidos, operaciones y datos relacionados, respetando los permisos de cada usuario."
+    },
+    {
+      "id": "flow-01",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[0]",
+      "question": "Prospecto",
+      "answer": "La oportunidad queda registrada con empresa, responsable y actividad."
+    },
+    {
+      "id": "flow-02",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[1]",
+      "question": "Cotización",
+      "answer": "La propuesta se construye sobre la información comercial ya registrada."
+    },
+    {
+      "id": "flow-03",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[2]",
+      "question": "Vinculación",
+      "answer": "El prospecto se convierte en cliente conservando su historial."
+    },
+    {
+      "id": "flow-04",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[3]",
+      "question": "Operación",
+      "answer": "La operación avanza por pasos con responsables y fechas visibles."
+    },
+    {
+      "id": "flow-05",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[4]",
+      "question": "Documentación",
+      "answer": "Los soportes quedan asociados al cliente y a la operación."
+    },
+    {
+      "id": "flow-06",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[5]",
+      "question": "Trazabilidad",
+      "answer": "El checklist muestra qué está hecho y qué falta en cada operación."
+    },
+    {
+      "id": "flow-07",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[6]",
+      "question": "Indicadores",
+      "answer": "Costos presupuestados, costos reales y margen se consultan en la operación."
+    },
+    {
+      "id": "flow-08",
+      "locale": "es",
+      "kind": "product",
+      "source": "src/lib/content.ts#flow.stages[7]",
+      "question": "Portal",
+      "answer": "Comparte con cada cliente la información disponible de sus operaciones, documentos y seguimiento."
+    },
+    {
+      "id": "en-faq-01",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[0]",
+      "question": "What is Logixtic® and how does it help international freight forwarders?",
+      "answer": "Logixtic® is software for international freight forwarders: an operational management and intelligence platform that connects commercial, operational, document and customer management in one system, so information is entered once and follows the entire operation."
+    },
+    {
+      "id": "en-faq-02",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[1]",
+      "question": "What kind of freight forwarders is Logixtic® designed for?",
+      "answer": "It is designed for international freight forwarders managing international trade operations with commercial, operational and document teams working on the same shipments."
+    },
+    {
+      "id": "en-faq-03",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[2]",
+      "question": "What operational problems does Logixtic® help solve?",
+      "answer": "It solves fragmented information. It prevents teams from searching, duplicating and confirming data in separate spreadsheets, emails, messages and folders before moving an operation forward."
+    },
+    {
+      "id": "en-faq-04",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[3]",
+      "question": "How is Logixtic® different from a traditional freight forwarding system?",
+      "answer": "It connects the complete process in a single source of information, from prospect to operational indicators, and adds conversational queries with Logix over the information already recorded."
+    },
+    {
+      "id": "en-faq-05",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[4]",
+      "question": "Which processes can Logixtic® centralize?",
+      "answer": "It centralizes commercial management, operations, documentation, traceability, customer access, and the cost and margin indicators for each operation."
+    },
+    {
+      "id": "en-faq-06",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[5]",
+      "question": "How does Logixtic® reduce reliance on spreadsheets, email and manual processes?",
+      "answer": "Information is entered once in the platform and remains available to other stages, with tasks, documents and owners linked to each operation instead of separate files and conversations."
+    },
+    {
+      "id": "en-faq-07",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[6]",
+      "question": "How do Logix and artificial intelligence work in Logixtic®?",
+      "answer": "Logix is a conversational query over information already recorded in Logixtic®. It can search customers, prospects, DOs, orders and operations while respecting each user's permissions."
+    },
+    {
+      "id": "en-faq-08",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[7]",
+      "question": "How does Logixtic® improve automation and productivity?",
+      "answer": "By connecting operational stages, the team stops repeating data entry and searches. Progress is visible in tasks and tracking, reducing manual coordination work."
+    },
+    {
+      "id": "en-faq-09",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[8]",
+      "question": "How does integrated document management work?",
+      "answer": "Each document is linked to the corresponding customer and operation, with an owner and date, and can be viewed from the customer file or the operation."
+    },
+    {
+      "id": "en-faq-10",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[9]",
+      "question": "What information can customers see in the Customer Portal?",
+      "answer": "Customers can view their operations, traceability, the documents available to them, their history and communication enabled by the freight forwarder."
+    },
+    {
+      "id": "en-faq-11",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[10]",
+      "question": "How are users and permissions managed?",
+      "answer": "Access to information depends on each user's permissions. Logix and the Customer Portal only show what that user is authorized to view."
+    },
+    {
+      "id": "en-faq-12",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[11]",
+      "question": "Does Logixtic® adapt to different operations and cargo types?",
+      "answer": "Yes. During implementation, the platform is configured around each freight forwarder's services, processes and operation types."
+    },
+    {
+      "id": "en-faq-13",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[12]",
+      "question": "How long does it take to implement Logixtic®?",
+      "answer": "Implementation has six stages: discovery, configuration, training, testing, launch and ongoing support. Timing depends on the operation's scope and is defined with the commercial team."
+    },
+    {
+      "id": "en-faq-14",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[13]",
+      "question": "What plans does Logixtic® offer?",
+      "answer": "The proposal depends on the number of users and the operation's scope. It is defined during the personalized demo with the Logixtic® team."
+    },
+    {
+      "id": "en-faq-15",
+      "locale": "en",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#en.faqs[14]",
+      "question": "How can I tell whether Logixtic® is right for my operation?",
+      "answer": "Book a personalized demo: we review how your team works today and which processes could be connected in the platform."
+    },
+    {
+      "id": "pt-faq-01",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[0]",
+      "question": "O que é Logixtic® e como ajuda os agentes de carga internacional?",
+      "answer": "Logixtic® é um software para agentes de carga internacional: uma plataforma de gestão e inteligência operacional que conecta a gestão comercial, operacional, documental e de clientes em um único sistema, para que as informações sejam registradas uma vez e acompanhem toda a operação."
+    },
+    {
+      "id": "pt-faq-02",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[1]",
+      "question": "Para que tipo de freight forwarder o Logixtic® foi desenvolvido?",
+      "answer": "Foi desenvolvido para agentes de carga internacional e freight forwarders que gerenciam operações de comércio internacional com equipes comerciais, operacionais e documentais trabalhando sobre as mesmas operações."
+    },
+    {
+      "id": "pt-faq-03",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[2]",
+      "question": "Quais problemas operacionais o Logixtic® ajuda a resolver?",
+      "answer": "Resolve a dispersão das informações. Evita que a equipe busque, duplique e confirme dados em planilhas, e-mails, mensagens e pastas separadas antes de avançar com uma operação."
+    },
+    {
+      "id": "pt-faq-04",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[3]",
+      "question": "Qual é a diferença entre o Logixtic® e um sistema tradicional para agentes de carga?",
+      "answer": "Conecta o processo completo em uma única fonte de informação, do prospect aos indicadores da operação, e incorpora consultas conversacionais com o Logix sobre as informações já registradas."
+    },
+    {
+      "id": "pt-faq-05",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[4]",
+      "question": "Quais processos o Logixtic® pode centralizar?",
+      "answer": "Centraliza a gestão comercial, a operação, a documentação, a rastreabilidade, a consulta do cliente e os indicadores de custos e margem de cada operação."
+    },
+    {
+      "id": "pt-faq-06",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[5]",
+      "question": "Como o Logixtic® reduz a dependência de planilhas, e-mails e processos manuais?",
+      "answer": "As informações são registradas uma vez na plataforma e ficam disponíveis para as outras etapas, com tarefas, documentos e responsáveis associados a cada operação, em vez de arquivos e conversas separados."
+    },
+    {
+      "id": "pt-faq-07",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[6]",
+      "question": "Como funcionam o Logix e a inteligência artificial no Logixtic®?",
+      "answer": "Logix é uma consulta conversacional sobre as informações já registradas no Logixtic®. Permite buscar clientes, prospects, DOs, pedidos e operações respeitando as permissões de cada usuário."
+    },
+    {
+      "id": "pt-faq-08",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[7]",
+      "question": "Como o Logixtic® melhora a automação e a produtividade?",
+      "answer": "Ao conectar as etapas da operação, a equipe deixa de repetir lançamentos e buscas de informações. O avanço fica visível em tarefas e acompanhamento, reduzindo o trabalho manual de coordenação."
+    },
+    {
+      "id": "pt-faq-09",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[8]",
+      "question": "Como funciona a gestão documental integrada?",
+      "answer": "Cada documento fica associado ao cliente e à operação correspondente, com responsável e data, e pode ser consultado no cadastro do cliente ou na operação."
+    },
+    {
+      "id": "pt-faq-10",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[9]",
+      "question": "Quais informações o cliente pode ver no Portal de Clientes?",
+      "answer": "O cliente consulta suas operações, sua rastreabilidade, os documentos disponíveis para ele, seu histórico e a comunicação habilitada pelo agente de carga."
+    },
+    {
+      "id": "pt-faq-11",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[10]",
+      "question": "Como são gerenciados usuários e permissões?",
+      "answer": "O acesso às informações depende das permissões de cada usuário. Logix e o Portal de Clientes mostram apenas o que esse usuário está autorizado a consultar."
+    },
+    {
+      "id": "pt-faq-12",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[11]",
+      "question": "O Logixtic® se adapta a diferentes tipos de operação e carga?",
+      "answer": "Sim. A plataforma é parametrizada durante a implementação de acordo com os serviços, processos e tipos de operação de cada agente de carga."
+    },
+    {
+      "id": "pt-faq-13",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[12]",
+      "question": "Quanto tempo leva para implementar o Logixtic®?",
+      "answer": "A implementação tem seis etapas: levantamento, parametrização, capacitação, testes, entrada em operação e acompanhamento. A duração depende do escopo da operação e é definida com a equipe comercial."
+    },
+    {
+      "id": "pt-faq-14",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[13]",
+      "question": "Quais planos o Logixtic® oferece?",
+      "answer": "A proposta depende do número de usuários e do escopo da operação. É definida na demonstração personalizada com a equipe do Logixtic®."
+    },
+    {
+      "id": "pt-faq-15",
+      "locale": "pt-BR",
+      "kind": "faq",
+      "source": "src/lib/i18n.tsx#pt.faqs[14]",
+      "question": "Como posso saber se o Logixtic® é adequado para minha operação?",
+      "answer": "Agende uma demonstração personalizada: analisamos como sua equipe trabalha hoje e quais processos poderiam ser conectados na plataforma."
+    }
+  ]
+}

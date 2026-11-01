@@ -3,6 +3,12 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 import { DemoButton } from "@/components/site/DemoButton";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import { DigitalTraceOverlay } from "@/components/experience/DigitalTraceOverlay";
+
+// Operación física (terminal de contenedores) -> registro digital (escaneo) -> control en Logixtic.
+const FLOW_CLIPS = [CINEMATIC_CLIPS.container_operations, CINEMATIC_CLIPS.scan];
 
 const copy = {
   es: {
@@ -124,9 +130,11 @@ export function Flow() {
       id="plataforma"
       aria-labelledby="plataforma-title"
       ref={sectionRef}
-      className="section-shell surface-deep"
+      className="section-shell surface-deep bgseq-host"
       onMouseLeave={() => { setHovering(false); setManual(false); }}
     >
+      <CinematicBackgroundSequence clips={FLOW_CLIPS} />
+      <DigitalTraceOverlay />
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div data-reveal className="reveal-item max-w-4xl">
           <h2 id="plataforma-title" className="section-title-dark">{t.title}</h2>

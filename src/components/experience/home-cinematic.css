@@ -1,0 +1,42 @@
+/*
+ * Sistema visual global de la home cuando VITE_LOGIXTIC_MOTION_V2 está activo (clase .home-cinematic en <main>).
+ * Luces autónomas que derivan lentamente sobre cada sección. Solo transform y opacity. El hero queda excluido.
+ */
+
+.home-cinematic main > section:not(.cinematic-hero)::after {
+  content: "";
+  position: absolute;
+  inset: -8% -4%;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    40% 36% at 30% 20%,
+    color-mix(in oklab, var(--color-skybrand) 9%, transparent),
+    transparent 72%
+  );
+  animation: home-light 22s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.home-cinematic main > section:not(.cinematic-hero) {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes home-light {
+  from {
+    transform: translate3d(-3%, 0, 0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(4%, -2%, 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cinematic main > section:not(.cinematic-hero)::after {
+    animation: none;
+  }
+}

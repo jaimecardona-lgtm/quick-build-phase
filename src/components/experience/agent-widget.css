@@ -1,0 +1,293 @@
+/*
+ * Widget Logix Web (AgentWidget.tsx). Alcance .aw-*. Anclado a la izquierda para no tapar WhatsApp.
+ */
+
+.aw-root {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 60;
+  font-family: var(--font-ui);
+}
+
+.aw-launcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 16px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 35%, transparent);
+  background: color-mix(in oklab, var(--color-night) 92%, transparent);
+  color: var(--color-on-dark);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 16px 36px -18px rgb(0 0 0 / 0.8);
+}
+
+.aw-launcher img {
+  border-radius: 50%;
+}
+
+.aw-panel {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 12px);
+  width: min(380px, calc(100vw - 40px));
+  max-height: min(600px, 72vh);
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--color-night);
+  color: var(--color-on-dark);
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 22%, transparent);
+  box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.85);
+}
+
+.aw-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-on-dark) 10%, transparent);
+}
+
+.aw-avatar {
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--color-royal) 25%, transparent);
+}
+
+.aw-title {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.aw-mode {
+  font-size: 11px;
+  color: var(--color-skybrand);
+}
+
+.aw-mode[data-dry="true"] {
+  color: var(--color-amber);
+}
+
+.aw-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--color-on-dark);
+}
+
+.aw-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+}
+
+.aw-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--color-on-dark) 75%, transparent);
+}
+
+.aw-tab[aria-selected="true"] {
+  background: color-mix(in oklab, var(--color-royal) 30%, transparent);
+  color: var(--color-on-dark);
+}
+
+.aw-list {
+  flex: 1;
+  min-height: 200px;
+  overflow-y: auto;
+  padding: 6px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aw-intro {
+  font-size: 12px;
+  color: color-mix(in oklab, var(--color-on-dark) 70%, transparent);
+}
+
+.aw-suggest {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.aw-chip {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--color-skybrand) 25%, transparent);
+  background: color-mix(in oklab, var(--color-night) 70%, var(--color-on-dark));
+  color: var(--color-on-dark);
+  font-size: 13px;
+}
+
+.aw-bubble {
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.aw-user {
+  align-self: flex-end;
+  background: color-mix(in oklab, var(--color-royal) 35%, transparent);
+}
+
+.aw-bot {
+  align-self: flex-start;
+  background: color-mix(in oklab, var(--color-on-dark) 8%, transparent);
+}
+
+.aw-error {
+  align-self: flex-start;
+  color: var(--color-amber);
+  font-size: 13px;
+}
+
+.aw-thinking {
+  color: color-mix(in oklab, var(--color-on-dark) 70%, transparent);
+}
+
+.aw-note {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-amber);
+  font-size: 11px;
+}
+
+.aw-sources {
+  margin-top: 8px;
+  font-size: 11px;
+  color: color-mix(in oklab, var(--color-on-dark) 70%, transparent);
+}
+
+.aw-sources ul {
+  margin: 4px 0 0;
+  padding-left: 16px;
+}
+
+.aw-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid color-mix(in oklab, var(--color-on-dark) 10%, transparent);
+}
+
+.aw-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in oklab, var(--color-on-dark) 20%, transparent);
+  background: color-mix(in oklab, var(--color-night) 70%, #000);
+  color: var(--color-on-dark);
+  font-size: 14px;
+}
+
+.aw-send {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  min-height: 42px;
+  border-radius: 12px;
+  background: var(--color-amber);
+  color: var(--color-night);
+}
+
+.aw-send:disabled {
+  opacity: 0.5;
+}
+
+.aw-roi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 14px 16px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.aw-roi label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aw-roi input {
+  min-height: 38px;
+  border-radius: 10px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in oklab, var(--color-on-dark) 20%, transparent);
+  background: color-mix(in oklab, var(--color-night) 70%, #000);
+  color: var(--color-on-dark);
+  font-size: 14px;
+}
+
+.aw-roi-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.aw-send-wide {
+  min-height: 42px;
+  border-radius: 12px;
+  background: var(--color-amber);
+  color: var(--color-night);
+  font-weight: 700;
+}
+
+.aw-roi-result p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.aw-roi-result small {
+  color: color-mix(in oklab, var(--color-on-dark) 70%, transparent);
+}
+
+.aw-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .aw-root {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .aw-panel {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 72px;
+    width: auto;
+    max-height: 78vh;
+  }
+}

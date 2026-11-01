@@ -32,3 +32,35 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Sprint 01: desarrollo local (Windows PowerShell)
+
+Frontend (TanStack Start, React 19, Vite 8):
+
+```powershell
+bun install --frozen-lockfile   # o: npm install
+bun run dev                     # servidor local con SSR
+bun run lint
+bun run build
+bun run verify:content          # prueba de preservación del copy ES / EN / PT-BR
+```
+
+Hero cinematográfico (opcional, desactivado por defecto). Crear un `.env.local` en la raíz, sin subirlo a Git:
+
+```powershell
+"VITE_LOGIXTIC_MOTION_V2=true" | Out-File -Encoding utf8 .env.local
+bun run dev
+```
+
+Backend FastAPI (servicio independiente, en `backend/`):
+
+```powershell
+cd backend
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+pytest -q
+```
+
+Documentación del sprint: [docs/audit-sprint-01.md](docs/audit-sprint-01.md), [docs/content-baseline.md](docs/content-baseline.md), [docs/motion-storyboard.md](docs/motion-storyboard.md), [docs/architecture-decisions.md](docs/architecture-decisions.md), [docs/security-backlog.md](docs/security-backlog.md).

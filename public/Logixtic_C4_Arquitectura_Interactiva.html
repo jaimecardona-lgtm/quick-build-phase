@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Arquitectura C4 interactiva para la evolución de la experiencia digital de Logixtic: frontend TanStack Start, FastAPI, Lovable Cloud, OpenRouter y motion design.">
+  <title>Logixtic | Architecture Atlas C4</title>
+  <style>
+    :root { --bg:#080e1b; --surface:#0e1929; --panel:#111d2f; --panel2:#142339; --ink:#eef6ff; --muted:#9bb2c9; --line:#273e58; --blue:#59b8f4; --cyan:#5ee6d0; --violet:#b49aff; --amber:#f2bb68; --red:#f18f95; --radius:18px; --shadow:0 24px 70px rgba(1,5,13,.38); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth}
+    body {background:radial-gradient(ellipse 70% 46% at 48% -14%,#143c60 0, transparent 64%),var(--bg);color:var(--ink); margin:0;min-height:100vh}
+    a {color:inherit;text-decoration:none}
+    button {font:inherit;cursor:pointer}
+    button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    .wrap {max-width:1660px;margin:auto;padding:28px clamp(16px,2.7vw,44px) 50px}
+    .masthead {display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    .brand {display:flex;align-items:center;gap:13px;font-weight:800;letter-spacing:.07em;font-size:19px}
+    .brand-symbol {width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(145deg,#4fdcfa,#5366ea 75%);color:#091022;box-shadow:0 5px 25px #4ab8f73c;font-size:24px;font-weight:900;line-height:1}
+    .brand .tagline{font-weight:450;letter-spacing:.11em;font-size:10px;color:#9fbacf;display:block;margin-top:3px}
+    .mast-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .meta-chip{border:1px solid #2c4761;background:#112138;border-radius:999px;padding:8px 12px;color:#b9d6e8;font-size:12px;letter-spacing:.025em}
+    .meta-chip strong{color:#f4faff;font-weight:700}
+    .safe {color:#8be6c2;border-color:#295e58;background:#12302f}
+    .hero {position:relative;isolation:isolate;overflow:hidden;min-height:295px;margin:26px 0 20px;border:1px solid #284560;border-radius:26px;background:linear-gradient(111deg,#101c2d 0%,#102a40 60%,#132036 100%);box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(340px,1.1fr) minmax(300px,.9fr);align-items:center}
+    .hero:before {content:"";position:absolute;width:650px;height:650px;border:1px solid #5198c622;border-radius:50%;right:-160px;top:-260px;box-shadow:0 0 0 80px #437da709,0 0 0 170px #437da705;pointer-events:none}
+    .hero:after {content:"";position:absolute;inset:0;background-image:linear-gradient(#81b6d605 1px,transparent 1px),linear-gradient(90deg,#81b6d605 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to right,transparent 35%,#000 100%);z-index:-1}
+    .hero-copy{padding:36px clamp(24px,4vw,62px);z-index:1}
+    .eyebrow{color:var(--cyan);font-size:11px;text-transform:uppercase;letter-spacing:.25em;font-weight:800;margin:0 0 15px}
+    h1 {font-size:clamp(29px,3.2vw,52px);line-height:1.12;letter-spacing:-.038em;max-width:800px;margin:0}
+    h1 span {color:#84dbff}
+    .hero-copy p.lead{font-size:14px;line-height:1.75;color:#adc4d9;max-width:620px;margin:16px 0 0}
+    .hero-art {padding:26px 37px 26px 0;display:grid;place-items:center;min-height:245px;position:relative}
+    .orbit {width:min(325px,100%);height:224px;position:relative;perspective:800px}
+    .orbit .rings {position:absolute;left:11%;top:2%;width:80%;height:92%;border:1px solid #65bce955;border-radius:50%;transform:rotate(-24deg);box-shadow:0 0 0 20px #54b0ed0a,0 0 0 53px #54b0ed07;animation:spin 18s linear infinite}
+    .orbit .rings:after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#5ce7d9;top:22%;left:2%;box-shadow:0 0 18px #5ce7d9}
+    .screen {position:absolute;left:16%;right:16%;top:17%;height:64%;border:1px solid #5eade17a;border-radius:14px;background:linear-gradient(145deg,#152e48,#101827 70%);box-shadow:0 20px 75px #020813ad;transform:rotate(-9deg) rotateY(-13deg);padding:14px;overflow:hidden}
+    .screen-top{display:flex;gap:4px;align-items:center}.dot{width:5px;height:5px;border-radius:50%;background:#6f9ebb}.screen-label{font-size:8px;letter-spacing:.13em;color:#9bd7f6;font-weight:750;margin-left:9px}
+    .screen-chart{position:absolute;left:15px;right:15px;bottom:16px;top:41px;border-radius:7px;background:repeating-linear-gradient(0deg,transparent 0,transparent 22px,#7399bd10 23px);overflow:hidden}
+    .screen-chart svg{width:100%;height:100%}
+    .transport{position:absolute;display:grid;place-items:center;width:64px;height:49px;border:1px solid #76b9ea66;border-radius:12px;background:#163451ec;font-size:26px;box-shadow:0 10px 30px #0007;animation:bob 4.5s ease-in-out infinite}
+    .plane{right:1%;top:2%}.ship{left:-1%;bottom:3%;animation-delay:-1.8s}.truck{right:2%;bottom:2%;animation-delay:-.9s}
+    @keyframes spin{to{transform:rotate(336deg)}}@keyframes bob{50%{transform:translateY(-8px)}}
+    .tabs {display:flex;gap:8px;overflow-x:auto;padding:2px 1px 13px;scrollbar-width:thin}
+    .tab{border:1px solid #2b4560;background:#111e30;color:#9cb8cf;border-radius:12px;padding:11px 15px;white-space:nowrap;font-size:13px;font-weight:650;transition:all .2s ease;display:flex;align-items:center;gap:8px}
+    .tab .small{font-size:10px;color:inherit;opacity:.75;text-transform:uppercase;letter-spacing:.06em}
+    .tab:hover{border-color:#4c85b3;color:#e3f8ff}
+    .tab.active{background:linear-gradient(145deg,#1c4870,#185571);border-color:#64c2e0;color:#efffff;box-shadow:inset 0 1px 0 #91e7ff22}
+    .view {display:none;animation:appear .28s ease both}.view.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .section-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;margin:14px 0 14px}
+    .section-head h2{font-size:26px;margin:0 0 6px;letter-spacing:-.025em}.section-head p{color:var(--muted);font-size:13px;max-width:770px;margin:0;line-height:1.5}
+    .section-kicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:800;margin-bottom:7px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid #385573;color:#bcd8ea;background:#15273d;padding:10px 13px;border-radius:11px;font-size:12px;font-weight:650}
+    .btn:hover{border-color:#62b2e3;background:#1a3451}.btn.primary{color:#061625;background:#74d5e9;border-color:#7ee3f3}
+    .diagram-layout{display:grid;grid-template-columns:minmax(0,1fr) 304px;gap:14px;align-items:stretch}
+    .diagram-shell,.inspector,.surface{border:1px solid #263e56;background:linear-gradient(155deg,#0c1727,#0f1b2b 83%);box-shadow:0 10px 32px #0509145e;border-radius:19px}
+    .diagram-shell{min-width:0;overflow:hidden;position:relative}
+    .diagram-top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 18px 0;flex-wrap:wrap}
+    .diagram-status{display:flex;align-items:center;gap:8px;color:#bed6e7;font-size:11px;font-weight:600}
+    .diagram-status:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px #65efd515}
+    .filters{display:flex;gap:6px;flex-wrap:wrap}.filter{background:transparent;border:1px solid transparent;color:#8fa8bf;padding:6px 8px;border-radius:8px;font-size:11px}.filter.active{color:#e8f6ff;background:#1d344b;border-color:#345676}
+    .graph-scroll{overflow-x:auto;scrollbar-width:thin;padding:6px 8px 4px;touch-action:pan-x}
+    .graph-svg{display:block;width:100%;min-width:900px;height:auto;aspect-ratio:1460/710}
+    .diagram-foot{display:flex;justify-content:space-between;border-top:1px solid #20354b;padding:13px 17px;color:#7795af;font-size:11px;gap:12px;flex-wrap:wrap}
+    .legend{display:flex;gap:13px;flex-wrap:wrap}.legend span{display:flex;align-items:center;gap:6px}.swatch{width:9px;height:9px;border-radius:3px;display:inline-block;background:#52bffa}.swatch.future{background:var(--violet)}.swatch.ext{background:var(--amber)}
+    .inspector{padding:19px;display:flex;flex-direction:column;gap:11px;min-height:500px}
+    .inspector .inspector-kicker{text-transform:uppercase;letter-spacing:.16em;font-size:10px;color:#6fe2d7;font-weight:800}
+    .inspector h3{font-size:21px;line-height:1.25;margin:1px 0 0;letter-spacing:-.02em}
+    .inspector p{color:#a9bed2;line-height:1.65;font-size:13px;margin:0}
+    .status-tag{display:inline-flex;align-items:center;font-size:10px;font-weight:750;letter-spacing:.03em;border:1px solid #4b91bf;color:#8ed8ff;border-radius:999px;padding:5px 10px;width:max-content}
+    .status-tag.proposed{color:#c7b0ff;border-color:#7866b2}.status-tag.external{color:#ffd59b;border-color:#a9824a}
+    .inspector-subtitle{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#809cb5;font-weight:800;margin-top:13px}
+    .tag-list{display:flex;flex-wrap:wrap;gap:6px}.tag{background:#1c334a;border:1px solid #2a4b68;color:#e1f0ff;border-radius:7px;padding:6px 8px;font-size:11px}
+    .callout{background:linear-gradient(120deg,#123246,#11293c);padding:13px 14px;border:1px solid #245a70;border-radius:12px;color:#b6e6e5;font-size:12px;line-height:1.55}
+    .callout strong{color:#e6ffff}
+    .node-graph {cursor:pointer;transition:opacity .16s ease,filter .16s ease}
+    .node-graph:hover{filter:drop-shadow(0 0 10px #6dc8f23a)}
+    .node-graph.dim,.edge-graph.dim{opacity:.12}
+    .node-graph.selected rect.node-main{stroke:#93e9f2;stroke-width:3}
+    .node-graph:focus{outline:none;filter:drop-shadow(0 0 12px #85e7f27c)}
+    .divider{height:1px;background:#253a52;margin:8px 0}
+    .node-graph text,.node-graph rect{pointer-events:none}
+    .flow-note {margin-top:14px;border:1px solid #33566a;background:#112538;border-radius:13px;padding:14px 17px;color:#bbd6e5;font-size:12px;line-height:1.7}
+    .flow-note strong{color:#9be8f8}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .stack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:16px}
+    .stack-card{background:linear-gradient(160deg,#101f31,#101927);border:1px solid #2a435b;border-radius:16px;padding:20px;min-height:210px}
+    .stack-card .icon{width:43px;height:43px;border-radius:12px;background:#193d54;display:grid;place-items:center;font-size:21px;margin-bottom:14px}
+    .stack-card h3{font-size:17px;margin:0 0 7px}.stack-card p{font-size:12px;color:#adc1d4;line-height:1.6;margin:0 0 13px}
+    .stack-card .techs{display:flex;gap:6px;flex-wrap:wrap}
+    .adrs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:13px}
+    .adr{border-left:3px solid #4fa7d6;background:#0f1d2d;padding:13px 16px;border-radius:0 10px 10px 0}
+    .adr h4{margin:0 0 6px;font-size:13px}.adr p{margin:0;color:#a9c1d4;font-size:12px;line-height:1.6}
+    .roadmap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:16px}
+    .phase{position:relative;background:#0f1e2d;border:1px solid #2c435b;border-radius:16px;padding:21px 20px;min-height:230px}
+    .phase .number{font-weight:800;font-size:11px;color:var(--cyan);letter-spacing:.17em;margin-bottom:9px}
+    .phase h3{font-size:17px;margin:0 0 9px}.phase p{font-size:12px;color:#aec5d8;line-height:1.6;margin:0 0 10px}
+    .phase small{display:block;color:#82d5d3;font-size:11px;line-height:1.55}
+    .phase::after{content:'→';position:absolute;right:-11px;top:30px;color:#7dc5e4;font-size:19px;z-index:1}.phase:nth-child(3n)::after{display:none}
+    .journey-wrap{display:grid;grid-template-columns:1fr 400px;gap:15px;margin-top:16px}
+    .story-scene{min-height:428px;position:relative;overflow:hidden;border:1px solid #2c506c;border-radius:20px;background:radial-gradient(circle at 52% 36%,#18516a 0,#102238 48%,#091424 100%);display:grid;place-items:center}
+    .story-scene:before {content:"";position:absolute;inset:0;background-image:linear-gradient(#93d0f008 1px,transparent 1px),linear-gradient(90deg,#93d0f008 1px,transparent 1px);background-size:32px 32px}
+    .scene-inner{z-index:1;width:min(90%,690px);display:grid;place-items:center;gap:20px;transition:transform .45s ease}
+    .scene-transport{display:flex;gap:36px;align-items:end;justify-content:center;width:100%;padding-bottom:28px;border-bottom:2px dashed #66bed367;perspective:600px}
+    .vehicle{display:grid;place-items:center;background:#183d55;border:1px solid #4cb0e18f;border-radius:20px;width:105px;height:103px;font-size:50px;box-shadow:0 12px 50px #070e25;animation:floatveh 3.5s ease-in-out infinite}
+    .vehicle:nth-child(2){animation-delay:-1.5s}.vehicle:nth-child(3){animation-delay:-.8s}@keyframes floatveh{50%{transform:translateY(-13px)}}
+    .tablet{width:340px;max-width:100%;min-height:230px;border:10px solid #172538;border-radius:23px;background:linear-gradient(150deg,#134061,#0a1525);box-shadow:0 32px 90px #020911;transform:perspective(1000px) rotateX(7deg) rotateY(-10deg);position:relative;padding:16px}
+    .tablet:after{content:"";position:absolute;right:9px;top:45%;width:4px;height:30px;border-radius:3px;background:#4980a6}
+    .tablet header{font-size:12px;font-weight:850;letter-spacing:.09em;color:#c8f5ff;display:flex;justify-content:space-between;margin-bottom:20px}
+    .tablet .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tablet .data{height:68px;border:1px solid #3b7e9a;border-radius:9px;background:#163852;padding:9px}.tablet .data small{display:block;color:#a5bfd4;font-size:8px;margin-bottom:7px}.tablet .data strong{color:#8df2de;font-size:17px}
+    .scene-word{font-size:26px;text-align:center;font-weight:800;letter-spacing:-.04em}
+    .scene-sub{color:#aacee1;text-align:center;line-height:1.6;font-size:13px;max-width:520px}
+    .steps{display:flex;flex-direction:column;gap:9px}
+    .step{background:#102035;border:1px solid #294862;padding:14px 16px;border-radius:13px;text-align:left;display:flex;gap:12px;color:#aac5d6;align-items:flex-start}
+    .step.selected{background:linear-gradient(120deg,#183e56,#143247);border-color:#76cee3;color:#eaffff}
+    .step .step-n{width:31px;height:31px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;flex:none;font-size:12px;font-weight:800}
+    .step strong{display:block;font-size:13px;margin-bottom:4px}.step span{display:block;font-size:11px;line-height:1.5;opacity:.86}
+    .scene-head{position:absolute;top:20px;left:22px;font-size:10px;font-weight:800;color:#86cdda;letter-spacing:.18em}
+    .scene-caption{position:absolute;bottom:15px;left:18px;right:18px;text-align:center;font-size:10px;color:#769db8}
+    .footer {display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #233a51;margin-top:35px;padding-top:16px;color:#7f9bb3;font-size:11px;line-height:1.6}
+    .footer a{color:#98d9ef;text-decoration:underline;text-decoration-color:#50809a}
+    kbd{background:#18314b;border:1px solid #2d5975;border-radius:4px;padding:2px 5px;font:10px ui-monospace,Consolas,monospace}
+    @media(max-width:1150px){.diagram-layout{grid-template-columns:1fr}.inspector{min-height:0}.stack-grid,.adrs,.roadmap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.phase:nth-child(3n)::after{display:block}.phase:nth-child(2n)::after{display:none}.journey-wrap{grid-template-columns:1fr}}
+    @media(max-width:800px){.hero{grid-template-columns:1fr}.hero-art{min-height:205px;padding:0 30px 22px}.hero-copy{padding-bottom:5px}.stack-grid,.adrs,.roadmap-grid,.two-col{grid-template-columns:1fr}.phase::after{display:none!important}.section-head h2{font-size:23px}.scene-transport{gap:9px}.vehicle{width:75px;height:74px;font-size:38px}.story-scene{min-height:360px}.tablet{width:285px}.meta-chip{font-size:10px}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    @media print{body{background:#fff;color:#0b192a}.wrap{padding:10px}.hero,.tabs,.actions,.inspector,.diagram-top,.diagram-foot,.footer{display:none!important}.view{display:block!important;break-after:page}.diagram-shell,.surface{background:#fff;border:1px solid #999}.graph-svg{min-width:900px}.section-head p{color:#555}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="brand"><div class="brand-symbol">L</div><div>LOGIXTIC <span class="tagline">ARCHITECTURE ATLAS · C4 MODEL</span></div></div>
+    <div class="mast-meta"><span class="meta-chip safe">● Arquitectura propuesta / No desplegada</span><span class="meta-chip"><strong>Branch:</strong> primera-version</span><span class="meta-chip"><strong>Baseline:</strong> f4b1d032</span></div>
+  </div>
+  <section class="hero">
+    <div class="hero-copy"><p class="eyebrow">Logixtic Experience · Arquitectura evolutiva</p><h1>Del movimiento de la carga <span>al control desde el software.</span></h1><p class="lead">C4 navegable basado en el repositorio real. Conservamos cada texto comercial en ES / EN / PT-BR y evolucionamos la experiencia con escenas cinematográficas, FastAPI, Lovable Cloud y un agente OpenRouter.</p></div>
+    <div class="hero-art" aria-hidden="true"><div class="orbit"><div class="rings"></div><div class="screen"><div class="screen-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="screen-label">LOGIXTIC · CONTROL</span></div><div class="screen-chart"><svg viewBox="0 0 300 120" preserveAspectRatio="none"><path d="M0 110H300" stroke="#578bac" opacity=".35"/><path d="M8 93C45 91 62 27 105 54S177 107 211 49S264 28 294 12" stroke="#6edbe1" stroke-width="3" fill="none"/><circle cx="211" cy="49" r="5" fill="#ffe092"/><path d="M8 99C54 69 79 110 121 77S209 76 259 37S273 36 298 35" fill="none" stroke="#b6a3ff" stroke-width="1.5" stroke-dasharray="5 6"/></svg></div></div><div class="transport plane">✈️</div><div class="transport ship">🚢</div><div class="transport truck">🚚</div></div></div>
+  </section>
+  <nav class="tabs" id="tabs" aria-label="Niveles y vistas de arquitectura">
+    <button class="tab active" data-tab="c1" aria-selected="true">◉ C1 <span class="small">Contexto</span></button>
+    <button class="tab" data-tab="c2" aria-selected="false">⬡ C2 <span class="small">Contenedores</span></button>
+    <button class="tab" data-tab="c3" aria-selected="false">▦ C3 <span class="small">Componentes</span></button>
+    <button class="tab" data-tab="c4" aria-selected="false">⌘ C4 <span class="small">Código</span></button>
+    <button class="tab" data-tab="deploy" aria-selected="false">☁ <span class="small">DevOps</span></button>
+    <button class="tab" data-tab="journey" aria-selected="false">✦ <span class="small">Motion journey</span></button>
+    <button class="tab" data-tab="stack" aria-selected="false">◈ <span class="small">Tecnologías</span></button>
+    <button class="tab" data-tab="roadmap" aria-selected="false">☷ <span class="small">Roadmap</span></button>
+  </nav>
+  <section id="graph-view" class="view active" aria-label="Diagramas C4">
+    <header class="section-head"><div><div class="section-kicker" id="graph-kicker">C4 / NIVEL 1</div><h2 id="graph-title">System Context</h2><p id="graph-intro">Actores y sistemas externos que intervienen en la experiencia de Logixtic.</p></div><div class="actions"><button class="btn" id="svg-export">↓ Exportar SVG</button><button class="btn" id="fullscreen">⛶ Pantalla completa</button></div></header>
+    <div class="diagram-layout">
+      <div class="diagram-shell" id="diagram-shell">
+        <div class="diagram-top"><div class="diagram-status">Haz clic en un componente para inspeccionarlo</div><div class="filters" role="group" aria-label="Filtrar componentes"><button class="filter active" data-filter="all">Todos</button><button class="filter" data-filter="existing">Actual</button><button class="filter" data-filter="proposed">Propuesto</button></div></div>
+        <div class="graph-scroll"><svg id="c4-graph" class="graph-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 710" role="img" aria-labelledby="graph-title graph-intro"></svg></div>
+        <div class="diagram-foot"><div class="legend"><span><i class="swatch"></i> Actual</span><span><i class="swatch future"></i> Propuesto</span><span><i class="swatch ext"></i> Externo</span></div><span>En móvil, desliza ↔ · Actual ≠ Propuesto</span></div>
+      </div>
+      <aside class="inspector" id="inspector" aria-live="polite"><div class="inspector-kicker">Inspector de componentes</div><h3 id="inspect-title">Selecciona un elemento</h3><span class="status-tag" id="inspect-status">Modelo C4</span><p id="inspect-description">Explora nodos y relaciones para conocer su responsabilidad, tecnologías, dependencias y controles de seguridad.</p><div class="divider"></div><div class="inspector-subtitle">Tecnologías / Artefactos</div><div class="tag-list" id="inspect-techs"><span class="tag">C4</span><span class="tag">Logixtic</span></div><div class="inspector-subtitle">Consideraciones</div><div class="callout" id="inspect-note"><strong>Regla cero:</strong> no modificar contenido aprobado ni fusionar la rama con main sin autorización.</div></aside>
+    </div>
+    <div class="flow-note" id="graph-note"><strong>Regla comercial:</strong> el software es el protagonista; el barco, avión y camión ilustran operaciones controladas por Logixtic, no servicios de transporte prestados por la empresa.</div>
+  </section>
+  <section id="journey-view" class="view" aria-label="Narrativa visual interactiva">
+    <header class="section-head"><div><div class="section-kicker">EXPERIENCIA / STORYBOARD</div><h2>Motion journey: carga → tablet → plataforma</h2><p>Guion propuesto para GSAP ScrollTrigger y Motion, preservando los títulos y descripciones originales del home.</p></div></header>
+    <div class="journey-wrap">
+      <div class="story-scene"><span class="scene-head" id="scene-head">01 / MUNDO LOGÍSTICO</span><div class="scene-inner" id="scene-inner"></div><div class="scene-caption">Previsualización esquemática, no video final ni captura de producto.</div></div>
+      <div class="steps" id="story-steps"></div>
+    </div>
+    <div class="flow-note"><strong>Diseño de movimiento:</strong> usar escenas 2.5D (imágenes por capas + parallax + transformaciones 3D CSS) inicialmente; GSAP ScrollTrigger únicamente en 1–2 secuencias principales, respetando <code>prefers-reduced-motion</code> y ofreciendo una imagen estática en móviles modestos. El texto que aparezca en las escenas se obtiene del diccionario actual, no se reescribe.</div>
+  </section>
+  <section id="stack-view" class="view" aria-label="Tecnologías y decisiones">
+    <header class="section-head"><div><div class="section-kicker">TECH STACK / BASE REAL VS OBJETIVO</div><h2>Una evolución, no una reescritura</h2><p>Componentes presentes en <code>quick-build-phase</code> y servicios nuevos que integraremos por etapas.</p></div></header>
+    <div class="stack-grid" id="stack-grid"></div>
+    <header class="section-head" style="margin-top:30px"><div><div class="section-kicker">ADRs / DECISIONES DE ARQUITECTURA</div><h2>Decisiones que protegen el proyecto</h2><p>Reglas para la implementación y futuras revisiones técnicas.</p></div></header>
+    <div class="adrs" id="adr-grid"></div>
+  </section>
+  <section id="roadmap-view" class="view" aria-label="Fases de implementación">
+    <header class="section-head"><div><div class="section-kicker">PHASED DELIVERY / CLAUDE CODE</div><h2>Ruta incremental sin tocar main</h2><p>Cada fase produce un corte demostrable, pruebas y un commit aislado en <code>primera-version</code>. Ningún merge automático.</p></div></header>
+    <div class="roadmap-grid" id="phase-grid"></div>
+    <div class="flow-note"><strong>Requisitos transversales:</strong> preservar ES / EN / PT-BR, SEO, enlaces a HubSpot / WhatsApp / ROI existente, logos e imágenes oficiales; mantener accesibilidad, tests, métricas, seguridad, control del costo de IA, y evitar introducir tracking real o datos confidenciales en la web pública sin integración autorizada.</div>
+  </section>
+  <footer class="footer"><span>Logixtic Experience v2 · Documento de arquitectura vivo · Elaborado a partir del código actual del repositorio, sin modificarlo.</span><span>GitHub: <a href="https://github.com/jaimecardona-lgtm/quick-build-phase" target="_blank" rel="noopener noreferrer">quick-build-phase</a> · <kbd>←</kbd> / <kbd>→</kbd> cambiar pestaña · <kbd>Esc</kbd> salir de pantalla completa</span></footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  const ns='http://www.w3.org/2000/svg';
+  const COLORS={existing:'#66c1f0',proposed:'#b49aff',external:'#f1bb6e',risk:'#f08f96'};
+  const statusNames={existing:'Implementado / existente',proposed:'Arquitectura objetivo / por implementar',external:'Sistema o proveedor externo',risk:'Riesgo a remediar'};
+  const node=(id,x,y,w,h,title,stack,type,icon,desc,technologies,note)=>({id,x,y,w,h,title,stack,type,icon,desc,technologies,note});
+  const edge=(from,to,d,label,lx,ly)=>({from,to,d,label,lx,ly});
+  const diagrams={
+    c1:{kicker:'C4 / NIVEL 1',title:'System Context',intro:'Quién utiliza la experiencia web y qué sistemas externos participan. El producto operativo Logixtic sigue separado del sitio comercial.',note:'La audiencia compra software B2B, no servicios de transporte. En la narrativa, cada avión, barco y camión se conecta visualmente con un tablero de gestión y trazabilidad.',bounds:[{x:424,y:130,w:480,h:422,label:'SISTEMA DE INTERÉS · EXPERIENCIA WEB LOGIXTIC'}],nodes:[
+      node('visitor',60,150,285,138,['Visitantes B2B'],['Agentes de carga · equipos','comerciales y operativos'],'external','👤','Navegan sin iniciar sesión, conocen funcionalidades, consultan demos y calculan ROI.',['Navegador web','Acceso público'],'No acceden a registros de operaciones reales ni a información administrativa.'),
+      node('leaders',60,408,285,138,['Directivos y editores'],['Personal interno autorizado'],'external','👔','Administran mensajes, artículos, medios y contenido aprobado desde un CMS autenticado.',['Supabase Auth','RBAC'],'Los permisos deben validarse en el servidor y cada publicación queda auditada.'),
+      node('website',475,230,380,220,['Logixtic Experience'],['Sitio comercial + CMS +','ROI + asistente + escenas'],'existing','WEB','Aplicación existente en TanStack Start, objetivo de evolución visual. El CMS, la IA conectada y la API FastAPI son funcionalidades futuras.',['React 19','TanStack Start','Tailwind 4','GSAP / Motion'],'Preservar textos, títulos, cifras, logos, enlaces, SEO y traducciones existentes.'),
+      node('saas',1050,80,320,137,['Logixtic operativo'],['Producto SaaS existente'],'external','SaaS','La plataforma empresarial que se promociona. Una posible integración de tracking se realizará solamente con API y autorización verificadas.',['Tenant demo','API futura'],'El sitio web NO es el motor real de operaciones ni debe acceder a tenants sin autorización.'),
+      node('sales',1050,294,320,137,['Canales comerciales'],['HubSpot · WhatsApp · blog','y ROI externos existentes'],'external','CRM','La landing ya enlaza reuniones, WhatsApp, artículos y un diagnóstico ROI externo.',['HubSpot','WhatsApp','Lovable ROI'],'Conservar enlaces vigentes y parámetros de atribución UTM.'),
+      node('llm',1050,510,320,137,['OpenRouter'],['Proveedor de modelos LLM'],'external','AI','Proveedor de inferencia del futuro asistente comercial y copiloto editorial. Llamadas solamente desde FastAPI.',['OpenRouter API','Modelos configurables'],'Nunca publicar API keys ni enviar datos privados del tenant al asistente público.'),
+    ],edges:[edge('visitor','website','M345 220 H412 V290 H475','EXPLORA',380,214),edge('leaders','website','M345 477 H412 V390 H475','ADMINISTRA',381,465),edge('website','saas','M855 286 H955 V146 H1050','DEMO / FUTURO API',962,138),edge('website','sales','M855 355 H1050','CTA',961,345),edge('website','llm','M855 404 H953 V579 H1050','INFERENCIA',957,570)]},
+    c2:{kicker:'C4 / NIVEL 2',title:'Container Diagram',intro:'Arquitectura del frontend actual y los contenedores objetivo. FastAPI se despliega por separado de Lovable Cloud; no corre Python dentro del frontend.',note:'Separación intencional: TanStack Start conserva SSR, navegación, SEO y motion; FastAPI centraliza operaciones de negocio y OpenRouter. Supabase/Lovable Cloud ofrece identidad, datos y archivos. El producto SaaS de Logixtic no se modifica.',bounds:[{x:298,y:36,w:804,h:611,label:'LOGIXTIC EXPERIENCE · APLICACIÓN WEB EVOLUTIVA'}],nodes:[
+      node('browser',36,247,222,153,['Navegador B2B'],['Web pública / área admin'],'external','UX','Cliente HTTP que muestra el sitio, renderiza motion y se autentica únicamente para operaciones internas.',['Chrome / Firefox / Safari','Responsive'],'Sin claves privadas; evitar dependencias de WebGL obligatorio.'),
+      node('start',330,88,323,176,['Web + SSR'],['React 19 · TanStack Start','Vite 8 · Tailwind 4'],'existing','WEB','Frontend real del repositorio con rutas, SEO, traducciones, animaciones y contenido local. Se añadirán motion components y cliente API.',['TypeScript','Motion','GSAP ScrollTrigger'],'Mantener el contenido y rutas actuales. SSR responde HTML público; proteger datos en backend.'),
+      node('api',743,88,327,176,['API de negocio'],['FastAPI · Pydantic 2','httpx · Python 3.12+'],'proposed','API','Backend propio para respuestas del agente, calculadora, control del CMS, leads, auditoría y autorizaciones.',['Python','FastAPI','Pydantic','httpx'],'No duplicar el login: reutilizar Auth de Lovable Cloud y verificar JWT en FastAPI.'),
+      node('cloud',1153,82,255,202,['Lovable Cloud'],['PostgreSQL · Auth','Storage · RLS'],'proposed','DB','Servicios administrados de identidad, persistencia, archivos y controles RLS; validar activación y compatibilidad del proyecto antes de aplicarlos.',['PostgreSQL','Supabase Auth','Storage','RLS'],'Service role estrictamente del lado del servidor. Acceso público solo a información publicada.'),
+      node('product',330,443,323,147,['Logixtic SaaS'],['Tenant operacional existente'],'external','SaaS','Software operativo separado; tracking y trazabilidad públicos serán simulaciones hasta disponer de API y permisos.',['Logixtic demo','Integración futura'],'Prohibido consultar datos de cliente por scraping o exposición directa de claves.'),
+      node('links',743,443,327,147,['Canales y ROI externo'],['HubSpot · WhatsApp','Blog + diagnóstico ROI'],'existing','EXT','Integraciones de enlace presentes. Se mantienen mientras se evalúa integrar módulos nuevos sin romper conversiones.',['HubSpot','WhatsApp','ROI externo'],'No reemplazar los enlaces comerciales aprobados en fase visual.'),
+      node('router',1153,451,255,147,['OpenRouter API'],['Inferencia LLM + fallback'],'external','LLM','Proveedor externo consumido por FastAPI por una conexión autenticada con secreto de servidor.',['OpenRouter','HTTPS'],'Timeout, fallback, presupuesto, límites y logging sin información sensible.'),
+    ],edges:[edge('browser','start','M258 292 H294 V189 H330','HTTPS',292,280),edge('start','api','M653 174 H743','JSON / HTTPS',695,162),edge('api','cloud','M1070 165 H1153','AUTH / DATA',1110,154),edge('start','product','M490 264 V443','LINK DEMO',541,354),edge('start','links','M653 222 H687 V509 H743','CTAs',700,378),edge('api','router','M1070 244 H1115 V520 H1153','LLM',1129,434)]},
+    c3:{kicker:'C4 / NIVEL 3',title:'Component Diagram · FastAPI',intro:'Componentes lógicos del backend Python objetivo. Ninguno está implementado todavía en la rama inspeccionada.',note:'El backend actúa como frontera de confianza. El motor ROI es determinista; la IA se limita a explicar resultados, consultar contenido aprobado y gestionar herramientas autorizadas. Las funciones editoriales requieren revisión humana.',bounds:[{x:311,y:28,w:793,h:650,label:'CONTENEDOR PROPUESTO · FASTAPI'}],nodes:[
+      node('gateway',43,299,220,131,['Web / SSR cliente'],['API client tipado'],'existing','WEB','El frontend invoca endpoints públicos o autenticados por HTTPS. Sigue sirviendo la landing sin depender de FastAPI para mostrar textos.',['TanStack Start','Zod','fetch'],'No usar secretos ni exponer tokens de administración al navegador.'),
+      node('auth',347,68,269,120,['AuthGuard + RBAC'],['JWT · JWKS · roles'],'proposed','SEC','Valida firmas, emisor y audiencia del token; consulta rol del usuario y aplica autorización de servidor.',['Supabase Auth','JWKS','Pydantic'],'No confiar en roles enviados en JSON del cliente. Defensa por endpoint.'),
+      node('cms',347,218,269,120,['ContentService'],['Secciones · versiones','workflow editorial'],'proposed','CMS','Administra borradores, publicación autorizada, textos por idioma, historial y rollback de contenido.',['FastAPI','PostgreSQL'],'Nunca sobreescribir el baseline de contenido sin acción explícita aprobada.'),
+      node('roi',347,368,269,120,['RoiService'],['Cálculo reproducible','configuración de escenarios'],'proposed','ROI','Calcula costos y beneficios usando fórmulas deterministas y supuestos auditables.',['Pydantic','Decimal','pytest'],'Separar estimaciones hipotéticas de métricas verificadas. Reutilizar ROI existente cuando sea posible.'),
+      node('assistant',347,518,269,120,['AgentOrchestrator'],['Prompts · tools · fallback','streaming controlado'],'proposed','AI','Orquesta chat público y asistente editorial; limita herramientas, parámetros, tokens y costo por sesión.',['httpx','OpenRouter','SSE'],'No inventar precios ni consultar información privada de operaciones.'),
+      node('knowledge',722,108,318,120,['KnowledgeService'],['FAQ · planes · blog','textos aprobados'],'proposed','RAG','Consulta inicialmente contenido aprobado del repositorio; después puede incorporar búsqueda indexada sin reescribir fuentes.',['PostgreSQL','Embeddings opcionales'],'Fuentes versionadas y aisladas del tenant operacional.'),
+      node('storage',722,286,318,120,['Persistence / Audit'],['DB repository · assets','log de publicaciones'],'proposed','DATA','Escribe leads, contenido editorial, historiales y auditoría; aplica permisos antes de cada consulta.',['SQLAlchemy 2','Alembic','Storage'],'RLS para accesos de cliente, autorización explícita cuando se usa servicio privilegiado.'),
+      node('leads',722,472,318,120,['LeadService / Limits'],['Captación · consentimiento','rate limit · métricas'],'proposed','CRM','Registra solicitudes, aplica reglas antispam y límites de llamadas al chat y formularios.',['Pydantic','FastAPI','PostgreSQL'],'Validar protección de datos, consentimiento y retención.'),
+      node('supa',1140,158,263,146,['Lovable Cloud'],['Postgres · Auth · Storage'],'external','DB','Infraestructura administrada compartida por frontend y backend.',['PostgreSQL','Supabase Auth'],'El backend no es una copia de toda la base de datos operativa.'),
+      node('provider',1140,443,263,146,['OpenRouter'],['Models · fallback'],'external','LLM','Servicio externo de inferencia de modelos configurables.',['OpenRouter API','HTTPS'],'Proteger claves, limitar costo y usar modo dry-run en desarrollo.'),
+    ],edges:[edge('gateway','auth','M263 344 H302 V128 H347','JWT',302,278),edge('gateway','cms','M263 364 H347','CMS',302,353),edge('gateway','roi','M263 379 H302 V421 H347','ROI',297,419),edge('gateway','assistant','M263 393 H300 V575 H347','CHAT',293,535),edge('cms','knowledge','M616 265 H670 V170 H722','READ',668,161),edge('cms','storage','M616 285 H722','DRAFTS',668,276),edge('assistant','knowledge','M616 563 H679 V206 H722','CONTEXT',667,372),edge('assistant','leads','M616 590 H722','TOOLS',668,580),edge('storage','supa','M1040 347 H1096 V225 H1140','DATA',1093,213),edge('knowledge','supa','M1040 179 H1140','READ',1090,170),edge('assistant','provider','M616 604 H1082 V515 H1140','LLM',1067,506)]},
+    c4:{kicker:'C4 / NIVEL 4',title:'Código · modules & contracts',intro:'Mapa orientativo de archivos: reutiliza módulos React actuales y propone un backend desacoplado. No es una lista de archivos ya creados.',note:'No editar src/routeTree.gen.ts: es generado. Evitar agregar dependencias 3D costosas en la primera escena; aislar nuevos estilos. La implementación del agente comienza con un adaptador OpenRouter mockeable y pruebas sin credenciales.',bounds:[{x:35,y:40,w:673,h:605,label:'FRONTEND · EXISTE / EVOLUCIONA'},{x:750,y:40,w:668,h:605,label:'BACKEND PYTHON · POR CREAR'}],nodes:[
+      node('routerfiles',67,83,284,138,['src/routes/index.tsx'],['Home + SSR + SEO'],'existing','TSX','Ruta actual que compone la landing de Logixtic, con metadatos y JSON-LD.',['TanStack Router','SSR'],'No alterar los metadatos comerciales ni el contenido autorizado.'),
+      node('contentfiles',399,83,274,138,['src/lib/content.ts'],['src/lib/i18n.tsx'],'existing','i18n','Catálogo ES/EN/PT-BR del contenido aprobado que debemos congelar en una referencia de pruebas.',['TypeScript','i18n'],'Los módulos con copys locales también deben verificarse.'),
+      node('motionfiles',67,273,284,145,['src/components/motion/*'],['HeroMotion / Journey /','TrackingShowcase'],'proposed','UI','Nuevos componentes para secuencias visuales y efectos sin mutar textos ni reescribir la página.',['GSAP ScrollTrigger','Motion','CSS 3D'],'Fallback estático, imágenes locales/optimizadas y reduced motion.'),
+      node('currentfiles',399,273,274,145,['src/components/site/*'],['Hero / Flow / LogixAI /','Evidence / Plans / FAQ'],'existing','UI','Componentes reutilizables con carruseles, interfaces, indicadores y enlaces existentes.',['React 19','Tailwind 4'],'Integrar el nuevo motion mediante composición y feature flag.'),
+      node('webclient',224,490,290,125,['src/lib/api/*'],['Cliente API tipado'],'proposed','HTTP','Contratos Zod y wrapper HTTPS para llamadas de chat, CMS y ROI.',['TypeScript','Zod','fetch'],'No llamar OpenRouter directamente desde el navegador.'),
+      node('entry',785,83,286,138,['backend/app/main.py'],['FastAPI app factory','/api/v1/health'],'proposed','PY','Entry point, middleware CORS, rutas, manejo de errores y documentación OpenAPI.',['FastAPI','Uvicorn','Pydantic'],'Configuración por entorno; CORS restrictivo en staging y producción.'),
+      node('api',1118,83,263,138,['api/v1/*.py'],['content · roi · ai ·','leads · auth/me'],'proposed','API','Routers públicos y protegidos con validación de entrada y dependencia RBAC.',['FastAPI','Pydantic'],'No crear una segunda autenticación con contraseñas.'),
+      node('services',785,273,286,145,['services/*.py'],['roi_service · content ·','agent_orchestrator'],'proposed','SRV','Lógica de negocio desacoplada de HTTP, con proveedores inyectables para test.',['Python 3.12+','Decimal','httpx'],'El ROI no depende de un LLM para su fórmula.'),
+      node('providers',1118,273,263,145,['integrations/*.py'],['openrouter_client','cloud_repository'],'proposed','EXT','Adaptadores concretos de los proveedores externos con timeouts, retries y fallback acotado.',['OpenRouter','Supabase'],'Sin secretos en git. Cliente mock en pruebas.'),
+      node('tests',924,490,295,125,['backend/tests/*'],['pytest · unit · API','contract tests'],'proposed','TEST','Pruebas para health, ROI, límites, auth, estructura y respuestas simuladas.',['pytest','httpx ASGI','ruff'],'Incorporar pruebas de invariantes del contenido frontend.'),
+    ],edges:[edge('routerfiles','currentfiles','M351 157 H372 V330 H399','RENDER',378,240),edge('contentfiles','currentfiles','M536 221 V273','COPY',551,247),edge('motionfiles','currentfiles','M351 342 H399','COMPOSE',376,332),edge('currentfiles','webclient','M530 418 V454 H360 V490','HTTPS',438,448),edge('entry','api','M1071 159 H1118','ROUTES',1093,150),edge('entry','services','M928 221 V273','DI',942,247),edge('api','providers','M1250 221 V273','ADAPTER',1292,249),edge('services','providers','M1071 341 H1118','CALLS',1093,331),edge('services','tests','M928 418 V490','TEST',943,454),edge('webclient','entry','M514 559 H745 V149 H785','HTTPS',712,545)]},
+    deploy:{kicker:'C4 / INFRAESTRUCTURA',title:'Deployment & DevOps',intro:'Aislamiento de ramas, preview seguro y servicios cloud propuestos; producción se mantiene intacta hasta aprobación explícita.',note:'Lovable sincroniza el proyecto conectado según la configuración del repositorio. Confirmar qué rama admite el editor antes de usarlo; los commits en primera-version deben revisarse en un despliegue aislado. FastAPI se ejecuta local o en un host Python aparte (Render como opción de primera salida).',bounds:[{x:20,y:38,w:690,h:620,label:'CONTROL DE CAMBIOS · NO TOCAR MAIN'},{x:750,y:38,w:677,h:620,label:'RUNTIME OBJETIVO · STAGING / POSTERIOR PRODUCCIÓN'}],nodes:[
+      node('dev',55,97,274,152,['Desarrollador + Claude'],['Claude Code · Git local','rama primera-version'],'existing','DEV','Claude Code trabaja en la rama aprobada. Auditoría inicial, tests y cambios pequeños con revisión manual.',['Claude Code','Git','Python .venv'],'Abortar si git branch no coincide o existen cambios sin guardar.'),
+      node('branch',395,97,273,152,['GitHub privado'],['PR opcional · CI','sin merge a main'],'existing','GIT','Repositorio quick-build-phase. main y primera-version nacen del mismo commit verificado.',['GitHub','Pull Requests','Checks'],'No push a main, no force push, no rebase destructivo, no merge automático.'),
+      node('local',55,359,274,149,['Dev local'],['TanStack Start :3000','FastAPI :8000'],'proposed','LOCAL','Pruebas en entorno local o preview de rama con servicios mock y sin credenciales reales.',['npm/bun','uv / .venv','pytest'],'Evitar modificar el intérprete de Python global.'),
+      node('preview',395,359,273,149,['Preview aislado'],['Branch build / staging','revisión por jefes'],'proposed','PRE','Vista previa de aceptación visual y funcional, distinta del dominio publicado.',['CI','Preview URL'],'No asumir que Lovable previsualiza automáticamente ramas secundarias.'),
+      node('front',781,93,300,166,['Web / SSR hosting'],['Lovable (actual) +','dominio al aprobar'],'existing','WEB','Hospedaje y build del proyecto frontend actual. Mantener el despliegue oficial sin cambios hasta aprobación.',['Lovable','TanStack Start SSR'],'Validar configuración de preview para primera-version.'),
+      node('python',781,355,300,154,['FastAPI hosting'],['Local primero · Render','para staging/piloto'],'proposed','API','Proceso Python ASGI separado; luego puede migrarse a infraestructura empresarial.',['Docker','Uvicorn','Render (propuesto)'],'Secretos de OpenRouter y Cloud solo en variables del servidor.'),
+      node('data',1141,93,245,166,['Lovable Cloud'],['Auth · Postgres','Storage · backups'],'proposed','DB','Persistencia administrada para la web comercial y el panel interno.',['PostgreSQL','Supabase Auth','RLS'],'Definir proyecto/entorno y aplicar migraciones controladas.'),
+      node('model',1141,355,245,154,['OpenRouter'],['Proveedor LLM','modelo + fallback'],'external','AI','Inferencia remota. No forma parte de la infraestructura de Lovable.',['API HTTPS','Modelos env'],'Registrar uso sin guardar prompts con datos sensibles.'),
+    ],edges:[edge('dev','branch','M329 170 H395','PUSH BRANCH',361,160),edge('dev','local','M190 249 V359','DEV',217,311),edge('branch','preview','M528 249 V359','CI',549,311),edge('preview','front','M668 411 H733 V177 H781','REVISIÓN',732,291),edge('local','python','M329 435 H781','HTTP',563,424),edge('front','data','M1081 168 H1141','AUTH',1111,158),edge('python','data','M1081 397 H1110 V214 H1141','DB',1122,299),edge('python','model','M1081 440 H1141','LLM',1110,429)]}
+  };
+  const story=[
+    {title:'Escena 01 · El mundo físico',short:'Avión, barco y camión en movimiento; el visitante reconoce la logística.',headline:'La operación ocurre en muchos lugares.',mode:'transport'},
+    {title:'Escena 02 · Zoom-out',short:'La cámara se aleja: las rutas y vehículos convergen hacia una interfaz.',headline:'Todo converge en una sola vista.',mode:'zoom'},
+    {title:'Escena 03 · Tablet',short:'La cámara revela un dashboard Logixtic dentro de una tablet.',headline:'El software toma el protagonismo.',mode:'tablet'},
+    {title:'Escena 04 · Control',short:'La tablet da paso a módulos reales: trazabilidad, documentos, costos.',headline:'Tracking · Trazabilidad · Control',mode:'dashboard'},
+    {title:'Escena 05 · Conversión',short:'Se recupera el CTA vigente: demo, ROI y contacto sin cambiar copy.',headline:'Del movimiento a la decisión.',mode:'cta'}
+  ];
+  const stack=[
+    ['⚛','Frontend actual','Continuamos con el framework real del repositorio. Conserva SSR, SEO y traducciones.', ['React 19','TypeScript','TanStack Start','TanStack Router','Vite 8','Tailwind CSS 4'],'existing'],
+    ['✨','Motion cinematográfico','Coreografía de scroll sin depender de un motor 3D pesado en la primera entrega.', ['GSAP ScrollTrigger','Motion for React','CSS transforms','SVG','reduced-motion'],'proposed'],
+    ['🧠','Backend de negocios','API Python separada para chat, ROI, CMS y leads. Contratos OpenAPI.', ['FastAPI','Python 3.12+','Pydantic 2','httpx','Uvicorn'],'proposed'],
+    ['☁','Datos e identidad','Aprovechar servicios administrados de Lovable Cloud para la web comercial.', ['PostgreSQL','Supabase Auth','Storage','RLS','Alembic (si aplica)'],'proposed'],
+    ['🤖','Asistente IA','El Logix actual es una demo de copilotos; el chat real será otro módulo, con fuentes aprobadas.', ['OpenRouter','Fallback','Tools allowlist','SSE','Rate limits'],'proposed'],
+    ['🛠','Desarrollo y operación','Rama aislada + tests, previews y un deployment Python independiente.', ['GitHub','Claude Code','pytest','Vitest (opcional)','Docker','Render (propuesto)'],'proposed']
+  ];
+  const adrs=[
+    ['ADR-001 · Preservar negocio','Texto exacto de src/lib/content.ts, i18n y copys locales; tres idiomas; enlaces comerciales; logos y cifras. Diseño ≠ reescritura.'],
+    ['ADR-002 · Escenas ligeras','Empezar con HTML/CSS/SVG, GSAP y Motion; WebGL opcional después de medir rendimiento. Accesibilidad obligatoria.'],
+    ['ADR-003 · API desacoplada','FastAPI en host Python; no duplicar TanStack SSR ni el login de Lovable Cloud. HTTP tipado y validación de JWT.'],
+    ['ADR-004 · ROI determinista','Cálculo con Decimal, hipótesis transparentes, tests; verificar calculadora externa antes de desarrollar otra.'],
+    ['ADR-005 · IA con frontera','OpenRouter solo servidor, timeouts, fallback, límites, conocimiento aprobado y herramientas auditables. Sin acceso directo a tenants.'],
+    ['ADR-006 · Seguridad existente','Revisar /planeacion: la ruta solo tiene noindex y localStorage, no se observa guard de autenticación. No publicar datos sensibles.']
+  ];
+  const phases=[
+    ['00','Auditoría + content lock','Inventariar textos, assets, CTAs, rutas, traducciones, animaciones y deuda técnica. Check de rama exacta.','Aceptación: baseline verificable; no diff comercial.'],
+    ['01','Hero cinematográfico','Scene director con 3 vehículos, zoom-out y tablet de producto; se inyecta en el Hero actual mediante flag.','Aceptación: original intacto con flag desactivado.'],
+    ['02','Tracking + control','Anclar animaciones a las secciones Flow / Evidence existentes, mostrar screenshots reales y estados simulados.','Aceptación: demo etiquetada y sin datos reales.'],
+    ['03','FastAPI foundation','Backend aislado: health, config, CORS, OpenAPI, tests, Docker y conectores mockeables.','Aceptación: pytest OK y sin keys obligatorias.'],
+    ['04','CMS / ROI / Auth','Lovable Cloud, roles, borradores/versiones, validación RBAC; aprovechar ROI existente.','Aceptación: permisos probados y cálculo reproducible.'],
+    ['05','OpenRouter + agente','Chat de leads, fuentes aprobadas, streaming, fallback y presupuestos, con editor copiloto separado.','Aceptación: no alucinación de datos privados; límites testeados.'],
+    ['06','QA + candidato','Performance, SEO, responsive, accesibilidad, seguridad, aprobación directiva y PR sin merge.','Aceptación: demo aprobada por jefes antes de main.']
+  ];
+  const svg=document.getElementById('c4-graph');let current='c1',filter='all',selectedId=null;
+  const el=(tag,attrs={},content)=>{const v=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,val])=>v.setAttribute(k,String(val)));if(content!=null)v.textContent=content;return v};
+  const txt=(str,x,y,opts={})=>el('text',{x,y,fill:opts.fill||'#d5edff','font-family':'Inter,Segoe UI,system-ui,sans-serif','font-size':opts.size||16,'font-weight':opts.weight||500,'letter-spacing':opts.spacing||0,...(opts.anchor?{'text-anchor':opts.anchor}:{})},str);
+  const groups=[];
+  function render(){
+    const data=diagrams[current];if(!data)return;
+    document.getElementById('graph-kicker').textContent=data.kicker;document.getElementById('graph-title').textContent=data.title;document.getElementById('graph-intro').textContent=data.intro;document.getElementById('graph-note').innerHTML='<strong>Nota de arquitectura:</strong> '+data.note;
+    svg.replaceChildren();
+    const defs=el('defs');const pattern=el('pattern',{id:'grid',width:30,height:30,patternUnits:'userSpaceOnUse'});pattern.append(el('path',{d:'M 30 0 L 0 0 0 30',fill:'none',stroke:'#88b6d6', 'stroke-width':.55,opacity:.12}));defs.append(pattern);
+    const marker=el('marker',{id:'arrowhead',viewBox:'0 0 12 12',refX:10,refY:6,markerWidth:7,markerHeight:7,orient:'auto-start-reverse'});marker.append(el('path',{d:'M 1 1 L 11 6 L 1 11',fill:'none',stroke:'#87b6d4','stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'}));defs.append(marker);svg.append(defs);
+    svg.append(el('rect',{x:0,y:0,width:1460,height:710,rx:14,fill:'#0b1728'}));svg.append(el('rect',{x:0,y:0,width:1460,height:710,fill:'url(#grid)'}));
+    data.bounds.forEach(b=>{const r=el('rect',{x:b.x,y:b.y,width:b.w,height:b.h,rx:23,fill:'#163043', 'fill-opacity':'.23',stroke:'#46748e','stroke-width':1.5,'stroke-dasharray':'9 8'});svg.append(r);svg.append(txt(b.label,b.x+21,b.y+29,{fill:'#78b1cb',size:12,weight:800,spacing:1.5}));});
+    data.edges.forEach(e=>{const dim=filter!=='all'&&!((data.nodes.find(n=>n.id===e.from)?.type===filter)||(data.nodes.find(n=>n.id===e.to)?.type===filter));const line=el('path',{d:e.d,fill:'none',stroke:'#7ba7c4','stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round','marker-end':'url(#arrowhead)',opacity:dim?.12:.83,class:'edge-graph'+(dim?' dim':'')});line.dataset.from=e.from;line.dataset.to=e.to;svg.append(line);if(e.label){const width=Math.max(e.label.length*6.4+18,42);svg.append(el('rect',{x:e.lx-width/2,y:e.ly-14,width,height:20,rx:6,fill:'#10263b',stroke:'#284b63'}));svg.append(txt(e.label,e.lx,e.ly,{size:10,fill:'#b2d7eb',weight:750,anchor:'middle'}));}});
+    data.nodes.forEach(n=>{
+      const isDim=filter!=='all'&&n.type!==filter;
+      const g=el('g',{transform:`translate(${n.x},${n.y})`,class:'node-graph'+(isDim?' dim':'')+(n.id===selectedId?' selected':''),role:'button',tabindex:0,'aria-label':n.title.join(' ')});g.dataset.id=n.id;
+      const color=COLORS[n.type]||COLORS.proposed;
+      g.append(el('rect',{class:'node-main',x:0,y:0,width:n.w,height:n.h,rx:17,fill:'#12283c',stroke:color,'stroke-width':2}));
+      g.append(el('rect',{x:0,y:0,width:5,height:n.h,rx:3,fill:color}));
+      const iconWidth=50;g.append(el('rect',{x:17,y:17,width:iconWidth,height:30,rx:8,fill:color,'fill-opacity':'.15',stroke:color,'stroke-opacity':'.3'}));
+      g.append(txt(n.icon,42,37,{size:12,weight:800,fill:color,anchor:'middle',spacing:'.4'}));
+      g.append(txt(n.type==='existing'?'ACTUAL':n.type==='external'?'EXTERNO':'OBJETIVO',n.w-16,36,{size:9,weight:800,fill:color,anchor:'end',spacing:1.1}));
+      const ytitle= n.h>=175 ? 76:75;
+      const titleSz= n.title.some(s=>s.length>25)?17:19;
+      n.title.forEach((line,i)=>g.append(txt(line,18,ytitle+i*23,{size:titleSz,weight:750,fill:'#f2f8ff'})));
+      const stackY=ytitle+n.title.length*23+4; n.stack.slice(0,3).forEach((line,i)=>g.append(txt(line,18,stackY+i*17,{size:12,fill:'#9fbfd4',weight:500})));
+      g.addEventListener('click',()=>select(n.id));g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();select(n.id);}});
+      svg.append(g);
+    });
+    if(!selectedId || !data.nodes.some(x=>x.id===selectedId)){select(data.nodes.find(x=>x.type==='proposed')?.id||data.nodes[0].id,false);}else{select(selectedId,false)}
+  }
+  function select(id,paint=true){
+    const n=diagrams[current].nodes.find(x=>x.id===id);if(!n)return;selectedId=id;
+    document.getElementById('inspect-title').textContent=n.title.join(' ');
+    const st=document.getElementById('inspect-status');st.textContent=statusNames[n.type];st.className='status-tag '+(n.type==='existing'?'':n.type);
+    document.getElementById('inspect-description').textContent=n.desc;
+    document.getElementById('inspect-techs').replaceChildren(...n.technologies.map(t=>{const e=document.createElement('span');e.className='tag';e.textContent=t;return e}));
+    document.getElementById('inspect-note').textContent=n.note;
+    svg.querySelectorAll('.node-graph').forEach(g=>g.classList.toggle('selected',g.dataset.id===id));
+    svg.querySelectorAll('.edge-graph').forEach(g=>{if(!g.classList.contains('dim'))g.setAttribute('stroke',g.dataset.from===id||g.dataset.to===id?'#6ae9e6':'#7ba7c4');g.setAttribute('stroke-width',g.dataset.from===id||g.dataset.to===id?'3':'2');});
+  }
+  function show(tab){
+    if(diagrams[tab]){current=tab;selectedId=null;document.getElementById('graph-view').classList.add('active');document.getElementById('journey-view').classList.remove('active');document.getElementById('stack-view').classList.remove('active');document.getElementById('roadmap-view').classList.remove('active');render();}
+    else {document.getElementById('graph-view').classList.remove('active');['journey','stack','roadmap'].forEach(v=>document.getElementById(v+'-view').classList.toggle('active',v===tab));}
+    document.querySelectorAll('.tab').forEach(btn=>{const on=btn.dataset.tab===tab;btn.classList.toggle('active',on);btn.setAttribute('aria-selected',on?'true':'false');});
+    if(location.hash!=='#'+tab)history.replaceState(null,'','#'+tab);
+  }
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>show(btn.dataset.tab)));
+  document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.filter;document.querySelectorAll('.filter').forEach(f=>f.classList.toggle('active',f===btn));render();}));
+  document.addEventListener('keydown',ev=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName||''))return; if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){const tabs=[...document.querySelectorAll('.tab')];const i=tabs.findIndex(t=>t.classList.contains('active'));if(i<0)return;const j=(i+(ev.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;show(tabs[j].dataset.tab);ev.preventDefault();}});
+  document.getElementById('fullscreen').addEventListener('click',()=>{const target=document.getElementById('diagram-shell');if(!document.fullscreenElement && target.requestFullscreen)target.requestFullscreen();else if(document.exitFullscreen)document.exitFullscreen();});
+  document.getElementById('svg-export').addEventListener('click',()=>{const clone=svg.cloneNode(true);clone.setAttribute('xmlns',ns);clone.setAttribute('width','1460');clone.setAttribute('height','710');const payload=new XMLSerializer().serializeToString(clone);const url=URL.createObjectURL(new Blob([payload],{type:'image/svg+xml;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='Logixtic_'+current.toUpperCase()+'_Architecture.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),2500);});
+  document.getElementById('stack-grid').replaceChildren(...stack.map(([icon,title,desc,techs,status])=>{const e=document.createElement('article');e.className='stack-card';e.innerHTML=`<div class="icon">${icon}</div><h3>${title}</h3><p>${desc}</p><div class="techs">${techs.map(t=>`<span class="tag">${t}</span>`).join('')}</div><p style="margin-top:12px;color:${COLORS[status]};font-weight:700;font-size:11px">${status==='existing'?'ACTUAL':'PROPUESTO'}</p>`;return e}));
+  document.getElementById('adr-grid').replaceChildren(...adrs.map(([title,desc])=>{const e=document.createElement('article');e.className='adr';e.innerHTML=`<h4>${title}</h4><p>${desc}</p>`;return e}));
+  document.getElementById('phase-grid').replaceChildren(...phases.map(([number,title,desc,accept])=>{const e=document.createElement('article');e.className='phase';e.innerHTML=`<div class="number">FASE ${number}</div><h3>${title}</h3><p>${desc}</p><small>${accept}</small>`;return e}));
+  const storyWrap=document.getElementById('story-steps');let storyCurrent=0;
+  function showStory(i){storyCurrent=i;const s=story[i];document.getElementById('scene-head').textContent=String(i+1).padStart(2,'0')+' / '+s.title.toUpperCase();const stage=document.getElementById('scene-inner');
+    if(s.mode==='transport'){stage.innerHTML=`<div class="scene-transport"><div class="vehicle">✈️</div><div class="vehicle">🚢</div><div class="vehicle">🚚</div></div><div class="scene-word">${s.headline}</div><div class="scene-sub">Tres modos de transporte; una historia de operación digital.</div>`;}
+    else if(s.mode==='zoom'){stage.innerHTML=`<div class="scene-transport" style="transform:scale(.75);filter:drop-shadow(0 0 15px #4aacc956)"><div class="vehicle">✈️</div><div class="vehicle">🚢</div><div class="vehicle">🚚</div></div><div style="font-size:38px;color:#85e7f0">↓</div><div class="scene-word">${s.headline}</div><div class="scene-sub">Movimiento de cámara: el mundo logístico se integra a un centro de control.</div>`;}
+    else if(s.mode==='tablet'){stage.innerHTML=`<div class="tablet"><header>LOGIXTIC <span>● SYSTEM ONLINE</span></header><div class="data-grid"><div class="data"><small>TRAZABILIDAD</small><strong>Eventos</strong></div><div class="data"><small>CONTROL</small><strong>KPI</strong></div><div class="data"><small>DOCUMENTOS</small><strong>Digital</strong></div><div class="data"><small>OPERACIÓN</small><strong>Unificada</strong></div></div></div><div class="scene-sub">${s.headline} · Vista conceptual; la implementación final mostrará capturas existentes.</div>`;}
+    else if(s.mode==='dashboard'){stage.innerHTML=`<div class="tablet" style="transform:none;width:460px"><header>LOGIXTIC <span>PLATAFORMA</span></header><div class="data-grid"><div class="data"><small>OPERACIONES</small><strong>Tracking</strong></div><div class="data"><small>CLIENTES</small><strong>CRM</strong></div><div class="data"><small>DOCUMENTACIÓN</small><strong>Control</strong></div><div class="data"><small>FINANZAS</small><strong>Margen</strong></div></div></div><div class="scene-sub">${s.headline}. Para producción se utilizarán los screenshots oficiales ya incluidos en el repositorio.</div>`;}
+    else {stage.innerHTML=`<div class="screen" style="position:relative;left:auto;right:auto;top:auto;transform:none;width:480px;max-width:100%;height:198px;display:grid;place-items:center"><div style="font-size:28px;font-weight:850;color:#d6f8ff">LOGIXTIC</div><div style="font-size:13px;color:#8cebe0">Control. Trazabilidad. Rentabilidad.</div><div style="border:1px solid #64d0df;padding:9px 20px;border-radius:50px;color:#e6ffff;font-size:12px">CTA EXISTENTE (sin reescribir)</div></div><div class="scene-sub">${s.headline}</div>`;}
+    [...storyWrap.children].forEach((btn,j)=>btn.classList.toggle('selected',j===i));
+  }
+  story.forEach((s,i)=>{const btn=document.createElement('button');btn.className='step'+(i===0?' selected':'');btn.type='button';btn.innerHTML=`<div class="step-n">${String(i+1).padStart(2,'0')}</div><div><strong>${s.title}</strong><span>${s.short}</span></div>`;btn.addEventListener('click',()=>showStory(i));storyWrap.append(btn)});
+  showStory(0);
+  const tab=decodeURIComponent(location.hash.replace('#',''));show(['c1','c2','c3','c4','deploy','journey','stack','roadmap'].includes(tab)?tab:'c1');
+})();
+</script>
+</body>
+</html>

@@ -3,6 +3,11 @@ import { ArrowRight, Check, Code2, Layers, PenTool, Plug, SearchCheck, Settings,
 import { useDemoUrl } from "@/hooks/use-demo-url";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
+import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
+import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+
+// Línea de expansión: el tren como metáfora de crecimiento por etapas.
+const PLANS_CLIPS = [CINEMATIC_CLIPS.rail];
 
 type Plan = { id: string; name: string; tag?: string; badge?: string; desc: string; items: string[]; featured?: boolean };
 type PlanIcon = typeof Layers;
@@ -108,7 +113,8 @@ export function Plans() {
     </ul>
   );
   return (
-    <section id="planes" aria-labelledby="planes-title" className="section-shell surface-deep">
+    <section id="planes" aria-labelledby="planes-title" className="section-shell surface-deep amb bgseq-host">
+      <CinematicBackgroundSequence clips={PLANS_CLIPS} className="bgseq-veil-strong" />
       <div className="mx-auto max-w-[1180px] px-5 md:px-8">
         <div data-reveal className="reveal-item mx-auto max-w-3xl text-center">
           <h2 id="planes-title" className="section-title-dark">
