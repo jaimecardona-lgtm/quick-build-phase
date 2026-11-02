@@ -21,6 +21,7 @@ _ALLOWED_EXTRA = frozenset(
         "latency_ms",
         "tokens",
         "degradation_reason",
+        "answer_kind",
     }
 )
 _HANDLER_NAME = "logixtic-json"

@@ -118,9 +118,10 @@ class HttpOpenRouterClient:
                 last_error = exc
                 if not exc.retryable:
                     raise
-        raise OpenRouterError(
-            "Todos los modelos configurados fallaron.", retryable=True, kind="http"
-        ) from last_error
+        # Se conserva el motivo real (timeout, quota, network...) para las métricas.
+        if last_error is not None:
+            raise last_error
+        raise OpenRouterError("No hay modelos configurados.", kind="config")
 
     async def _call(
         self,

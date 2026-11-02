@@ -99,6 +99,8 @@ async def ai_health(request: Request) -> dict[str, Any]:
         "knowledge_version": knowledge.version,
         "knowledge_entries": len(knowledge),
         "model_configured": bool(settings.openrouter_primary_model),
+        # Solo presencia (booleano): nunca el valor de la clave.
+        "api_key_configured": bool(settings.openrouter_api_key.get_secret_value()),
         "signature_required": bool(settings.internal_hmac_secret.get_secret_value()),
         "judge_enabled": settings.agent_judge_enabled,
         "engagement_enabled": settings.agent_engagement_enabled,

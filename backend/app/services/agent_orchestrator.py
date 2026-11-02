@@ -23,6 +23,7 @@ from app.integrations.openrouter_client import (
 )
 from app.services import engagement_service, judge_service
 from app.services.budget import CtaCooldown, DailyBudget
+from app.services.conversation import classify_social, social_text
 from app.services.knowledge_service import KnowledgeBase
 
 logger = get_logger(__name__)
@@ -143,10 +144,12 @@ class Metrics:
     latency_ms: int = 0
     tokens: int | None = None
     degradation_reason: str | None = None
+    answer_kind: str = "commercial"
 
     def as_log(self) -> dict[str, object]:
         return {
             "event": "agent_answer",
+            "answer_kind": self.answer_kind,
             "effective_model": self.effective_model,
             "fallback_used": self.fallback_used,
             "judge_status": self.judge_status,
@@ -212,7 +215,19 @@ async def answer(
             suggested = "demo" if engagement.demo_interest else None
 
     hits = runtime.knowledge.search(message, limit=3, locale=locale)
+    intent = classify_social(message)
+    # Saludos, cortesía y despedidas sin contenido comercial, y peticiones de ayuda o aclaración:
+    # respuesta determinista, sin modelo y sin inventar funciones. Con fuente aprobada, un saludo
+    # acompañado de una pregunta se responde como consulta comercial.
+    if intent in ("ambiguous", "clarification") or (intent and not hits):
+        metrics.answer_kind = "social"
+        return _finish(
+            AgentAnswer(text=social_text(intent, locale), model="policy"),
+            metrics,
+            started,
+        )
     if not hits:
+        metrics.answer_kind = "no_source"
         return _finish(
             AgentAnswer(text=texts["no_source"], model="policy", suggested_action=suggested),
             metrics,
