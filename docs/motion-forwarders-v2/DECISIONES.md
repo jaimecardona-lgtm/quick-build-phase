@@ -123,3 +123,25 @@ Captura real del producto: `public/assets/01-plataforma-servicios-menu.webp` (m�
 - **"La información dispersa…":** `logixtic_carrusel_2.jpg.jpeg` como fondo (derivado `public/media/img/bg/logixtic_carrusel_2.webp`, 928 px), recortado al área del portátil (`background-size: 190%`, `background-position: 100% 62%`) con velo 0.90–0.96. Las tres tarjetas se mantienen legibles.
 - **Riesgo:** la pieza original trae un titular ("El tiempo se pierde en tareas que se repiten") y etiquetas de tarjetas. El recorte y el velo los ocultan, pero no se eliminan del archivo. Sin embargo, no los presento como copy.
 - **Alcance:** los tres cambios solo aplican en la variante `forwarders-v2`; 8081 no cambia.
+
+## Imagen de apoyo en el hero (V16)
+
+- **Imagen:** recorte de `aplicacion web.jpg` (puerto, grúas y camiones; `public/media/img/bg/hero-port-trucks.webp`). **Sin la pantalla del portátil** porque muestra la interfaz "VELOCITY" (ajena a Logixtic).
+- **Posición:** columna derecha del hero, centrada verticalmente con el copy; 480 px (40 % del ancho útil a 1440).
+- **Integración:** fade en borde izquierdo, superior, inferior y derecho (máscara), radio 14 px, sombra suave y velo azul noche (0.15–0.45).
+- **Responsive:** en tablet y móvil se oculta; el copy y los CTA no cambian de posición.
+- **Textos:** H1 y CTA sin cambios.
+
+## Encuadre del hero: portátil como protagonista (V17)
+
+- **Composición:** `public/media/img/bg/hero-laptop-logix.webp`, generada a partir de `aplicacion web.jpg`. La pantalla del portátil se reemplazó por la captura real del módulo de servicios de Logixtic (`01-plataforma-servicios-menu.webp`), con transformación de perspectiva y máscara sobre el cuadrado de la pantalla. La interfaz "VELOCITY" original ya no aparece.
+- **Encuadre:** recorte del 30 % al 100 % del ancho y del 10 % al 92 % del alto. El portátil ocupa la mayor parte; el puerto y los contenedores quedan de fondo; el camión queda en el borde izquierdo, bajo el fade.
+- **Tamaño:** 540 px en escritorio (45 % del ancho útil a 1440). Oculto en tablet y móvil.
+- **Limitación:** la pantalla muestra la captura real recortada; el portátil y su base son una fotografía generada. Se mantienen H1 y CTA sin cambios.
+
+## PC protagonista en el hero (V18)
+
+- **Mismo asset:** `public/media/img/aplicacion web.jpg` (mismo PC y misma foto). Se recorta del 36 % al 100 % del ancho y del 13 % al 86 % del alto.
+- **Pantalla:** se sustituye por la captura real del módulo de servicios de Logixtic, con perspectiva. La interfaz "VELOCITY" original no aparece, porque es una interfaz de terceros que no puede presentarse como producto de Logixtic. **Pendiente de confirmación explícita** si se quiere mostrarla.
+- **Tamaño:** 600 px en escritorio (50 % del ancho útil a 1440). Oculto en tablet y móvil.
+- **Contexto:** puerto, contenedores y camión como apoyo secundario, en el fondo y bajo el fade.

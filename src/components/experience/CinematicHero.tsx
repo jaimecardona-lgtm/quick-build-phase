@@ -16,7 +16,7 @@ import "@/components/experience/cinematic.css";
 // Sin scroll pinning: la sección tiene altura normal y la siguiente llega con el scroll habitual.
 // V2: sin clips con personas (escaneo.mp4 muestra una persona hasta aprobación editorial).
 const HERO_CLIPS = FORWARDERS_V2 ? videoClipsFor(SCENE_SECTIONS.hero) : [CINEMATIC_CLIPS.sea, CINEMATIC_CLIPS.scan];
-// V2: el hero es solo imagen (digitalizacion.jpg), sin video encima.
+// V2: fondo tecnológico digitalizacion.jpg (z-index 0) + capas de datos (z-index 1) + fotografía aplicacion web.jpg (z-index 2).
 const heroStill = FORWARDERS_V2 ? imageSceneFor(SCENE_SECTIONS.hero) : undefined;
 
 export function CinematicHero() {
@@ -78,7 +78,11 @@ export function CinematicHero() {
             </div>
           </div>
 
-          {/* Captura real del sistema demo de Logixtic: decorativa, no contenido nuevo. Solo escritorio. */}
+          {FORWARDERS_V2 ? (
+            <figure className="hero-side" aria-hidden="true">
+              <div className="hero-side-photo" />
+            </figure>
+          ) : null}
         </div>
       </div>
     </section>

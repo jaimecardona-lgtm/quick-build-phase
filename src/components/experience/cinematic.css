@@ -59,11 +59,11 @@
   background:
     linear-gradient(
       90deg,
-      rgb(0 24 59 / 0.86) 0%,
-      rgb(0 24 59 / 0.5) 42%,
-      rgb(0 24 59 / 0.14) 100%
+      rgb(0 24 59 / 0.72) 0%,
+      rgb(0 24 59 / 0.36) 40%,
+      rgb(0 24 59 / 0.06) 100%
     ),
-    linear-gradient(to bottom, rgb(0 24 59 / 0.2), rgb(0 24 59 / 0.75) 85%);
+    linear-gradient(to bottom, rgb(0 24 59 / 0.12), rgb(0 24 59 / 0.6) 85%);
 }
 
 /* El hero usa solo su velo propio: el velo genérico de la secuencia lo apagaría. */
@@ -199,4 +199,41 @@
 .cinematic-hero .cin-plate-port .bgseq-poster,
 .cinematic-hero .cin-plate-port .bgseq-video {
   object-position: 70% 55%;
+}
+
+/* Hero V2: única imagen del hero = aplicacion web.jpg (original, sin mockups ni capas).
+ * Encuadre: fondo a 150% del ancho del bloque y posición 80% horizontal, para que el portátil
+ * de la fotografía quede como protagonista del lado derecho. Móvil: el bloque va bajo el CTA. */
+.hero-side {
+  margin: 0;
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.hero-side-photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 12px;
+  background-image: url("/media/img/aplicacion%20web.jpg");
+  background-repeat: no-repeat;
+  background-size: 140% auto;
+  background-position: 60% 50%;
+  /* Fusión suave en borde izquierdo y superior/inferior: sin recuadro visible sobre el fondo. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 22%),
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 22%),
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+@media (min-width: 1024px) {
+  .hero-side {
+    justify-self: end;
+    align-self: center;
+    width: min(50vw, 600px);
+  }
 }
