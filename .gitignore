@@ -36,3 +36,6 @@ dist-ssr
 .env.*
 !.env.example
 !.env.*.example
+
+# Supabase CLI: estado local generado (referencia de proyecto, pooler). No versionar.
+supabase/.temp/

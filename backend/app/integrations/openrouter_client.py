@@ -143,12 +143,17 @@ class HttpOpenRouterClient:
         attempt: int,
     ) -> CompletionResult:
         max_tokens = request.max_tokens or self._settings.openrouter_max_tokens
-        payload = {
+        payload: dict = {
             "model": model,
             "messages": [message.model_dump() for message in request.messages],
             "temperature": self._settings.openrouter_temperature,
             "max_tokens": max_tokens,
         }
+        effort = self._settings.openrouter_reasoning_effort
+        if effort != "off":
+            # Parámetro oficial de OpenRouter: evita que un modelo razonador agote
+            # los tokens sin devolver texto.
+            payload["reasoning"] = {"effort": effort}
         async with httpx.AsyncClient(
             base_url=self._settings.openrouter_api_base,
             timeout=timeout,
@@ -160,6 +165,18 @@ class HttpOpenRouterClient:
                     json=payload,
                     headers={"Authorization": f"Bearer {api_key}"},
                 )
+                # Algunos modelos exigen razonamiento y rechazan 'none'. Reintento único con 'low'.
+                if (
+                    response.status_code == 400
+                    and "reasoning is mandatory" in response.text.lower()
+                    and payload.get("reasoning", {}).get("effort") != "low"
+                ):
+                    payload["reasoning"] = {"effort": "low"}
+                    response = await client.post(
+                        "chat/completions",
+                        json=payload,
+                        headers={"Authorization": f"Bearer {api_key}"},
+                    )
             except httpx.TimeoutException as exc:
                 raise OpenRouterError(
                     "Tiempo de espera agotado con OpenRouter.", retryable=True, kind="timeout"

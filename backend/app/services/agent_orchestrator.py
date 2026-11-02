@@ -26,6 +26,7 @@ from app.services import engagement_service, judge_service
 from app.services.budget import CtaCooldown, DailyBudget
 from app.services.conversation import classify_social, social_text
 from app.services.knowledge_service import KnowledgeBase
+from app.services.rag_retriever import RagRetriever
 
 logger = get_logger(__name__)
 
@@ -130,6 +131,7 @@ class AgentRuntime:
     knowledge: KnowledgeBase
     budget: DailyBudget
     cta_cooldown: CtaCooldown
+    retriever: RagRetriever | None = None
 
     @property
     def budgeted(self) -> OpenRouterClient:
@@ -147,12 +149,18 @@ class Metrics:
     degradation_reason: str | None = None
     answer_kind: str = "commercial"
     primary_error_kind: str | None = None
+    retrieval: str = "lexical"
+    embedding_status: str = "skipped"
+    rpc_status: str = "skipped"
 
     def as_log(self) -> dict[str, object]:
         return {
             "event": "agent_answer",
             "answer_kind": self.answer_kind,
             "primary_error_kind": self.primary_error_kind,
+            "retrieval": self.retrieval,
+            "embedding_status": self.embedding_status,
+            "rpc_status": self.rpc_status,
             "effective_model": self.effective_model,
             "fallback_used": self.fallback_used,
             "judge_status": self.judge_status,
@@ -218,8 +226,24 @@ async def answer(
         else:
             suggested = "demo" if engagement.demo_interest else None
 
-    hits = runtime.knowledge.search(message, limit=3, locale=locale)
     intent = classify_social(message)
+    hits = runtime.knowledge.search(message, limit=3, locale=locale)
+    # Recuperación híbrida desde Supabase si está activa.
+    # Los mensajes sociales cortos no consultan nada.
+    # Cualquier fallo o ausencia de resultados mantiene el conocimiento local (lexical).
+    rag_on = runtime.retriever is not None and runtime.settings.rag_enabled
+    if rag_on and intent is None:
+        rag = await runtime.retriever.retrieve(
+            message,
+            locale,
+            deadline=deadline,
+            reserve_call=runtime.budget.try_reserve_call,
+        )
+        metrics.embedding_status = rag.embedding_status
+        metrics.rpc_status = rag.rpc_status
+        if rag.hits:
+            hits = rag.hits
+            metrics.retrieval = rag.mode
     # Saludos, cortesía y despedidas sin contenido comercial, y peticiones de ayuda o aclaración:
     # respuesta determinista, sin modelo y sin inventar funciones. Con fuente aprobada, un saludo
     # acompañado de una pregunta se responde como consulta comercial.

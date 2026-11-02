@@ -86,3 +86,32 @@ class CtaCooldown:
                 return False
             self._last[session_id] = now
             return True
+
+
+class CreditBudget:
+    """Presupuesto diario (UTC) de créditos de un proveedor externo (p. ej. Tavily)."""
+
+    def __init__(self, daily_limit: float, clock: Callable[[], datetime] | None = None) -> None:
+        self._limit = float(daily_limit)
+        self._clock = clock or (lambda: datetime.now(UTC))
+        self._lock = threading.Lock()
+        self._day = self._clock().strftime("%Y-%m-%d")
+        self._spent = 0.0
+
+    def try_spend(self, credits: float) -> bool:
+        with self._lock:
+            day = self._clock().strftime("%Y-%m-%d")
+            if day != self._day:
+                self._day, self._spent = day, 0.0
+            if self._spent + credits > self._limit:
+                return False
+            self._spent += credits
+            return True
+
+    def refund(self, credits: float) -> None:
+        with self._lock:
+            self._spent = max(0.0, self._spent - credits)
+
+    def snapshot(self) -> dict[str, float | str]:
+        with self._lock:
+            return {"day": self._day, "spent": self._spent, "limit": self._limit}

@@ -52,6 +52,7 @@ def _runtime(request: Request) -> AgentRuntime:
         knowledge=state.knowledge,
         budget=state.agent_budget,
         cta_cooldown=state.cta_cooldown,
+        retriever=getattr(state, "retriever", None),
     )
 
 

@@ -46,6 +46,9 @@ class Settings(BaseSettings):
     openrouter_judge_model: str = "google/gemma-4-31b-it:free"
     openrouter_engagement_model: str = "nvidia/nemotron-3.5-lightning:free"
     openrouter_temperature: float = Field(default=0.2, ge=0.0, le=2.0)
+    # Razonamiento: 'none' lo desactiva (parámetro reasoning.effort de OpenRouter).
+    # 'off' no envía el parámetro. Sin control, un modelo razonador puede agotar los tokens.
+    openrouter_reasoning_effort: Literal["none", "minimal", "low", "medium", "high", "off"] = "none"
     openrouter_max_tokens: int = Field(default=600, gt=0)
     # Timeout por llamada HTTP a OpenRouter.
     openrouter_timeout_seconds: float = Field(default=12.0, gt=0, le=20)
@@ -62,6 +65,31 @@ class Settings(BaseSettings):
     agent_daily_token_budget: int = Field(default=150_000, ge=0)
     # Un CTA de demo como máximo cada N minutos por sesión (evita insistencia comercial).
     agent_cta_cooldown_minutes: int = Field(default=30, ge=0, le=1440)
+
+    # RAG (recuperación híbrida en Supabase). Apagado por defecto: el conocimiento local responde.
+    rag_enabled: bool = False
+    # Modelo y dimensión verificados en la API real (2048). La migración 0003 fija esa dimensión.
+    rag_embedding_model: str = "nvidia/nemotron-3.5-embed-1b:free"
+    rag_embedding_dimension: int = Field(default=2048)
+    rag_timeout_seconds: float = Field(default=5.0, gt=0, le=8)
+    rag_top_k: int = Field(default=5, ge=1, le=20)
+    rag_candidates: int = Field(default=30, ge=5, le=100)
+    # Umbral de similitud coseno para la rama vectorial (ajustable con datos reales).
+    rag_min_similarity: float = Field(default=0.35, ge=0.0, le=1.0)
+
+    # Tavily (herramienta de búsqueda web pública). Apagada por defecto; nunca se llama en cada
+    # mensaje.
+    tavily_enabled: bool = False
+    tavily_api_key: SecretStr = SecretStr("")
+    tavily_api_base: str = "https://api.tavily.com"
+    tavily_timeout_seconds: float = Field(default=6.0, gt=0, le=10)
+    tavily_search_depth: Literal["basic", "advanced"] = "basic"
+    tavily_max_results: int = Field(default=5, ge=1, le=10)
+    # Extract: apagado por defecto. Solo URLs de la lista de dominios permitidos.
+    tavily_extract_enabled: bool = False
+    tavily_allowed_domains: Annotated[list[str], NoDecode] = Field(default_factory=list)
+    tavily_daily_credit_budget: int = Field(default=20, ge=0, le=10000)
+    tavily_cache_minutes: int = Field(default=60, ge=0, le=1440)
 
     # Persistencia de prospectos en Supabase (proyecto dedicado de staging, nunca el tenant).
     # La clave secreta solo la lee este servicio. Nunca se envía al navegador ni a VITE_*.
@@ -104,6 +132,20 @@ class Settings(BaseSettings):
     @classmethod
     def _validate_api_base(cls, value: str) -> str:
         return _validate_http_url(value, "OPENROUTER_API_BASE")
+
+    @field_validator("rag_embedding_dimension")
+    @classmethod
+    def _dimension_matches_schema(cls, value: int) -> int:
+        if value != 2048:
+            raise ValueError("RAG_EMBEDDING_DIMENSION debe ser 2048 (migración 0003).")
+        return value
+
+    @field_validator("tavily_allowed_domains", mode="before")
+    @classmethod
+    def _split_domains(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [item.strip().lower() for item in value.split(",") if item.strip()]
+        return value
 
     @field_validator("supabase_url")
     @classmethod

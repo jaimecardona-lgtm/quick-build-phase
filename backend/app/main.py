@@ -10,10 +10,12 @@ from app.api.v1 import router as v1_router
 from app.core.config import Settings, get_settings
 from app.core.logging import configure_logging, get_logger
 from app.core.security import RateLimiter, ReplayGuard
+from app.integrations.embeddings import build_embedding_provider
 from app.integrations.openrouter_client import build_openrouter_client
 from app.integrations.supabase_client import SupabaseRestClient
 from app.services.budget import CtaCooldown, DailyBudget
 from app.services.knowledge_service import KnowledgeBase
+from app.services.rag_retriever import RagRetriever
 
 API_V1_PREFIX = "/api/v1"
 logger = get_logger(__name__)
@@ -49,6 +51,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.cta_cooldown = CtaCooldown(settings.agent_cta_cooldown_minutes)
     app.state.lead_rate_limiter = RateLimiter(5)
     app.state.supabase = SupabaseRestClient(settings)
+    app.state.retriever = RagRetriever(settings, build_embedding_provider(settings))
     app.include_router(v1_router, prefix=API_V1_PREFIX)
 
     logger.info(

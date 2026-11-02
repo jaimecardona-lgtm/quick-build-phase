@@ -1,0 +1,3 @@
+# Configuración local de Supabase CLI para el proyecto Logixtic.
+# No contiene credenciales. El proyecto remoto se enlaza con: supabase link --project-ref <ref>
+project_id = "logixtic"

@@ -362,3 +362,59 @@ def test_primary_failure_is_recorded_even_when_whole_chain_fails():
     assert result.degraded is True
     assert result.metrics.degradation_reason == "empty"
     assert result.metrics.primary_error_kind == "quota"
+
+
+def test_reasoning_effort_none_is_sent_by_default_and_can_be_turned_off():
+    import json as _json
+
+    seen = []
+
+    def handler(request):
+        seen.append(_json.loads(request.content))
+        return httpx.Response(
+            200, json={"model": "model-a", "choices": [{"message": {"content": MODEL_TEXT}}]}
+        )
+
+    runtime, _ = _runtime(handler, rag_enabled=False)
+    _run(runtime, "¿Qué es Logixtic?")
+    assert seen[0]["reasoning"] == {"effort": "none"}
+
+    seen.clear()
+    runtime_off, _ = _runtime(handler, rag_enabled=False, openrouter_reasoning_effort="off")
+    _run(runtime_off, "¿Qué es Logixtic?")
+    assert "reasoning" not in seen[0]
+
+
+MANDATORY_MSG = "Reasoning is mandatory for this endpoint and cannot be disabled."
+
+
+def test_mandatory_reasoning_error_retries_once_with_low_effort():
+    import json as _json
+
+    seen = []
+
+    def handler(request):
+        body = _json.loads(request.content)
+        seen.append(body.get("reasoning"))
+        if body.get("reasoning") == {"effort": "none"}:
+            return httpx.Response(400, json={"error": {"message": MANDATORY_MSG}})
+        return httpx.Response(
+            200, json={"model": "model-a", "choices": [{"message": {"content": MODEL_TEXT}}]}
+        )
+
+    runtime, _ = _runtime(handler, rag_enabled=False)
+    result = _run(runtime, "¿Qué es Logixtic?")
+    assert seen == [{"effort": "none"}, {"effort": "low"}]
+    assert result.text == MODEL_TEXT and result.degraded is False
+
+
+def test_other_400_errors_are_not_retried():
+    seen = []
+
+    def handler(request):
+        seen.append(1)
+        return httpx.Response(400, json={"error": {"message": "invalid parameter"}})
+
+    runtime, _ = _runtime(handler, rag_enabled=False)
+    result = _run(runtime, "¿Qué es Logixtic?")
+    assert len(seen) == 1 and result.degraded is True

@@ -5,7 +5,7 @@
 # Uso (desde la raíz del repo):  bash db/tests/run_local_ephemeral.sh
 set -euo pipefail
 
-IMAGE="${PG_IMAGE:-postgres:16-alpine}"
+IMAGE="${PG_IMAGE:-pgvector/pgvector:pg16}"
 NAME="logixtic-rls-$$"
 PASS="$(head -c 24 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 24)"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -33,4 +33,6 @@ echo "== 0001 migración";        psql_file "$ROOT/db/migrations/0001_roles_cms_
 echo "== 0002 migración";        psql_file "$ROOT/db/migrations/0002_public_ingress_hardening.sql"
 echo "== 0002 pruebas RLS";      psql_file "$ROOT/db/tests/0002_ingress_test.sql"
 echo "== 0001 pruebas RLS originales (locales)"; psql_file "$ROOT/db/tests/0001_rls_test.sql"
+echo "== 0003 migración RAG (pgvector)"; psql_file "$ROOT/db/migrations/0003_rag_pgvector.sql"
+echo "== 0003 pruebas RAG (vectores sintéticos)"; psql_file "$ROOT/db/tests/0003_rag_test.sql"
 echo "RESULTADO: migraciones 0001+0002 y pruebas 0002 completadas en Postgres efímero."

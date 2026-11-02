@@ -23,6 +23,13 @@ _ALLOWED_EXTRA = frozenset(
         "degradation_reason",
         "answer_kind",
         "primary_error_kind",
+        "retrieval",
+        "embedding_status",
+        "rpc_status",
+        "cache_hit",
+        "credits",
+        "result_count",
+        "error_kind",
         "finish_reason",
         "has_reasoning",
     }

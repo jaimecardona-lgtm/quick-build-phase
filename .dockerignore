@@ -40,3 +40,6 @@ scripts/*
 # Miscelánea
 *.log
 .DS_Store
+
+# CLI de Supabase y migraciones: no forman parte del runtime.
+supabase
