@@ -9,8 +9,10 @@ from app import __version__
 from app.api.v1 import router as v1_router
 from app.core.config import Settings, get_settings
 from app.core.logging import configure_logging, get_logger
-from app.core.security import RateLimiter
+from app.core.security import RateLimiter, ReplayGuard
 from app.integrations.openrouter_client import build_openrouter_client
+from app.integrations.supabase_client import SupabaseRestClient
+from app.services.budget import CtaCooldown, DailyBudget
 from app.services.knowledge_service import KnowledgeBase
 
 API_V1_PREFIX = "/api/v1"
@@ -39,6 +41,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.openrouter = build_openrouter_client(settings)
     app.state.knowledge = KnowledgeBase.load()
     app.state.rate_limiter = RateLimiter(settings.chat_rate_limit_per_minute)
+    app.state.replay_guard = ReplayGuard()
+    app.state.agent_budget = DailyBudget(
+        call_limit=settings.agent_daily_model_call_budget,
+        token_limit=settings.agent_daily_token_budget,
+    )
+    app.state.cta_cooldown = CtaCooldown(settings.agent_cta_cooldown_minutes)
+    app.state.lead_rate_limiter = RateLimiter(5)
+    app.state.supabase = SupabaseRestClient(settings)
     app.include_router(v1_router, prefix=API_V1_PREFIX)
 
     logger.info(

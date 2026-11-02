@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: logixtic-staging
+    runtime: docker
+    plan: free
+    branch: feat/productizacion-staging
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: off

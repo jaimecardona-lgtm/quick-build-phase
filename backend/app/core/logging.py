@@ -9,7 +9,20 @@ import logging
 import sys
 from datetime import UTC, datetime
 
-_ALLOWED_EXTRA = frozenset({"event", "app_env"})
+# Métricas técnicas del agente: sin texto de conversación, sin datos personales ni secretos.
+_ALLOWED_EXTRA = frozenset(
+    {
+        "event",
+        "app_env",
+        "effective_model",
+        "fallback_used",
+        "judge_status",
+        "engagement_status",
+        "latency_ms",
+        "tokens",
+        "degradation_reason",
+    }
+)
 _HANDLER_NAME = "logixtic-json"
 _RESERVED_ATTRS = frozenset(vars(logging.makeLogRecord({}))) | {"message", "asctime"}
 

@@ -1,0 +1,42 @@
+# Contexto de build de la imagen única (raíz). Excluye todo lo que no se necesita en runtime.
+.git
+.github
+.gitattributes
+node_modules
+.output
+.wrangler
+dist
+dist-ssr
+coverage
+
+# Secretos y configuración local: nunca entran en la imagen.
+.env
+.env.*
+!.env.container.example
+**/.env
+**/.env.*
+!**/.env.example
+# Variante visual aprobada (solo flags públicos de build, sin secretos). Debe ir DESPUÉS de .env.*
+!.env.forwarders-v2
+
+# Backend: solo el paquete de la aplicación (las pruebas y el venv local no entran).
+backend/.venv
+backend/venv
+backend/tests
+backend/.pytest_cache
+backend/.ruff_cache
+backend/logixtic_api.egg-info
+backend/Dockerfile
+backend/.dockerignore
+**/__pycache__
+**/*.pyc
+
+# Documentación, base de datos y scripts de desarrollo: no forman parte del runtime.
+docs
+db
+scripts/*
+!scripts/start-render.sh
+
+# Miscelánea
+*.log
+.DS_Store

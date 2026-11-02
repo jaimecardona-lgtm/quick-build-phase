@@ -7,7 +7,7 @@ from functools import lru_cache
 from typing import Annotated, Literal
 from urllib.parse import urlsplit
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 DEFAULT_CORS_ORIGINS = ("http://localhost:3000", "http://localhost:5173")
@@ -38,13 +38,38 @@ class Settings(BaseSettings):
 
     openrouter_api_base: str = "https://openrouter.ai/api/v1"
     openrouter_api_key: SecretStr = SecretStr("")
+    # Modelos por rol. Primary/fallback vacíos por defecto (configuración segura y sin red);
+    # en staging se fijan por entorno. Judge/Engagement llevan los IDs recomendados, pero están
+    # apagados hasta activar AGENT_JUDGE_ENABLED / AGENT_ENGAGEMENT_ENABLED.
     openrouter_primary_model: str = ""
     openrouter_fallback_model: str = ""
-    openrouter_temperature: float = Field(default=0.3, ge=0.0, le=2.0)
-    openrouter_max_tokens: int = Field(default=700, gt=0)
-    openrouter_timeout_seconds: float = Field(default=30.0, gt=0)
+    openrouter_judge_model: str = "google/gemma-4-31b-it:free"
+    openrouter_engagement_model: str = "nvidia/nemotron-3.5-lightning:free"
+    openrouter_temperature: float = Field(default=0.2, ge=0.0, le=2.0)
+    openrouter_max_tokens: int = Field(default=600, gt=0)
+    # Timeout por llamada HTTP a OpenRouter.
+    openrouter_timeout_seconds: float = Field(default=8.0, gt=0, le=30)
+    # Presupuesto total de una respuesta (primary + fallback). Debe quedar por debajo del
+    # timeout del SSR (CHAT_TIMEOUT_MS = 12 s) para que el usuario reciba siempre una respuesta.
+    agent_total_timeout_seconds: float = Field(default=9.0, gt=0, le=10)
 
     agent_dry_run: bool = True
+    agent_judge_enabled: bool = False
+    agent_engagement_enabled: bool = False
+    # Presupuesto diario (UTC) de llamadas y tokens a modelos. Al agotarse se responde solo con
+    # contenido aprobado. Valores conservadores para modelos gratuitos.
+    agent_daily_model_call_budget: int = Field(default=300, ge=0)
+    agent_daily_token_budget: int = Field(default=150_000, ge=0)
+    # Un CTA de demo como máximo cada N minutos por sesión (evita insistencia comercial).
+    agent_cta_cooldown_minutes: int = Field(default=30, ge=0, le=1440)
+
+    # Persistencia de prospectos en Supabase (proyecto dedicado de staging, nunca el tenant).
+    # La clave secreta solo la lee este servicio. Nunca se envía al navegador ni a VITE_*.
+    supabase_url: str = ""
+    supabase_secret_key: SecretStr = SecretStr("")
+    leads_enabled: bool = False
+    # Versión del aviso de privacidad que el formulario debe mostrar y aceptar. Debe coincidir.
+    privacy_notice_version: str = Field(default="pendiente-aprobacion", min_length=1, max_length=32)
 
     # Autenticación servidor-servidor desde la pasarela (Edge Function). Nunca se expone al
     # navegador.
@@ -79,6 +104,29 @@ class Settings(BaseSettings):
     @classmethod
     def _validate_api_base(cls, value: str) -> str:
         return _validate_http_url(value, "OPENROUTER_API_BASE")
+
+    @field_validator("supabase_url")
+    @classmethod
+    def _validate_supabase_url(cls, value: str) -> str:
+        if not value:
+            return value
+        return _validate_http_url(value.rstrip("/"), "SUPABASE_URL")
+
+    @field_validator("openrouter_primary_model", "openrouter_fallback_model")
+    @classmethod
+    def _validate_model_id(cls, value: str) -> str:
+        cleaned = value.strip()
+        if cleaned and (" " in cleaned or len(cleaned) > 128):
+            raise ValueError("Identificador de modelo OpenRouter no válido.")
+        return cleaned
+
+    @model_validator(mode="after")
+    def _check_timeouts(self) -> "Settings":
+        if self.agent_total_timeout_seconds < self.openrouter_timeout_seconds:
+            raise ValueError(
+                "AGENT_TOTAL_TIMEOUT_SECONDS no puede ser menor que OPENROUTER_TIMEOUT_SECONDS."
+            )
+        return self
 
 
 @lru_cache

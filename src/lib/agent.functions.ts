@@ -5,8 +5,11 @@
  * - Timeout explícito y errores mapeados a códigos; el texto visible lo localiza el componente.
  */
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 
+// Debe superar AGENT_TOTAL_TIMEOUT_SECONDS del backend (9 s) con margen: así el usuario recibe
+// siempre la respuesta del backend (incluida la extractiva) antes de que expire esta espera.
 const CHAT_TIMEOUT_MS = 12_000;
 const DEFAULT_AGENT_URL = "http://127.0.0.1:8010";
 
@@ -51,8 +54,29 @@ const RoiInput = z.object({
 });
 
 function backend(): { baseUrl: string; secret: string } {
-  const baseUrl = (process.env["AGENT_API_URL"] ?? DEFAULT_AGENT_URL).replace(/\/$/, "");
+  const configured = process.env["AGENT_API_URL"];
+  // Fuera de desarrollo nunca se usa localhost: sin AGENT_API_URL el agente queda no disponible.
+  const production = process.env["NODE_ENV"] === "production";
+  const baseUrl = configured
+    ? configured.replace(/\/$/, "")
+    : production
+      ? ""
+      : DEFAULT_AGENT_URL;
   return { baseUrl, secret: process.env["INTERNAL_HMAC_SECRET"] ?? "" };
+}
+
+/**
+ * Clave de cuota del visitante. Render añade la IP real del cliente AL FINAL de X-Forwarded-For;
+ * el primer valor lo puede falsear el visitante, así que solo se usa el último.
+ * Supuesto a verificar en Render antes de producción (ver docs/productization/02_render_all_in_one.md).
+ * Se envía dentro del cuerpo firmado y se guarda solo como hash truncado.
+ */
+async function visitorKey(): Promise<string | undefined> {
+  const forwarded = getRequestHeader("x-forwarded-for");
+  const ip = forwarded?.split(",").map((part) => part.trim()).filter(Boolean).pop();
+  if (!ip || !/^[0-9a-fA-F:.]{2,45}$/.test(ip)) return undefined;
+  const { createHash } = await import("node:crypto");
+  return createHash("sha256").update(ip).digest("hex").slice(0, 32);
 }
 
 async function callBackend(
@@ -61,6 +85,7 @@ async function callBackend(
   payload?: unknown,
 ): Promise<{ status: number; json: unknown } | { status: 0 }> {
   const { baseUrl, secret } = backend();
+  if (!baseUrl) return { status: 503, json: null };
   const body = payload === undefined ? "" : JSON.stringify(payload);
   const headers: Record<string, string> = {};
   if (payload !== undefined) headers["Content-Type"] = "application/json";
@@ -96,7 +121,10 @@ function codeFor(status: number): AgentErrorCode {
 export const askCommercialAssistant = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ChatInput.parse(input))
   .handler(async ({ data }): Promise<ChatResult> => {
-    const response = await callBackend("POST", "/api/v1/ai/chat", data);
+    const response = await callBackend("POST", "/api/v1/ai/chat", {
+      ...data,
+      client_key: await visitorKey(),
+    });
     if (response.status !== 200) return { ok: false, code: codeFor(response.status) };
     const json = response.json as Record<string, unknown> | null;
     if (!json || typeof json["text"] !== "string") return { ok: false, code: "error" };

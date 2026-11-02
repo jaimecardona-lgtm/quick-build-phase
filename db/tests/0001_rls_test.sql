@@ -48,7 +48,8 @@ select set_config('request.jwt.claim.sub', '', false);
 select pg_temp.expect((select count(*) from public.site_section_versions) = 0, 'anon: no ve versiones sin publicar (cero filas)');
 select pg_temp.expect(pg_temp.denied($q$insert into public.site_section_versions (section_key, locale, revision, state, payload, author_id) values ('closing-note','es',1,'draft','{}','00000000-0000-0000-0000-00000000000c')$q$), 'anon: no puede crear versiones');
 select pg_temp.expect(pg_temp.denied($q$insert into public.leads (company, contact_name, email, source, consent_at) values ('Empresa','X','x@example.com','web',null)$q$), 'anon: lead sin consentimiento rechazado');
-select pg_temp.expect(not pg_temp.denied($q$insert into public.leads (company, contact_name, email, source, consent_at) values ('Empresa Demo','Contacto','contacto@example.com','web',now())$q$), 'anon: lead con consentimiento permitido');
+-- Actualizado por 0002: el visitante anónimo ya NO inserta leads directamente (entrada solo vía FastAPI).
+select pg_temp.expect(pg_temp.denied($q$insert into public.leads (company, contact_name, email, source, consent_at) values ('Empresa Demo','Contacto','contacto@example.com','web',now())$q$), 'anon: lead con consentimiento rechazado (0002)');
 select pg_temp.expect(pg_temp.denied($q$select 1 from public.leads$q$), 'anon: no puede leer leads (permiso denegado)');
 select pg_temp.expect(pg_temp.denied($q$select 1 from public.roi_scenarios$q$) and pg_temp.denied($q$select 1 from public.ai_messages$q$), 'anon: sin acceso a ROI ni mensajes de IA');
 select pg_temp.expect(pg_temp.denied($q$select 1 from public.audit_logs$q$), 'anon: sin acceso a auditoría');

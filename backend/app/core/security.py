@@ -41,6 +41,29 @@ def verify_signature(
     return hmac.compare_digest(expected, signature_header)
 
 
+class ReplayGuard:
+    """Rechaza firmas ya vistas dentro de la ventana de antigüedad (anti-repetición).
+
+    Cada firma HMAC es única por (timestamp, cuerpo). Repetir una petición capturada dentro de
+    los 300 s queda bloqueado. Memoria local: en varias instancias hace falta un almacén
+    compartido (pendiente en el backlog de staging).
+    """
+
+    def __init__(self, window_seconds: int = MAX_SKEW_SECONDS) -> None:
+        self._window = window_seconds
+        self._seen: dict[str, float] = {}
+
+    def check_and_store(self, signature: str, now: float | None = None) -> bool:
+        current = time.time() if now is None else now
+        expired = [key for key, expiry in self._seen.items() if expiry <= current]
+        for key in expired:
+            del self._seen[key]
+        if signature in self._seen:
+            return False
+        self._seen[signature] = current + self._window
+        return True
+
+
 class RateLimiter:
     """Ventana deslizante por clave (IP o sesión). Memoria local: un proceso por instancia."""
 
