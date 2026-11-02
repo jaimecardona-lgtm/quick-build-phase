@@ -22,6 +22,9 @@ _ALLOWED_EXTRA = frozenset(
         "tokens",
         "degradation_reason",
         "answer_kind",
+        "primary_error_kind",
+        "finish_reason",
+        "has_reasoning",
     }
 )
 _HANDLER_NAME = "logixtic-json"

@@ -307,7 +307,8 @@ def test_total_timeout_cannot_be_below_per_call_timeout():
 
 def test_timeouts_default_to_coherent_values_below_ssr_budget():
     settings = make_settings()
-    assert settings.agent_total_timeout_seconds < 12
+    # Coordinado con el SSR (CHAT_TIMEOUT_MS = 24 s): el total queda por debajo con margen.
+    assert settings.agent_total_timeout_seconds < 24
     assert settings.openrouter_timeout_seconds <= settings.agent_total_timeout_seconds
 
 

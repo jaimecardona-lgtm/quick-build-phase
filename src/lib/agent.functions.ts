@@ -8,9 +8,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 
-// Debe superar AGENT_TOTAL_TIMEOUT_SECONDS del backend (9 s) con margen: así el usuario recibe
-// siempre la respuesta del backend (incluida la extractiva) antes de que expire esta espera.
-const CHAT_TIMEOUT_MS = 12_000;
+// Coordinado con el backend: OPENROUTER_TIMEOUT_SECONDS=12 por intento, AGENT_TOTAL_TIMEOUT_SECONDS=20
+// en total. Esta espera (24 s) debe superar el total con margen para recibir siempre la respuesta del
+// backend, incluida la extractiva.
+const CHAT_TIMEOUT_MS = 24_000;
 const DEFAULT_AGENT_URL = "http://127.0.0.1:8010";
 
 export type AgentErrorCode = "unavailable" | "rate_limited" | "invalid" | "misconfigured" | "error";

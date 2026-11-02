@@ -262,3 +262,103 @@ def test_health_reports_key_presence_without_value():
     assert body["model_configured"] is True
     assert body["dry_run"] is False
     assert FAKE_KEY not in client.get("/api/v1/ai/health").text
+
+
+def test_primary_failure_kind_is_recorded_when_fallback_answers():
+    def handler(request):
+        if json.loads(request.content)["model"] == "model-a":
+            return httpx.Response(429, json={"error": "quota"})
+        return httpx.Response(
+            200, json={"model": "model-b", "choices": [{"message": {"content": MODEL_TEXT}}]}
+        )
+
+    settings_runtime, calls = _runtime(handler, openrouter_fallback_model="model-b")
+    result = _run(settings_runtime, "¿Qué es Logixtic?")
+    assert calls == ["model-a", "model-b"]
+    assert result.metrics.fallback_used is True
+    assert result.metrics.primary_error_kind == "quota"
+    assert result.degraded is False
+
+
+def test_total_deadline_is_a_hard_clock_limit():
+    import time as _time
+
+    async def slow(request):
+        await asyncio.sleep(3)
+        return httpx.Response(
+            200, json={"model": "model-a", "choices": [{"message": {"content": "x"}}]}
+        )
+
+    # Por intento 1 s, total 1,5 s: el reloj debe cortar aunque httpx no haya expirado.
+    runtime, _ = _runtime(slow, openrouter_timeout_seconds=1.0, agent_total_timeout_seconds=1.5)
+    start = _time.monotonic()
+    result = _run(runtime, "¿Qué es Logixtic?")
+    elapsed = _time.monotonic() - start
+    assert result.degraded is True
+    assert elapsed < 2.5, f"el límite total no se respetó: {elapsed:.2f}s"
+
+
+def test_coordinated_timeouts_have_explicit_defaults_and_limits():
+    settings = make_settings()
+    assert settings.openrouter_timeout_seconds == 12.0
+    assert settings.agent_total_timeout_seconds == 20.0
+    assert settings.openrouter_timeout_seconds <= settings.agent_total_timeout_seconds
+    # El total debe quedar por debajo de la espera del SSR (24 s) con margen.
+    assert settings.agent_total_timeout_seconds + 3 < 24
+    with pytest.raises(ValueError):
+        make_settings(openrouter_timeout_seconds=15.0, agent_total_timeout_seconds=10.0)
+
+
+def test_empty_content_from_primary_is_a_retryable_failure_and_fallback_answers():
+    def handler(request):
+        if json.loads(request.content)["model"] == "model-a":
+            return httpx.Response(
+                200, json={"model": "model-a", "choices": [{"message": {"content": None}}]}
+            )
+        return httpx.Response(
+            200, json={"model": "model-b", "choices": [{"message": {"content": MODEL_TEXT}}]}
+        )
+
+    runtime, calls = _runtime(handler, openrouter_fallback_model="model-b")
+    result = _run(runtime, "¿Qué es Logixtic?")
+    assert calls == ["model-a", "model-b"]
+    assert result.text == MODEL_TEXT
+    assert result.metrics.primary_error_kind == "empty"
+    assert result.degraded is False
+
+
+def test_unexpected_exception_degrades_to_extractive_without_leaking_details(monkeypatch):
+    runtime, _ = _runtime(lambda request: httpx.Response(500))
+
+    async def boom(self, request):
+        raise RuntimeError("detalle interno no visible")
+
+    monkeypatch.setattr(HttpOpenRouterClient, "complete", boom)
+    result = _run(runtime, "¿Qué es Logixtic?")
+    assert result.degraded is True
+    assert result.metrics.degradation_reason == "internal"
+    assert "detalle interno" not in result.text
+    assert result.sources
+
+
+def test_tracking_request_is_marked_as_refusal_not_commercial():
+    runtime, calls = _runtime(_ok)
+    result = _run(runtime, "¿Dónde está mi embarque ABC123 ahora mismo?")
+    assert calls == []
+    assert result.refused is True
+    assert result.metrics.answer_kind == "refusal"
+
+
+def test_primary_failure_is_recorded_even_when_whole_chain_fails():
+    def handler(request):
+        if json.loads(request.content)["model"] == "model-a":
+            return httpx.Response(429, json={"error": "quota"})
+        return httpx.Response(
+            200, json={"model": "model-b", "choices": [{"message": {"content": None}}]}
+        )
+
+    runtime, _ = _runtime(handler, openrouter_fallback_model="model-b")
+    result = _run(runtime, "¿Qué es Logixtic?")
+    assert result.degraded is True
+    assert result.metrics.degradation_reason == "empty"
+    assert result.metrics.primary_error_kind == "quota"

@@ -16,9 +16,11 @@ import httpx
 from pydantic import BaseModel, Field
 
 from app.core.config import Settings
+from app.core.logging import get_logger
 
 DRY_RUN_MODEL = "dry-run"
 DRY_RUN_TEXT = "[DRY-RUN] Respuesta simulada: AGENT_DRY_RUN=true, no se llamó a OpenRouter."
+logger = get_logger(__name__)
 RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
 MIN_ATTEMPT_SECONDS = 1.0
 
@@ -34,6 +36,8 @@ class OpenRouterError(RuntimeError):
         super().__init__(message)
         self.retryable = retryable
         self.kind = kind
+        # Motivos de los intentos previos cuando falla toda la cadena de modelos.
+        self.attempt_errors: list[str] = []
 
 
 class ChatMessage(BaseModel):
@@ -57,6 +61,9 @@ class CompletionResult(BaseModel):
     # Posición en la cadena de modelos: 0 = primary, 1 = fallback.
     attempt: int = 0
     tokens: int | None = None
+    # Motivo de cada intento fallido anterior (kinds de OpenRouterError).
+    # Vacío si el primario respondió.
+    attempt_errors: list[str] = Field(default_factory=list)
 
     @property
     def fallback_used(self) -> bool:
@@ -101,6 +108,7 @@ class HttpOpenRouterClient:
             )
 
         last_error: OpenRouterError | None = None
+        failures: list[str] = []
         for attempt, model in enumerate(models):
             timeout = self._settings.openrouter_timeout_seconds
             if request.deadline is not None:
@@ -113,13 +121,16 @@ class HttpOpenRouterClient:
                     )
                 timeout = min(timeout, remaining)
             try:
-                return await self._call(api_key, model, request, timeout, attempt)
+                result = await self._call(api_key, model, request, timeout, attempt)
+                return result.model_copy(update={"attempt_errors": failures})
             except OpenRouterError as exc:
                 last_error = exc
+                failures.append(exc.kind)
                 if not exc.retryable:
                     raise
         # Se conserva el motivo real (timeout, quota, network...) para las métricas.
         if last_error is not None:
+            last_error.attempt_errors = failures[:-1]
             raise last_error
         raise OpenRouterError("No hay modelos configurados.", kind="config")
 
@@ -169,6 +180,28 @@ class HttpOpenRouterClient:
             text = data["choices"][0]["message"]["content"]
         except (ValueError, KeyError, IndexError, TypeError) as exc:
             raise OpenRouterError("Respuesta inesperada de OpenRouter.", kind="invalid") from exc
+        # Un modelo puede devolver contenido nulo (p. ej. si el límite de tokens
+        # se gasta en razonamiento). Es un fallo reintentable: el fallback puede responder.
+        if not isinstance(text, str) or not text.strip():
+            # Diagnóstico sin contenido: motivo de parada y si el modelo devolvió razonamiento.
+            choice = data["choices"][0]
+            message = choice.get("message") or {}
+            logger.warning(
+                "openrouter_empty_content",
+                extra={
+                    "event": "openrouter_empty_content",
+                    "finish_reason": str(choice.get("finish_reason")),
+                    "has_reasoning": bool(
+                        message.get("reasoning") or message.get("reasoning_content")
+                    ),
+                    "effective_model": str(data.get("model", model)),
+                },
+            )
+            raise OpenRouterError(
+                "OpenRouter devolvió una respuesta vacía.",
+                retryable=True,
+                kind="empty",
+            )
         usage = data.get("usage") if isinstance(data, dict) else None
         tokens = None
         if isinstance(usage, dict) and isinstance(usage.get("total_tokens"), int):

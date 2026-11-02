@@ -8,6 +8,7 @@ Reglas:
 - El mensaje del usuario se envuelve como dato, no como instrucción del sistema.
 """
 
+import asyncio
 import re
 import time
 from dataclasses import dataclass, field
@@ -145,11 +146,13 @@ class Metrics:
     tokens: int | None = None
     degradation_reason: str | None = None
     answer_kind: str = "commercial"
+    primary_error_kind: str | None = None
 
     def as_log(self) -> dict[str, object]:
         return {
             "event": "agent_answer",
             "answer_kind": self.answer_kind,
+            "primary_error_kind": self.primary_error_kind,
             "effective_model": self.effective_model,
             "fallback_used": self.fallback_used,
             "judge_status": self.judge_status,
@@ -193,6 +196,7 @@ async def answer(
 
     if TRACKING_PATTERN.search(message):
         metrics.degradation_reason = "policy_refusal"
+        metrics.answer_kind = "refusal"
         return _finish(
             AgentAnswer(text=texts["refusal"], refused=True, model="policy"), metrics, started
         )
@@ -267,10 +271,22 @@ async def answer(
         ],
         deadline=deadline,
     )
+    # Límite total real de reloj: los timeouts de httpx son por lectura, no por respuesta completa.
+    remaining = max(deadline - time.monotonic(), 0.0)
     try:
-        result = await runtime.budgeted.complete(request)
+        async with asyncio.timeout(remaining):
+            result = await runtime.budgeted.complete(request)
+    except TimeoutError:
+        return fallback("timeout")
     except OpenRouterError as exc:
+        if exc.attempt_errors:
+            metrics.primary_error_kind = exc.attempt_errors[0]
         return fallback(exc.kind)
+    except Exception:  # cualquier fallo inesperado degrada; nunca llega trazas al visitante
+        logger.warning("agent_unexpected_error", extra={"event": "agent_unexpected_error"})
+        return fallback("internal")
+    if result.attempt_errors:
+        metrics.primary_error_kind = result.attempt_errors[0]
 
     metrics.effective_model = result.model
     metrics.fallback_used = result.fallback_used

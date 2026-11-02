@@ -48,10 +48,10 @@ class Settings(BaseSettings):
     openrouter_temperature: float = Field(default=0.2, ge=0.0, le=2.0)
     openrouter_max_tokens: int = Field(default=600, gt=0)
     # Timeout por llamada HTTP a OpenRouter.
-    openrouter_timeout_seconds: float = Field(default=8.0, gt=0, le=30)
+    openrouter_timeout_seconds: float = Field(default=12.0, gt=0, le=20)
     # Presupuesto total de una respuesta (primary + fallback). Debe quedar por debajo del
     # timeout del SSR (CHAT_TIMEOUT_MS = 12 s) para que el usuario reciba siempre una respuesta.
-    agent_total_timeout_seconds: float = Field(default=9.0, gt=0, le=10)
+    agent_total_timeout_seconds: float = Field(default=20.0, gt=0, le=25)
 
     agent_dry_run: bool = True
     agent_judge_enabled: bool = False
