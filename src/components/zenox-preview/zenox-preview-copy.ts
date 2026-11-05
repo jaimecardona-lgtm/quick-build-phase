@@ -52,13 +52,13 @@ export const PREVIEW_COPY = {
       ],
     },
     services: {
-      kicker: "Capacidades del software (interfaz)",
+      kicker: "Capacidades del software",
       h2: "El software para agentes de carga que cubre toda tu operación, del prospecto a la liquidación",
       tabsLabel: "Grupos de capacidades",
       pending: "Pendiente de validación en producción",
       groups: [
         {
-          name: "Gestión comercial (interfaz)",
+          name: "Gestión comercial",
           caps: [
             {
               name: "CRM para agentes de carga",
@@ -75,7 +75,7 @@ export const PREVIEW_COPY = {
           ],
         },
         {
-          name: "Gestión operativa (interfaz)",
+          name: "Gestión operativa",
           caps: [
             {
               name: "Operaciones y DO",
@@ -92,7 +92,7 @@ export const PREVIEW_COPY = {
           ],
         },
         {
-          name: "Control y rentabilidad (interfaz)",
+          name: "Control y rentabilidad",
           caps: [
             {
               name: "Margen por operación",
@@ -314,4 +314,195 @@ export const REVIEW_SECURITY_ITEM: Record<Lang, string> = {
   es: "Roles y permisos configurados; referencia a BASC e ISO 28000 (no es certificación)",
   en: "Roles and permissions configured; reference to BASC and ISO 28000 (not a certification)",
   pt: "Papéis e permissões configurados; referência a BASC e ISO 28000 (não é certificação)",
+};
+
+/* Tarjeta de trazabilidad multimodal del Hero (datos demostrativos, rotulados). Borradores EN/PT. */
+export const PREVIEW_TRACK: Record<
+  Lang,
+  {
+    kicker: string;
+    note: string;
+    status: string;
+    eta: string;
+    route: [string, string, string];
+    mode: string;
+  }
+> = {
+  es: {
+    kicker: "Trazabilidad multimodal",
+    note: "Datos demostrativos · no son operaciones reales",
+    status: "En escala",
+    eta: "ETA 18 nov",
+    route: ["Shanghái", "Panamá", "Colombia"],
+    mode: "Marítimo",
+  },
+  en: {
+    kicker: "Multimodal traceability",
+    note: "Demo data · not real operations",
+    status: "Transshipment",
+    eta: "ETA 18 Nov",
+    route: ["Shanghai", "Panama", "Colombia"],
+    mode: "Sea",
+  },
+  pt: {
+    kicker: "Rastreabilidade multimodal",
+    note: "Dados demonstrativos · não são operações reais",
+    status: "Em escala",
+    eta: "ETA 18 nov",
+    route: ["Xangai", "Panamá", "Colômbia"],
+    mode: "Marítimo",
+  },
+};
+
+/* Trazabilidad multimodal (sección propia). Datos demostrativos: nunca se presentan como seguimiento real. */
+export const PREVIEW_MULTIMODAL: Record<
+  Lang,
+  {
+    kicker: string;
+    note: string;
+    eta: string;
+    status: Record<"transit" | "stop" | "control", string>;
+    shipments: ReadonlyArray<{
+      mode: "sea" | "air" | "road";
+      modeLabel: string;
+      route: ReadonlyArray<string>;
+      status: "transit" | "stop" | "control";
+      eta: string;
+      progress: number;
+    }>;
+  }
+> = {
+  es: {
+    kicker: "Trazabilidad multimodal",
+    note: "Datos demostrativos · no son operaciones reales",
+    eta: "ETA",
+    status: { transit: "En tránsito", stop: "En escala", control: "Control documental" },
+    shipments: [
+      {
+        mode: "sea",
+        modeLabel: "Marítimo",
+        route: ["Hamburgo", "Cartagena"],
+        status: "stop",
+        eta: "18 nov",
+        progress: 0.6,
+      },
+      {
+        mode: "air",
+        modeLabel: "Aéreo",
+        route: ["Valencia", "Bogotá"],
+        status: "transit",
+        eta: "21 nov",
+        progress: 0.4,
+      },
+      {
+        mode: "road",
+        modeLabel: "Terrestre",
+        route: ["Miami", "Caracas"],
+        status: "control",
+        eta: "14 nov",
+        progress: 0.9,
+      },
+    ],
+  },
+  en: {
+    kicker: "Multimodal traceability",
+    note: "Demo data · not real operations",
+    eta: "ETA",
+    status: { transit: "In transit", stop: "Transshipment", control: "Document control" },
+    shipments: [
+      {
+        mode: "sea",
+        modeLabel: "Sea",
+        route: ["Hamburg", "Cartagena"],
+        status: "stop",
+        eta: "18 Nov",
+        progress: 0.6,
+      },
+      {
+        mode: "air",
+        modeLabel: "Air",
+        route: ["Valencia", "Bogotá"],
+        status: "transit",
+        eta: "21 Nov",
+        progress: 0.4,
+      },
+      {
+        mode: "road",
+        modeLabel: "Road",
+        route: ["Miami", "Caracas"],
+        status: "control",
+        eta: "14 Nov",
+        progress: 0.9,
+      },
+    ],
+  },
+  pt: {
+    kicker: "Rastreabilidade multimodal",
+    note: "Dados demonstrativos · não são operações reais",
+    eta: "ETA",
+    status: { transit: "Em trânsito", stop: "Em escala", control: "Controle documental" },
+    shipments: [
+      {
+        mode: "sea",
+        modeLabel: "Marítimo",
+        route: ["Hamburgo", "Cartagena"],
+        status: "stop",
+        eta: "18 nov",
+        progress: 0.6,
+      },
+      {
+        mode: "air",
+        modeLabel: "Aéreo",
+        route: ["Valência", "Bogotá"],
+        status: "transit",
+        eta: "21 nov",
+        progress: 0.4,
+      },
+      {
+        mode: "road",
+        modeLabel: "Rodoviário",
+        route: ["Miami", "Caracas"],
+        status: "control",
+        eta: "14 nov",
+        progress: 0.9,
+      },
+    ],
+  },
+};
+
+/* The Platform: etiquetas de las visualizaciones conceptuales (no son capturas). */
+export const PREVIEW_CONCEPT: Record<
+  Lang,
+  { label: string; scatter: ReadonlyArray<string>; nodes: ReadonlyArray<string>; hub: string }
+> = {
+  es: {
+    label: "Ilustración conceptual · no es una captura",
+    scatter: [
+      "Hojas de cálculo",
+      "Correos",
+      "Cotización sin seguimiento",
+      "HBL / HAWB",
+      "Mensajes de WhatsApp",
+    ],
+    nodes: ["Cliente", "Cotización", "Operación", "Documentos"],
+    hub: "Una sola fuente",
+  },
+  en: {
+    label: "Conceptual illustration · not a screenshot",
+    scatter: ["Spreadsheets", "Emails", "Untracked quote", "HBL / HAWB", "WhatsApp messages"],
+    nodes: ["Client", "Quote", "Operation", "Documents"],
+    hub: "One source",
+  },
+  pt: {
+    label: "Ilustração conceitual · não é uma captura",
+    scatter: [
+      "Planilhas",
+      "E-mails",
+      "Cotação sem acompanhamento",
+      "HBL / HAWB",
+      "Mensagens de WhatsApp",
+    ],
+    nodes: ["Cliente", "Cotação", "Operação", "Documentos"],
+    hub: "Uma única fonte",
+  },
 };

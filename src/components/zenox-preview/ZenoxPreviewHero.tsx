@@ -1,14 +1,24 @@
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { PREVIEW_COPY, previewLang } from "@/components/zenox-preview/zenox-preview-copy";
+import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
+import { HeroWorldMap } from "@/components/zenox-preview/HeroWorldMap";
+import {
+  PREVIEW_COPY,
+  PREVIEW_TRACK,
+  previewLang,
+} from "@/components/zenox-preview/zenox-preview-copy";
 
 const HUB_URL = "https://meetings.hubspot.com/carlossalazar/diagnostico";
 const ROI_URL = "https://diagnosticoroilogixtic.lovable.app/";
 
-// Hero de la vista previa Zenox. Textos del documento oficial (copy v1); EN/PT son borradores.
+// Hero de la vista previa. H1 y textos aprobados (ES); EN/PT son borradores.
+// Capas: rutas animadas (DataNetworkLayer, propia), cintas, luz de profundidad, capturas reales del producto
+// y una tarjeta de trazabilidad multimodal demostrativa. Sin vídeo ni imágenes de procedencia no documentada.
 export function ZenoxPreviewHero() {
   const { locale } = useLanguage();
-  const t = PREVIEW_COPY[previewLang(locale)].hero;
+  const lang = previewLang(locale);
+  const t = PREVIEW_COPY[lang].hero;
+  const tr = PREVIEW_TRACK[lang];
   return (
     <section id="inicio" className="zxp-hero" aria-labelledby="zxp-hero-title">
       <div className="zxp-hero-ribbons" aria-hidden="true">
@@ -27,6 +37,9 @@ export function ZenoxPreviewHero() {
           />
         </svg>
       </div>
+      <HeroWorldMap />
+      <DataNetworkLayer variant="routes" />
+      <div className="zxp-hero-light" aria-hidden="true" />
 
       <div className="zxp-hero-grid">
         <div className="zxp-hero-copy">
@@ -58,17 +71,40 @@ export function ZenoxPreviewHero() {
         </div>
 
         <div className="zxp-hero-stack" role="img" aria-label={t.ariaCaption}>
-          <figure className="zxp-glass zxp-glass-back">
-            <img src="/assets/06-costos-operacion.webp" alt="" loading="eager" decoding="async" />
-          </figure>
-          <figure className="zxp-glass zxp-glass-front">
-            <img
-              src="/assets/02-gestion-comercial-resumen.webp"
-              alt=""
-              loading="eager"
-              decoding="async"
-            />
-          </figure>
+          <div className="zxp-laptop" aria-hidden="true">
+            <div className="zxp-laptop-lid">
+              <div className="zxp-laptop-screen">
+                <img
+                  src="/assets/01-plataforma-servicios-menu.webp"
+                  alt=""
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            </div>
+            <div className="zxp-laptop-base" />
+          </div>
+          <div className="zxp-track" aria-hidden="true">
+            <div className="zxp-track-head">
+              <span className="zxp-track-kicker">{tr.kicker}</span>
+              <span className="zxp-track-status">{tr.status}</span>
+            </div>
+            <p className="zxp-track-route">
+              {tr.route.map((city, i) => (
+                <span key={city}>
+                  {i > 0 ? <span className="zxp-track-arrow"> → </span> : null}
+                  {city}
+                </span>
+              ))}
+            </p>
+            <div className="zxp-track-bar">
+              <span />
+            </div>
+            <p className="zxp-track-meta">
+              {tr.mode} · {tr.eta}
+            </p>
+            <p className="zxp-track-note">{tr.note}</p>
+          </div>
           <span className="zxp-node zxp-node-1">{t.nodeOne}</span>
           <span className="zxp-node zxp-node-2">{t.nodeTwo}</span>
         </div>

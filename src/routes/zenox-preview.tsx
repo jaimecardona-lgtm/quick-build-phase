@@ -7,6 +7,7 @@ import { ZenoxPreviewHero } from "@/components/zenox-preview/ZenoxPreviewHero";
 import { ZenoxPreviewPlatform } from "@/components/zenox-preview/ZenoxPreviewPlatform";
 import { ZenoxPreviewServices } from "@/components/zenox-preview/ZenoxPreviewServices";
 import { Flow } from "@/components/site/Flow";
+import { ZenoxTrackingBoard } from "@/components/zenox-preview/ZenoxTrackingBoard";
 import "@/components/zenox-preview/zenox-preview.css";
 import { LogixAI } from "@/components/site/LogixAI";
 import { SuccessStories } from "@/components/site/SuccessStories";
@@ -73,6 +74,9 @@ function ZenoxPreview() {
         {/* 07 Digitalización de procesos manuales (componente Flow existente, id propio para no duplicar #plataforma) */}
         {/* Cifras ocultas: el copy aprobado las marca [VALIDAR] hasta contar con su fuente y periodo. */}
         <Flow showResults={false} />
+        {/* Trazabilidad multimodal (tarjetas demostrativas del componente original; su fondo de vídeo está desactivado) */}
+        {/* Trazabilidad multimodal: tarjetas demostrativas (datos ficticios, rotulados) */}
+        <ZenoxTrackingBoard />
         {/* 08–09 Mapa internacional y globo de conectividad (métricas ocultas: pendientes de validación) */}
         <Evidence showMetrics={false} />
         {/* 11 Casos de éxito (pendientes de aval escrito: revisión interna) */}
