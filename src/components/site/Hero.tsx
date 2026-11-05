@@ -7,9 +7,9 @@ import { track } from "@/lib/analytics";
 import { WHATSAPP_URL, whatsappCopy } from "@/lib/whatsapp";
 import platformAsset from "@/assets/hero-platform.webp.asset.json";
 
-export function Hero() {
+export function Hero({ titleOverride }: { titleOverride?: readonly [string, string] } = {}) {
   const { content, locale } = useLanguage();
-  const { hero } = content;
+  const hero = titleOverride ? { ...content.hero, title: titleOverride } : content.hero;
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {

@@ -5,9 +5,13 @@ import { LanguageSelector } from "@/components/site/LanguageSelector";
 import { useLanguage } from "@/lib/i18n";
 import { track } from "@/lib/analytics";
 
-export function Header() {
+type NavLink = { label: string; href: string };
+
+// navLinks: opcional. La Home "/" no lo pasa y usa content.nav sin cambios.
+export function Header({ navLinks }: { navLinks?: readonly NavLink[] } = {}) {
   const { content } = useLanguage();
-  const { companyLink, diagnosticLink, nav, resourceLinks, ui } = content;
+  const { companyLink, diagnosticLink, nav: contentNav, resourceLinks, ui } = content;
+  const nav = navLinks ?? contentNav;
   const [scrolled, setScrolled] = useState(false);
   const [openResources, setOpenResources] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);

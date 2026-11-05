@@ -36,6 +36,10 @@ docs
 db
 scripts/*
 !scripts/start-render.sh
+!scripts/staging-gateway.mjs
+
+# Vídeos sin licencia documentada: nunca en el artefacto (la reproducción además está desactivada por flag).
+public/media/cinematic/**/*.mp4
 
 # Miscelánea
 *.log

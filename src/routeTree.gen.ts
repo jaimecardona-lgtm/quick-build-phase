@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as PlaneacionRouteImport } from './routes/planeacion'
+import { Route as ZenoxPreviewRouteImport } from './routes/zenox-preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const PlaneacionRoute = PlaneacionRouteImport.update({
   path: '/planeacion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZenoxPreviewRoute = ZenoxPreviewRouteImport.update({
+  id: '/zenox-preview',
+  path: '/zenox-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
   '/planeacion': typeof PlaneacionRoute
+  '/zenox-preview': typeof ZenoxPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
   '/planeacion': typeof PlaneacionRoute
+  '/zenox-preview': typeof ZenoxPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
   '/planeacion': typeof PlaneacionRoute
+  '/zenox-preview': typeof ZenoxPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/healthz' | '/planeacion'
+  fullPaths: '/' | '/healthz' | '/planeacion' | '/zenox-preview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/healthz' | '/planeacion'
-  id: '__root__' | '/' | '/healthz' | '/planeacion'
+  to: '/' | '/healthz' | '/planeacion' | '/zenox-preview'
+  id: '__root__' | '/' | '/healthz' | '/planeacion' | '/zenox-preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HealthzRoute: typeof HealthzRoute
   PlaneacionRoute: typeof PlaneacionRoute
+  ZenoxPreviewRoute: typeof ZenoxPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaneacionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zenox-preview': {
+      id: '/zenox-preview'
+      path: '/zenox-preview'
+      fullPath: '/zenox-preview'
+      preLoaderRoute: typeof ZenoxPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HealthzRoute: HealthzRoute,
   PlaneacionRoute: PlaneacionRoute,
+  ZenoxPreviewRoute: ZenoxPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

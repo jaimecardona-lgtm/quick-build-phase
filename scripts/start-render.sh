@@ -16,12 +16,24 @@ set -uo pipefail
 APP_ROOT="${APP_ROOT:-/srv/app}"
 PY="${PY:-/opt/venv/bin/python}"
 API_HOST="127.0.0.1"
-API_PORT="8010"
+API_PORT="${API_PORT:-8010}"
 # Plazo máximo para que FastAPI quede listo. Con 0,1 vCPU la importación tarda ~60 s.
 API_READY_TIMEOUT="${API_READY_TIMEOUT:-600}"
 export PORT="${PORT:-10000}"
 export HOST="${HOST:-0.0.0.0}"
 export AGENT_API_URL="http://${API_HOST}:${API_PORT}"
+
+# Control de acceso de staging (Opción A, fase 3F). Con modo "basic", el gateway escucha en PORT (público)
+# y Nitro en un puerto interno. Con modo "off" (comportamiento anterior) Nitro escucha en PORT.
+STAGING_ACCESS_MODE="${STAGING_ACCESS_MODE:-off}"
+GATE_PID=""
+if [[ "${STAGING_ACCESS_MODE}" == "basic" ]]; then
+  NODE_PORT="${APP_INTERNAL_PORT:-10001}"
+  NODE_HOST="127.0.0.1"
+else
+  NODE_PORT="${PORT}"
+  NODE_HOST="${HOST}"
+fi
 
 API_PID=""
 WEB_PID=""
@@ -36,6 +48,8 @@ shutdown() {
   log "apagando procesos (codigo ${code})"
   [[ -n "${WEB_PID}" ]] && kill -TERM "${WEB_PID}" 2>/dev/null
   [[ -n "${API_PID}" ]] && kill -TERM "${API_PID}" 2>/dev/null
+  [[ -n "${GATE_PID}" ]] && kill -TERM "${GATE_PID}" 2>/dev/null
+  [[ -n "${GATE_PID}" ]] && wait "${GATE_PID}" 2>/dev/null
   [[ -n "${WEB_PID}" ]] && wait "${WEB_PID}" 2>/dev/null
   [[ -n "${API_PID}" ]] && wait "${API_PID}" 2>/dev/null
   exit "${code}"
@@ -55,9 +69,15 @@ probe_api() {
 }
 
 # 1. Arrancar ambos procesos a la vez. Node primero para que el puerto público abra cuanto antes.
-log "arrancando Node SSR en ${HOST}:${PORT}"
-node "${APP_ROOT}/.output/server/index.mjs" &
+log "arrancando Node SSR en ${NODE_HOST}:${NODE_PORT}"
+PORT="${NODE_PORT}" HOST="${NODE_HOST}" node "${APP_ROOT}/.output/server/index.mjs" &
 WEB_PID=$!
+
+if [[ "${STAGING_ACCESS_MODE}" == "basic" ]]; then
+  log "arrancando gateway de acceso restringido en ${HOST}:${PORT}"
+  GATEWAY_HOST="${HOST}" UPSTREAM_PORT="${NODE_PORT}" PORT="${PORT}"     node "${APP_ROOT}/scripts/staging-gateway.mjs" &
+  GATE_PID=$!
+fi
 
 log "arrancando FastAPI en ${API_HOST}:${API_PORT}"
 "${PY}" -m uvicorn app.main:app \
@@ -76,6 +96,10 @@ while true; do
   fi
   if ! kill -0 "${API_PID}" 2>/dev/null; then
     log "FastAPI terminó; apagando Node SSR"
+    shutdown 1
+  fi
+  if [[ -n "${GATE_PID}" ]] && ! kill -0 "${GATE_PID}" 2>/dev/null; then
+    log "gateway terminó; apagando procesos"
     shutdown 1
   fi
   if [[ "${API_READY}" -eq 0 ]]; then

@@ -80,7 +80,7 @@ function CountUp({ target, locale }: { target: number; locale: string }) {
   );
 }
 
-export function Evidence() {
+export function Evidence({ showMetrics = true }: { showMetrics?: boolean } = {}) {
   const { content, locale } = useLanguage();
   const { evidence, ui } = content;
   const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
@@ -126,6 +126,7 @@ export function Evidence() {
               {t.title[0]}<br />{t.title[1]}
             </h2>
             <p className="section-lead-dark mt-5">{t.body}</p>
+            {showMetrics ? (
             <dl className="ev3-metrics mt-8">
               {[17543, 699].map((v, i) => (
                 <div key={v} className="ev3-metric">
@@ -135,6 +136,7 @@ export function Evidence() {
                 </div>
               ))}
             </dl>
+            ) : null}
           </div>
 
           <LogisticsRoutes

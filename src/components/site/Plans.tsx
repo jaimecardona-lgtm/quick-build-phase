@@ -7,6 +7,7 @@ import { CinematicBackgroundSequence } from "@/components/experience/CinematicBa
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
 import { FORWARDERS_V2 } from "@/lib/cinematic-assets";
 import { DataNetworkLayer } from "@/components/experience/DataNetworkLayer";
+import { REVIEW_SECURITY_ITEM } from "@/components/zenox-preview/zenox-preview-copy";
 
 // Línea de expansión: el tren como metáfora de crecimiento por etapas.
 const PLANS_CLIPS = [CINEMATIC_CLIPS.rail];
@@ -70,10 +71,15 @@ const waLink = (text: string) => `https://wa.me/573189733174?text=${encodeURICom
 
 const customIcons = [SearchCheck, PenTool, Plug, Code2];
 
-export function Plans() {
+export function Plans({ reviewMode = false }: { reviewMode?: boolean } = {}) {
   const { locale } = useLanguage();
   const demoUrl = useDemoUrl();
-  const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
+  const lang = locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es";
+  const t = copy[lang];
+  const reviewItems = (items: string[]): string[] =>
+    items
+      .filter((item) => !/24\/7|24h/i.test(item))
+      .map((item) => (/certific/i.test(item) ? REVIEW_SECURITY_ITEM[lang] : item));
   const cards = t.plans.filter((p) => p.id !== "setup");
   const setup = t.plans.find((p) => p.id === "setup")!;
   const c = t.custom;
@@ -97,14 +103,14 @@ export function Plans() {
           {plan.name}
           {plan.tag && <span className="plans-tag font-ui">{plan.tag}</span>}
         </h3>
-        {plan.badge && <p className="plans-badge font-ui">{plan.badge}</p>}
+        {plan.badge && !reviewMode && <p className="plans-badge font-ui">{plan.badge}</p>}
         {sub && <p className="plans-sub font-ui">{sub}</p>}
       </div>
     </div>
   );
   const List = ({ items, icons }: { items: string[]; icons?: (typeof Layers)[] }) => (
     <ul className="plans-list">
-      {items.map((item, i) => {
+      {(reviewMode ? reviewItems(items) : items).map((item, i) => {
         const I = icons?.[i] ?? Check;
         return (
           <li key={item} className="font-ui">

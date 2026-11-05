@@ -71,7 +71,7 @@ function useCountUp(ref: React.RefObject<HTMLElement | null>) {
   return progress;
 }
 
-export function Flow() {
+export function Flow({ showResults = true }: { showResults?: boolean } = {}) {
   const { content, locale } = useLanguage();
   const { flow, portal } = content;
   const portalIcons = [Building2, Route, FileText, FileClock];
@@ -216,18 +216,22 @@ export function Flow() {
           </div>
 
           <div ref={resultsRef} className="flow2-results" data-lit={progress > 0}>
-            <h3 className="title-panel">{t.resultsTitle}</h3>
-            <dl className="flow2-metrics">
-              {metrics.map((m, i) => (
-                <div key={i} className="flow2-metric" data-accent={i === 1}>
-                  <dt className="sr-only">{t.results[i]}</dt>
-                  <dd className="flow2-number" aria-label={`${m.value}${m.suffix}`}>
-                    <span aria-hidden="true">{Math.round(m.value * progress)}{m.suffix}</span>
-                  </dd>
-                  <dd className="mt-2 font-ui text-sm leading-snug text-on-dark/80" aria-hidden="true">{t.results[i]}</dd>
-                </div>
-              ))}
-            </dl>
+            {showResults ? (
+              <>
+                <h3 className="title-panel">{t.resultsTitle}</h3>
+                <dl className="flow2-metrics">
+                  {metrics.map((m, i) => (
+                    <div key={i} className="flow2-metric" data-accent={i === 1}>
+                      <dt className="sr-only">{t.results[i]}</dt>
+                      <dd className="flow2-number" aria-label={`${m.value}${m.suffix}`}>
+                        <span aria-hidden="true">{Math.round(m.value * progress)}{m.suffix}</span>
+                      </dd>
+                      <dd className="mt-2 font-ui text-sm leading-snug text-on-dark/80" aria-hidden="true">{t.results[i]}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            ) : null}
             <div className="flow2-cta">
               <DemoButton sectionId="plataforma" size="lg" />
             </div>

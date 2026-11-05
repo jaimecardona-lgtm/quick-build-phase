@@ -6,8 +6,11 @@ import { useEffect } from "react";
  */
 export function useReveal() {
   useEffect(() => {
+    // Estado oculto solo con JavaScript activo: sin JS el contenido permanece visible.
+    document.documentElement.classList.add("js-reveal");
     const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-    if (!("IntersectionObserver" in window)) {
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) {
       nodes.forEach((node) => node.setAttribute("data-visible", "true"));
       return;
     }
@@ -22,6 +25,9 @@ export function useReveal() {
       { threshold: 0.18, rootMargin: "0px 0px -6%" },
     );
     nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("js-reveal");
+    };
   }, []);
 }

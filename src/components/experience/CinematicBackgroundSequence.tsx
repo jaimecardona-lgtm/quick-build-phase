@@ -4,6 +4,9 @@ import { useLanguage } from "@/lib/i18n";
 import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
 import "@/components/experience/scene-backgrounds.css";
 
+// Videos sin licencia aprobada: apagados salvo VITE_LOGIXTIC_CINEMATIC_VIDEO_APPROVED=true.
+const CINEMATIC_VIDEO_APPROVED = import.meta.env["VITE_LOGIXTIC_CINEMATIC_VIDEO_APPROVED"] === "true";
+
 /*
  * Fondo audiovisual secuencial para una sección. Reproduce sus clips en orden, uno a la vez, con
  * crossfade; al terminar la lista reinicia. Silenciado, en bucle de lista, pausado fuera de pantalla.
@@ -150,7 +153,8 @@ export function CinematicBackgroundSequence({
   }, [clips]);
 
   // Sin el flag cinematográfico no se renderiza nada: la producción conserva su apariencia actual.
-  if (!CINEMATIC_ENABLED) return null;
+  // Los clips son videos sin licencia documentada (ver license-manifest.json): solo se reproducen si se aprueban explícitamente.
+  if (!CINEMATIC_ENABLED || !CINEMATIC_VIDEO_APPROVED) return null;
 
   const poster = clips[0]?.poster ?? "";
 

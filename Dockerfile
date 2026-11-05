@@ -20,10 +20,13 @@ ARG VITE_LOGIXTIC_AGENT=true
 ARG VITE_PLANEACION_ENABLED=false
 # Modo de build: la variante visual aprobada (Hero cinematográfico) vive en .env.forwarders-v2.
 ARG VITE_BUILD_MODE=forwarders-v2
+# Preset explícito: sin él, Nitro genera "cloudflare-module" y node .output/server/index.mjs no arranca.
 ENV NODE_ENV=production \
+    NITRO_PRESET=node-server \
     VITE_LOGIXTIC_AGENT=${VITE_LOGIXTIC_AGENT} \
     VITE_PLANEACION_ENABLED=${VITE_PLANEACION_ENABLED}
 RUN bun run build --mode ${VITE_BUILD_MODE} \
+ && node -e "const p=require('./.output/nitro.json').preset; if (p!=='node-server') { console.error('preset inesperado: '+p); process.exit(1) }" \
  && test -f .output/server/index.mjs
 
 # ---------------------------------------------------------------------------------------------
@@ -52,6 +55,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_ENV=staging \
     HOST=0.0.0.0 \
     PORT=10000 \
+    APP_INTERNAL_PORT=10001 \
+    STAGING_ACCESS_MODE=basic \
     AGENT_API_URL=http://127.0.0.1:8010 \
     PY=/opt/venv/bin/python
 
@@ -63,6 +68,7 @@ COPY --from=web-build /usr/local/bin/node /usr/local/bin/node
 COPY --from=web-build /app/.output /srv/app/.output
 COPY --from=api-build /opt/venv /opt/venv
 COPY scripts/start-render.sh /srv/app/scripts/start-render.sh
+COPY scripts/staging-gateway.mjs /srv/app/scripts/staging-gateway.mjs
 
 RUN sed -i 's/\r$//' /srv/app/scripts/start-render.sh \
  && chmod 0555 /srv/app/scripts/start-render.sh \
