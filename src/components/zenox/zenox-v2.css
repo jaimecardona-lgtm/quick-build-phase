@@ -1,0 +1,1233 @@
+/*
+ * Variante Zenox V2. Sistema visual original (sin recursos de la plantilla de referencia).
+ * Animaciones: solo transform y opacity. Pausa fuera de pantalla con data-active="false".
+ * Desactivadas con prefers-reduced-motion.
+ */
+
+/* ---------- Header y footer (fuera de .zx-root) ---------- */
+.zx-header,
+.zx-footer {
+  --zx-text: #f2f4fa;
+  --zx-line: rgb(255 255 255 / 0.09);
+  --zx-muted: #9aa3b8;
+  --zx-violet: #8b6bff;
+  --zx-blue: #3ec7ff;
+  --zx-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.zx-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  background: rgb(5 6 11 / 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgb(255 255 255 / 0.07);
+}
+
+.zx-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.zx-brand img {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.zx-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 22px;
+}
+
+.zx-nav a {
+  color: #c9cfdd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.zx-nav a:hover,
+.zx-nav a:focus-visible {
+  color: #fff;
+}
+
+.zx-header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.zx-btn--small {
+  padding: 8px 8px 8px 16px;
+  font-size: 12px;
+}
+
+.zx-menu {
+  display: none;
+  margin-left: auto;
+}
+
+.zx-menu summary {
+  cursor: pointer;
+  color: #fff;
+  font-family: var(--zx-mono);
+  font-size: 13px;
+  list-style: none;
+  padding: 8px 12px;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 999px;
+}
+
+.zx-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.zx-menu ul {
+  position: absolute;
+  right: 20px;
+  top: 64px;
+  background: #0b0d14;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 16px;
+  padding: 12px;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.zx-menu a {
+  color: #e6e9f2;
+  text-decoration: none;
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+@media (max-width: 1080px) {
+  .zx-nav {
+    display: none;
+  }
+  .zx-header-actions .zx-btn {
+    display: none;
+  }
+  .zx-menu {
+    display: block;
+  }
+}
+
+.zx-footer {
+  background: #05060b;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  padding: 48px 20px 56px;
+  color: #9aa3b8;
+}
+
+.zx-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.zx-footer .zx-brand img {
+  height: 30px;
+}
+
+.zx-footer-tagline {
+  margin: 0;
+  font-size: 15px;
+}
+
+.zx-footer-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.zx-footer-nav a {
+  color: #c9cfdd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.zx-footer-nav a:hover,
+.zx-footer-nav a:focus-visible {
+  color: #fff;
+}
+
+/* ---------- Base compartida (dentro de .zx-root) ---------- */
+.zx-root {
+  scroll-margin-top: 80px;
+}
+
+.zx-root section[id] {
+  scroll-margin-top: 80px;
+}
+
+.zx-mt-16 {
+  margin-top: 16px;
+}
+
+.zx-p--sm {
+  font-size: 0.94rem;
+}
+
+.zx-p--lead {
+  font-size: 1.08rem;
+  color: #b8c0d2;
+  max-width: 56ch;
+}
+
+.zx-micro {
+  font-size: 0.82rem;
+  color: var(--zx-muted);
+  max-width: 52ch;
+  margin-top: 18px;
+}
+
+.zx-support {
+  color: #f2f4fa;
+  font-size: 1.05rem;
+  margin: 18px 0 0;
+}
+
+.zx-caption {
+  text-align: left;
+  font-family: var(--zx-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zx-muted);
+  padding-bottom: 12px;
+}
+
+.zx-card--glass {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.012));
+  backdrop-filter: blur(8px);
+}
+
+.zx-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--zx-blue);
+  background: rgb(62 199 255 / 0.1);
+  border: 1px solid rgb(62 199 255 / 0.25);
+}
+
+.zx-icon--lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  color: var(--zx-violet);
+  background: rgb(139 107 255 / 0.12);
+  border-color: rgb(139 107 255 / 0.35);
+}
+
+.zx-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ---------- 01 Hero ---------- */
+.zx-hero-v2 {
+  padding-top: clamp(96px, 9vw, 116px) !important;
+  padding-bottom: clamp(40px, 5vw, 72px) !important;
+  overflow: hidden;
+}
+
+.zx-hero-grid {
+  display: grid;
+  gap: 48px;
+  align-items: start;
+  grid-template-columns: 1fr;
+}
+
+/* Altura fija en píxeles: un cambio de fuente no debe mover el resplandor (evita CLS). */
+.zx-hero-v2 .zx-ribbon {
+  inset: -60px -10% auto -10%;
+  height: 560px;
+}
+
+@media (min-width: 960px) {
+  .zx-hero-grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 56px;
+  }
+}
+
+.zx-hero-v2 .zx-h1 {
+  text-align: left;
+  font-size: clamp(2.4rem, 4.6vw, 4rem);
+}
+
+.zx-hero-copy {
+  display: grid;
+  gap: 22px;
+  justify-items: start;
+}
+
+.zx-hero-copy .zx-p {
+  text-align: left;
+}
+
+.zx-hero-copy .zx-cta-row {
+  justify-content: flex-start;
+}
+
+.zx-stage {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  width: 100%;
+  max-width: 640px;
+  justify-self: end;
+  isolation: isolate;
+}
+
+.zx-stage-glow {
+  position: absolute;
+  inset: -12% -8% -6% -8%;
+  z-index: -1;
+  background:
+    radial-gradient(45% 50% at 62% 38%, rgb(139 107 255 / 0.5), transparent 70%),
+    radial-gradient(40% 45% at 30% 70%, rgb(62 199 255 / 0.32), transparent 70%);
+  filter: blur(28px);
+  animation: zx-drift 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.zx-stage-device {
+  position: absolute;
+  left: 12%;
+  top: 6%;
+  width: 66%;
+  aspect-ratio: 4 / 3;
+  border-radius: 22px;
+  padding: 8px;
+  background: linear-gradient(160deg, #3a3d4a, #101218 60%, #2b2e3a);
+  box-shadow: 0 40px 120px -30px rgb(139 107 255 / 0.45);
+  animation: zx-rise 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.zx-stage-device img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% 50%;
+  border-radius: 14px;
+  display: block;
+}
+
+.zx-glass {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgb(18 20 30 / 0.66);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.86rem;
+  color: #eef1f8;
+  white-space: nowrap;
+  box-shadow: 0 18px 50px -20px rgb(0 0 0 / 0.7);
+  animation: zx-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.zx-glass--a {
+  left: 0;
+  bottom: 14%;
+  animation-delay: -1s;
+}
+
+.zx-glass--b {
+  right: 2%;
+  top: 0;
+  animation-delay: -3s;
+}
+
+.zx-glass--c {
+  right: 8%;
+  bottom: 4%;
+  animation-delay: -5s;
+}
+
+.zx-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 12px #4ade80;
+  flex: none;
+}
+
+.zx-dot--blue {
+  background: var(--zx-blue);
+  box-shadow: 0 0 12px var(--zx-blue);
+}
+
+.zx-dot--violet {
+  background: var(--zx-violet);
+  box-shadow: 0 0 12px var(--zx-violet);
+}
+
+.zx-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  animation: zx-float 12s ease-in-out infinite reverse;
+}
+
+.zx-links path {
+  fill: none;
+  stroke: rgb(62 199 255 / 0.35);
+  stroke-width: 1.2;
+}
+
+.zx-links circle {
+  fill: var(--zx-blue);
+}
+
+/* Pausa cuando el hero no está en pantalla (IntersectionObserver fija data-active) */
+.zx-stage[data-active="false"] *,
+.zx-stage[data-active="false"] {
+  animation-play-state: paused !important;
+}
+
+/* ---------- Entidad ---------- */
+.zx-entity {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.zx-entity-text {
+  margin: 0;
+  max-width: 78ch;
+  color: #dfe3ee;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  line-height: 1.6;
+  border-left: 2px solid var(--zx-violet);
+  padding-left: 22px;
+}
+
+.zx-entity-text .zx-label {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.zx-entity-body {
+  display: block;
+}
+
+/* ---------- Problema ---------- */
+.zx-problem-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 44px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .zx-problem-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .zx-problem-card--0 {
+    grid-row: span 2;
+    padding: 40px;
+    background: linear-gradient(170deg, rgb(139 107 255 / 0.18), rgb(255 255 255 / 0.02) 60%);
+  }
+  .zx-problem-card--0 .zx-h3 {
+    font-size: 1.6rem;
+  }
+}
+
+.zx-problem-card .zx-icon {
+  margin-bottom: 18px;
+}
+
+/* ---------- Fragmentación → control ---------- */
+.zx-flow {
+  position: relative;
+  padding-left: 8px;
+}
+
+.zx-flow-track {
+  position: absolute;
+  left: 27px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: rgb(255 255 255 / 0.1);
+  overflow: hidden;
+}
+
+.zx-flow-track span {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--zx-blue), var(--zx-violet));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1.6s ease;
+}
+
+.zx-flow[data-visible="true"] .zx-flow-track span {
+  transform: scaleY(1);
+}
+
+.zx-flow-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 28px;
+}
+
+.zx-flow-steps li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.zx-flow-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--zx-mono);
+  font-size: 13px;
+  background: #0b0d14;
+  border: 1px solid rgb(139 107 255 / 0.5);
+  color: #fff;
+}
+
+/* ---------- Plataforma ---------- */
+.zx-platform {
+  margin-top: 44px;
+  display: grid;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .zx-platform {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 48px;
+  }
+  .zx-platform-panel {
+    position: sticky;
+    top: 110px;
+  }
+}
+
+.zx-platform-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.zx-platform-item {
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  font: inherit;
+}
+
+.zx-platform-item:hover,
+.zx-platform-item:focus-visible,
+.zx-platform-item[aria-pressed="true"] {
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.zx-platform-item[aria-pressed="true"] {
+  border-color: rgb(139 107 255 / 0.5);
+}
+
+.zx-platform-num {
+  font-family: var(--zx-mono);
+  font-size: 12px;
+  color: var(--zx-violet);
+  padding-top: 4px;
+}
+
+.zx-platform-text {
+  display: grid;
+  gap: 6px;
+}
+
+.zx-platform-text .zx-h3 {
+  display: block;
+  margin: 0;
+}
+
+.zx-platform-text .zx-p {
+  margin: 0;
+}
+
+.zx-platform-panel-inner {
+  position: relative;
+  border-radius: 28px;
+  padding: 36px;
+  min-height: 340px;
+  background: linear-gradient(170deg, rgb(139 107 255 / 0.2), rgb(62 199 255 / 0.05) 70%);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  animation: zx-fade 0.45s ease both;
+}
+
+.zx-platform-lines {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.zx-platform-lines span {
+  height: 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+}
+
+.zx-platform-lines span:nth-child(2) {
+  width: 78%;
+}
+
+.zx-platform-lines span:nth-child(3) {
+  width: 52%;
+}
+
+/* ---------- Resultados ---------- */
+.zx-insights {
+  margin-top: 40px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .zx-insights {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.zx-insight-index {
+  display: block;
+  font-family: var(--zx-mono);
+  font-size: 12px;
+  color: var(--zx-blue);
+  margin-bottom: 18px;
+}
+
+/* ---------- Clientes ---------- */
+.zx-case-frame {
+  margin-top: 22px;
+  height: 180px;
+  border-radius: 18px;
+  border: 1px dashed rgb(255 255 255 / 0.18);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.zx-case-frame span {
+  position: absolute;
+  width: 46%;
+  height: 46%;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.zx-case-frame span:first-child {
+  left: 10%;
+  top: 22%;
+}
+
+.zx-case-frame span:last-child {
+  right: 10%;
+  bottom: 14%;
+  background: rgb(139 107 255 / 0.1);
+}
+
+/* ---------- Logix ---------- */
+.zx-logix {
+  background: linear-gradient(180deg, transparent, rgb(139 107 255 / 0.06), transparent);
+}
+
+.zx-chat {
+  border-radius: 28px;
+  padding: 26px;
+  background: rgb(10 12 20 / 0.7);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: 0 40px 100px -40px rgb(139 107 255 / 0.4);
+  display: grid;
+  gap: 14px;
+}
+
+.zx-chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.zx-bubble {
+  max-width: 88%;
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.zx-bubble--user {
+  justify-self: end;
+  background: #1c2030;
+  color: #f2f4fa;
+  border-bottom-right-radius: 6px;
+}
+
+.zx-bubble--ai {
+  justify-self: start;
+  background: linear-gradient(135deg, rgb(139 107 255 / 0.3), rgb(62 199 255 / 0.12));
+  color: #eef1f8;
+  border-bottom-left-radius: 6px;
+}
+
+.zx-chat-foot {
+  margin-top: 8px;
+}
+
+/* ---------- Implementación ---------- */
+.zx-timeline {
+  position: relative;
+  margin-top: 44px;
+}
+
+.zx-timeline-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 19px;
+  height: 2px;
+  background: rgb(255 255 255 / 0.1);
+  overflow: hidden;
+}
+
+.zx-timeline-track span {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--zx-blue), var(--zx-violet));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.8s ease;
+}
+
+.zx-timeline[data-visible="true"] .zx-timeline-track span {
+  transform: scaleX(1);
+}
+
+.zx-timeline ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .zx-timeline ol {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+
+.zx-timeline-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--zx-mono);
+  font-size: 12px;
+  color: #fff;
+  background: #0b0d14;
+  border: 1px solid rgb(139 107 255 / 0.55);
+  margin-bottom: 14px;
+}
+
+.zx-timeline h3 {
+  margin: 0;
+}
+
+/* ---------- Planes ---------- */
+.zx-plans {
+  margin-top: 40px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .zx-plans {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.zx-price-name {
+  font-size: 1.35rem;
+}
+
+.zx-price--setup {
+  background: rgb(255 255 255 / 0.02);
+  border-style: dashed;
+}
+
+.zx-price ul {
+  font-size: 0.93rem;
+}
+
+/* ---------- FAQ ---------- */
+.zx-faq summary {
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+
+/* ---------- Cierre ---------- */
+.zx-closing-section {
+  overflow: hidden;
+  padding-bottom: clamp(96px, 12vw, 160px) !important;
+}
+
+.zx-ribbon--closing {
+  inset: -30% -20% auto -20%;
+  height: 90%;
+  opacity: 0.9;
+  filter: blur(60px);
+}
+
+/* Espacio para el lanzador flotante del widget en móvil (no altera el widget).
+   Solo aplica cuando la página Zenox está montada (body:has(.zx-header)). */
+@media (max-width: 720px) {
+  .zx-closing-section {
+    padding-bottom: 150px !important;
+  }
+  body:has(.zx-header) .aw-launcher {
+    padding: 10px;
+  }
+  body:has(.zx-header) .aw-launcher span {
+    display: none;
+  }
+  .zx-hero-v2 .zx-cta-row .zx-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ---------- Movimiento ---------- */
+@keyframes zx-rise {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes zx-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@keyframes zx-fade {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-stage-glow,
+  .zx-stage-device,
+  .zx-glass,
+  .zx-links,
+  .zx-platform-panel-inner {
+    animation: none !important;
+  }
+  .zx-flow-track span,
+  .zx-timeline-track span {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Bloque editorial lateral del Hero: UNA SOLA OPERACIÓN (espejo de Framer). */
+.zx-hero-block { margin: 0 0 40px; max-width: 430px; }
+.zx-hero-block-tag { font-family: var(--zx-mono, ui-monospace, monospace); font-size: 13px; color: rgba(255,255,255,0.7); margin: 0 0 10px; }
+.zx-hero-block-title { font-size: 15px; font-weight: 500; letter-spacing: 0.02em; margin: 0 0 18px; color: #fff; }
+.zx-hero-block-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.zx-hero-block-list li { border-top: 1px solid rgba(255,255,255,0.12); padding: 14px 0 16px; }
+.zx-hero-block-h { font-size: 20px; font-weight: 500; margin: 0 0 6px; color: #fff; }
+.zx-hero-block-p { font-size: 15px; line-height: 1.4; margin: 0; color: rgba(255,255,255,0.7); }
+
+/* ---------- Hero: composición Framer (Desktop 1280) ----------
+ * Bloque editorial en x≈0 (194px), titular en x≈498 (618px), carrusel/captura debajo.
+ * Cintas y brillo en CSS: no se copian activos de la plantilla. */
+.zx-hero-fw .zx-hero-grid {
+  display: grid;
+  grid-template-columns: 195px 303px minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 56px;
+  align-items: start;
+  min-height: 640px;
+}
+.zx-hero-fw .zx-hero-block {
+  grid-column: 1;
+  grid-row: 1;
+  max-width: 195px;
+  margin: 88px 0 0;
+}
+.zx-hero-fw .zx-hero-copy {
+  grid-column: 3;
+  grid-row: 1;
+  max-width: 618px;
+  margin-top: 84px;
+}
+.zx-hero-fw .zx-stage {
+  grid-column: 1 / span 3;
+  grid-row: 2;
+  justify-self: end;
+  width: min(100%, 760px);
+  aspect-ratio: 16 / 9;
+}
+.zx-hero-fw .zx-ribbon--band {
+  inset: 22% -10% auto 30%;
+  height: 300px;
+  background: linear-gradient(112deg, transparent 18%, rgb(150 120 255 / 0.9) 42%, rgb(70 210 255 / 0.7) 55%, transparent 72%);
+  filter: blur(14px);
+  transform: rotate(-12deg);
+  opacity: 1;
+  z-index: -1;
+}
+@media (max-width: 959px) {
+  .zx-hero-fw .zx-hero-grid { grid-template-columns: 1fr; min-height: auto; row-gap: 40px; }
+  .zx-hero-fw .zx-hero-block { grid-column: 1; grid-row: auto; max-width: none; margin: 0; }
+  .zx-hero-fw .zx-hero-copy { grid-column: 1; grid-row: auto; margin-top: 0; max-width: none; }
+  .zx-hero-fw .zx-stage { grid-column: 1; grid-row: auto; justify-self: stretch; width: 100%; }
+  .zx-hero-fw .zx-ribbon--band { inset: 40% -20% auto -20%; height: 260px; }
+}
+
+.zx-hero-fw .zx-hero-block-tag { font-size: 11px; white-space: nowrap; letter-spacing: -0.02em; }
+
+/* ---------- The Platform: escena fija con tres estados (Framer "The Platform") ---------- */
+.zx-pf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 56px;
+  margin-top: 64px;
+  align-items: start;
+}
+.zx-pf-stage {
+  position: sticky;
+  top: 120px;
+  height: 520px;
+}
+.zx-pf-device {
+  position: relative;
+  height: 100%;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(60% 60% at 70% 30%, rgb(139 107 255 / 0.28), transparent 70%),
+    #07080c;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+}
+.zx-pf-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(12px) scale(0.985);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.zx-pf-stage[data-active-state="0"] .zx-pf-layer[data-layer="0"],
+.zx-pf-stage[data-active-state="1"] .zx-pf-layer[data-layer="1"],
+.zx-pf-stage[data-active-state="2"] .zx-pf-layer[data-layer="2"] {
+  opacity: 1;
+  transform: none;
+}
+.zx-pf-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+.zx-pf-chip,
+.zx-pf-node {
+  position: absolute;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgb(255 255 255 / 0.04);
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+.zx-pf-chip--0 { top: 16%; left: 8%; }
+.zx-pf-chip--1 { top: 34%; left: 52%; }
+.zx-pf-chip--2 { top: 58%; left: 14%; }
+.zx-pf-chip--3 { top: 72%; left: 56%; }
+.zx-pf-chip--4 { top: 22%; left: 40%; }
+.zx-pf-chip--5 { top: 84%; left: 22%; }
+.zx-pf-node--a { top: 22%; left: 12%; }
+.zx-pf-node--b { top: 22%; right: 12%; }
+.zx-pf-node--c { bottom: 22%; left: 12%; }
+.zx-pf-node--d { bottom: 22%; right: 12%; }
+.zx-pf-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.zx-pf-links path {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.3);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+.zx-pf-step {
+  padding: 28px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
+}
+.zx-pf-step[data-current="true"] { opacity: 1; }
+.zx-pf-num {
+  display: block;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 13px;
+  color: rgb(160 140 255);
+  margin-bottom: 8px;
+}
+.zx-pf-steps { list-style: none; margin: 0; padding: 0; }
+.zx-pf-step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+
+/* ---------- Services (Framer "Services") ---------- */
+.zx-sv-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  padding-block: 96px;
+}
+.zx-sv-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 32px;
+  min-height: 420px;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  background: linear-gradient(160deg, rgb(139 107 255 / 0.18), rgb(10 10 16 / 0.6));
+}
+.zx-sv-num { font-family: var(--zx-mono, ui-monospace, monospace); font-size: 13px; color: rgb(160 140 255); }
+.zx-sv-caps { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 12px; }
+.zx-sv-caps li { color: rgba(255, 255, 255, 0.72); line-height: 1.45; }
+.zx-sv-caps strong { color: #fff; font-weight: 500; }
+.zx-sv-list { list-style: none; padding: 0; margin: 40px 0 0; }
+.zx-sv-list li { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.zx-sv-list li:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.zx-sv-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 22px 0;
+  color: rgba(255, 255, 255, 0.45);
+  font: inherit;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.zx-sv-item[aria-pressed="true"] { color: #fff; }
+.zx-sv-item-num { font-family: var(--zx-mono, ui-monospace, monospace); font-size: 13px; color: rgb(160 140 255); }
+
+/* ---------- Logix (Framer "Logix") ---------- */
+.zx-lx-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  padding-block: 96px;
+}
+.zx-lx-rows { list-style: none; padding: 0; margin: 40px 0 0; }
+.zx-lx-rows li { border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 22px 0; }
+.zx-lx-rows li:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.zx-lx-visual {
+  margin: 0;
+  aspect-ratio: 1;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: radial-gradient(circle at 50% 40%, rgb(124 92 255 / 0.25), transparent 65%), #06070b;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.zx-lx-visual img { width: 100%; height: auto; max-width: 430px; }
+
+/* ---------- Responsive: 1 columna en móvil ---------- */
+@media (max-width: 959px) {
+  .zx-pf-grid,
+  .zx-sv-grid,
+  .zx-lx-grid { grid-template-columns: 1fr; gap: 32px; }
+  .zx-pf-stage { position: relative; top: 0; height: 340px; }
+  .zx-sv-card { min-height: 0; }
+  .zx-lx-visual { aspect-ratio: auto; padding: 16px; }
+}
+
+/* ---------- Movimiento reducido: sin transiciones ni desplazamientos ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .zx-pf-layer,
+  .zx-pf-step,
+  .zx-sv-item { transition: none !important; }
+}
+
+/* Marcadores explícitos de recursos pendientes (no son capturas ni figuras reales). */
+.zx-pending-shot {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  border: 1px dashed rgb(255 255 255 / 0.25);
+  border-radius: 16px;
+  color: rgb(255 255 255 / 0.6);
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 13px;
+  text-align: center;
+  padding: 16px;
+  background: rgb(255 255 255 / 0.02);
+}
+.zx-sv-figure {
+  height: 180px;
+  border: 1px dashed rgb(255 255 255 / 0.25);
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: rgb(255 255 255 / 0.55);
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 13px;
+  text-align: center;
+  padding: 12px;
+}
+.zx-logos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px 32px;
+  align-items: center;
+}
+.zx-logos img {
+  width: 100%;
+  max-height: 44px;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: brightness(1.1);
+}
+
+/* The Platform: capturas reales dentro del marco del dispositivo (sin diagramas). */
+.zx-pf-device img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+  display: block;
+}
+.zx-pf-layer { margin: 0; }
+
+/* Móvil: la escena se queda fija bajo el header mientras cambian los tres estados. */
+@media (max-width: 959px) {
+  .zx-pf-stage {
+    position: sticky;
+    top: 72px;
+    height: 260px;
+    z-index: 2;
+    background: #050608;
+  }
+  .zx-pf-device { border-radius: 18px; }
+}
+
+/* Services: captura real de costos en el grupo Control y rentabilidad. */
+.zx-sv-shot {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  object-fit: cover;
+}
+
+/* Botones flotantes en la Home Zenox: en móvil quedan compactos para no tapar el Hero ni los CTA. */
+@media (max-width: 959px) {
+  .zx-root ~ .aw-root .aw-launcher,
+  body:has(#zenox-home) .aw-launcher {
+    padding: 0;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 0;
+    gap: 0;
+    left: 12px;
+    bottom: 12px;
+  }
+  body:has(#zenox-home) .aw-launcher img {
+    width: 30px;
+    height: 30px;
+  }
+  body:has(#zenox-home) .wa-float {
+    width: 44px;
+    height: 44px;
+    right: 12px;
+    bottom: 12px;
+  }
+}

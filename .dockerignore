@@ -47,3 +47,21 @@ public/media/cinematic/**/*.mp4
 
 # CLI de Supabase y migraciones: no forman parte del runtime.
 supabase
+
+# Fase 5A: evidencia visual, respaldos y recursos sin distribución verificada (no son parte del runtime).
+visual-evidence
+**/backup-*
+**/*.tgz
+.claude
+*.log
+# Imagen sin referencias en src/ (no se pide desde la Home).
+public/img zenox/mano con celular.jpg
+# Licencia pendiente y sin uso desde la Home Zenox (solo legacy o escenas no montadas). Procedencia no documentada.
+public/media/img/aplicacion web.jpg
+public/media/img/contenedores.jpg
+public/media/img/digitalizacion.jpg
+public/__l5e/assets-v1/a51a4305-6dc6-40e2-9957-e59be2d67461/logixtic-port-hero.webp
+public/__l5e/assets-v1/4384cb5f-aeb2-4710-a783-d13a4b2016f3/hero-platform.webp
+# Fase 4E: sin referencias desde la Home tras sustituir Services (anillo) y Platform (teléfono, mano).
+public/img zenox/anillo.jpg
+public/zenox-art

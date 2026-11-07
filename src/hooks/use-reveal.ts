@@ -17,6 +17,12 @@ export function useReveal() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // Home Zenox (fase 4G): revelado reversible. Entra al viewport y se atenúa al salir, en ambos sentidos.
+          if (entry.target instanceof HTMLElement && entry.target.closest(".zx-root")) {
+            entry.target.setAttribute("data-visible", String(entry.isIntersecting));
+            return;
+          }
+          // Resto del sitio: revelado de una sola vez (sin cambios).
           if (!entry.isIntersecting) return;
           entry.target.setAttribute("data-visible", "true");
           observer.unobserve(entry.target);

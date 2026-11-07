@@ -1,0 +1,81 @@
+/* Recursos gráficos originales de Zenox sustituyendo los gradientes y placeholders:
+ *  - Hero: cintas luminosas a sangre (linea.jpg), en modo "screen" sobre fondo negro.
+ *  - The Platform: mano y teléfono (platform-hand.webp, pantalla recortada); las capturas de Logixtic quedan detrás.
+ *  - Services: anillo tridimensional (anillo.jpg), en modo "screen".
+ * Las coordenadas del teléfono son porcentajes del recorte de 910 × 800 px.
+ * ESTADO DE LICENCIA: la plantilla pública indica "All Rights Reserved". Estos archivos no deben
+ * incorporarse al repositorio ni distribuirse hasta confirmar por escrito su licencia de uso.
+ */
+
+/* ---------- Hero: cintas originales ---------- */
+.zx-hero-fw {
+  position: relative;
+  isolation: isolate;
+}
+
+.zx-hero-fw > .zx-hero-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 88% 45%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.zx-hero-fw > .zx-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- The Platform: mano y teléfono originales ---------- */
+/* Centrado sin transform: el proyecto anula transform en reduced-motion. */
+.zx-pf-device .zx-pf-art {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 910 / 800;
+}
+
+.zx-pf-art .zx-pf-hand {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Pantalla del teléfono: rectángulo de la pantalla medida en el recorte, recortado a su forma real. */
+.zx-pf-art .zx-pf-layer {
+  inset: auto;
+  left: 13.19%;
+  top: 6%;
+  width: 34.29%;
+  height: 66.5%;
+  z-index: 1;
+  clip-path: polygon(0% 5.6%, 56.4% 0%, 100% 85%, 42.3% 100%);
+}
+
+.zx-pf-art .zx-pf-layer img {
+  object-fit: cover;
+  object-position: left top;
+  opacity: 1;
+}
+
+/* ---------- Services: anillo tridimensional original ---------- */
+.zx-sv-ring {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+  border-radius: 12px;
+  /* Funde los bordes del recurso original con la tarjeta para que no se vea el rectángulo de la imagen. */
+  -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 60%, transparent 100%);
+}

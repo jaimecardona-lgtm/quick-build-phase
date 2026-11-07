@@ -1,0 +1,126 @@
+/* Secciones inferiores de la Home Zenox (desafíos, implementación, planes y FAQ).
+ * Todo el ámbito es .zx-root: no afecta a /legacy-home ni a otras rutas.
+ * Movimiento solo con opacity y transform; sin animaciones continuas; respeta prefers-reduced-motion. */
+
+.zx-root {
+  --zx-deep: #030408;
+  --zx-panel: rgb(255 255 255 / 0.035);
+  --zx-panel-line: rgb(255 255 255 / 0.12);
+  --zx-glow-blue: rgb(62 199 255 / 0.55);
+  --zx-glow-violet: rgb(139 107 255 / 0.5);
+}
+
+/* Anclas: el encabezado fijo no tapa el título de la sección al navegar. */
+.zx-root [id] {
+  scroll-margin-top: 92px;
+}
+
+/* Fondo negro Zenox en las secciones que aún usan el tema azul del sitio. */
+.zx-root #desafios-operativos,
+.zx-root #implementacion,
+.zx-root #planes,
+.zx-root #faq {
+  background: var(--zx-deep) !important;
+  position: relative;
+}
+
+/* ---------- Desafíos operativos: tarjetas con profundidad e iluminación discreta ---------- */
+.zx-root .challenge-card {
+  position: relative;
+  isolation: isolate;
+  background: var(--zx-panel);
+  border-color: var(--zx-panel-line);
+  overflow: hidden;
+}
+
+.zx-root .challenge-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(70% 60% at 0% 0%, var(--zx-glow-blue), transparent 70%),
+    radial-gradient(60% 60% at 100% 100%, var(--zx-glow-violet), transparent 70%);
+  opacity: 0;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+}
+
+.zx-root .challenge-card:hover,
+.zx-root .challenge-card:focus-visible {
+  border-color: rgb(62 199 255 / 0.4);
+  transform: translateY(-3px);
+}
+
+.zx-root .challenge-card:hover::before,
+.zx-root .challenge-card:focus-visible::before {
+  opacity: 0.22;
+}
+
+/* ---------- FAQ: acordeones con contenido que aparece suavemente ---------- */
+.zx-root .faq-item {
+  background: var(--zx-panel);
+  border: 1px solid var(--zx-panel-line);
+  border-radius: 14px;
+  transition: border-color 220ms ease, background-color 220ms ease;
+}
+
+.zx-root .faq-item:hover,
+.zx-root .faq-item[open] {
+  border-color: rgb(62 199 255 / 0.35);
+  background: rgb(255 255 255 / 0.05);
+}
+
+.zx-root .faq-item summary:focus-visible {
+  outline: 2px solid var(--zx-glow-blue);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.zx-root .faq-item[open] > p {
+  animation: zx-faq-in 340ms ease both;
+}
+
+@keyframes zx-faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Planes: foco visual y microinteracción del CTA ---------- */
+.zx-root .plans-card {
+  transition: transform 300ms ease, border-color 220ms ease;
+}
+
+.zx-root .plans-card:hover,
+.zx-root .plans-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgb(62 199 255 / 0.45);
+}
+
+.zx-root .plans-cta {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.zx-root .plans-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -12px var(--zx-glow-blue);
+}
+
+.zx-root .plans-cta:focus-visible {
+  outline: 2px solid var(--zx-glow-blue);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .challenge-card,
+  .zx-root .challenge-card::before,
+  .zx-root .faq-item,
+  .zx-root .faq-item[open] > p,
+  .zx-root .plans-card,
+  .zx-root .plans-cta {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,361 @@
+/* Escenas Zenox: cobertura global (globo) y presentación de Logix.
+ * Solo transform y opacity. Las animaciones continuas se pausan fuera de pantalla (data-active="false").
+ * Ámbito .zx-root: no afecta a otras rutas. */
+
+/* ---------- Globo ---------- */
+.zx-root .zx-globe {
+  position: relative;
+  isolation: isolate;
+}
+
+.zx-root .zx-globe::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  background: linear-gradient(180deg, #030408 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.zx-root .zx-globe.reveal-item {
+  transition: opacity 1100ms ease, transform 1100ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.zx-root .zx-globe-tilt {
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.zx-root .zx-globe[data-active="false"] .gc-band,
+.zx-root .zx-globe[data-active="false"] .gc-band * {
+  animation-play-state: paused !important;
+}
+
+/* ---------- Logix: halo y flotación sutil ---------- */
+.zx-root .zx-lx-visual {
+  position: relative;
+  isolation: isolate;
+}
+
+.zx-root .zx-lx-halo {
+  position: absolute;
+  inset: 10% 6%;
+  border-radius: 50%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(62 199 255 / 0.32), rgb(139 107 255 / 0.2) 55%, transparent 80%);
+  filter: blur(22px);
+  pointer-events: none;
+  animation: zx-lx-breathe 6s ease-in-out infinite;
+}
+
+.zx-root .zx-lx-float {
+  animation: zx-lx-float 7s ease-in-out infinite;
+}
+
+.zx-root .zx-lx[data-active="false"] .zx-lx-halo,
+.zx-root .zx-lx[data-active="false"] .zx-lx-float {
+  animation-play-state: paused;
+}
+
+@keyframes zx-lx-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(0.97); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+@keyframes zx-lx-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-globe.reveal-item,
+  .zx-root .zx-globe-tilt,
+  .zx-root .zx-lx-halo,
+  .zx-root .zx-lx-float {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Mapa de presencia regional (Evidence): fondo negro Zenox dentro de la Home. El mapa y sus datos demostrativos no cambian. */
+.zx-root #clientes.section-shell {
+  background: #030408 !important;
+}
+
+/* ---------- Launcher de Logix (solo en la Home Zenox) ----------
+ * El launcher compartido queda a la izquierda; en móvil se compacta a icono y respeta el margen seguro.
+ * El botón de WhatsApp queda a la derecha y no se toca. */
+body:has(#zenox-home) .aw-launcher {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: max(16px, env(safe-area-inset-left));
+  max-width: min(260px, calc(100vw - 96px));
+}
+
+@media (max-width: 767px) {
+  body:has(#zenox-home) .aw-launcher {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 999px;
+  }
+  body:has(#zenox-home) .aw-launcher > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Globo: fundido de bordes para ocultar el rectángulo de la imagen ---------- */
+.zx-root .zx-globe .gc-band {
+  -webkit-mask-image: radial-gradient(ellipse 66% 70% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 66% 70% at 50% 50%, #000 62%, transparent 100%);
+}
+
+/* ---------- Planes: entrada escalonada y foco ---------- */
+.zx-root .plans-grid > .plans-card:nth-child(2) { transition-delay: 90ms; }
+.zx-root .plans-grid > .plans-card:nth-child(3) { transition-delay: 180ms; }
+
+/* ---------- Volver arriba ---------- */
+.zx-root .zx-totop {
+  display: block;
+  margin: 28px auto 0;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgb(255 255 255 / 0.8);
+  background: transparent;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: transform 220ms ease, border-color 220ms ease, color 220ms ease;
+}
+
+.zx-root .zx-totop:hover,
+.zx-root .zx-totop:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgb(62 199 255 / 0.6);
+  color: #fff;
+}
+
+/* Launcher compacto (icono) en la Home Zenox: deja libres las esquinas de planes, FAQ y Logix. */
+body:has(#zenox-home) .aw-launcher {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+body:has(#zenox-home) .aw-launcher > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Planes: paneles negros Zenox con borde luminoso. Los textos, precios y CTA no cambian. */
+.zx-root #planes .plans-card {
+  background: linear-gradient(180deg, rgb(14 18 30 / 0.94), rgb(5 7 12 / 0.98)) !important;
+  border: 1px solid rgb(255 255 255 / 0.1) !important;
+  box-shadow: 0 30px 70px -44px rgb(139 107 255 / 0.55);
+}
+
+.zx-root #planes .plans-card:hover,
+.zx-root #planes .plans-card:focus-within {
+  border-color: rgb(62 199 255 / 0.5) !important;
+}
+
+/* Capas decorativas absolutas (fotos de escena, redes, halos) no deben tapar el contenido en flujo.
+ * En la variante forwarders-v2 .scene-photo es absoluta con z-index 0 y pinta por encima del texto de las secciones.
+ * El contenedor de contenido de cada sección se eleva encima de sus capas decorativas. */
+.zx-root section > .mx-auto,
+.zx-root section > .zx-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fase 4C: la banda del globo se desvanece hacia la sección siguiente en lugar de cortarse en línea recta.
+   Solo afecta al globo de la Home Zenox (GlobalCoverage no cambia). */
+.zx-root .zx-globe .gc-band {
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+}
+
+/* La base del contenedor toma el azul de la sección siguiente (casos de éxito), así el fundido termina en su color. */
+.zx-root .zx-globe {
+  background: linear-gradient(to bottom, #030408 0%, #030408 40%, #0c1f3c 100%);
+}
+
+/* Fase 4D: en móvil, el flujo y el mapa forman una sola continuidad. Se reduce el padding de cierre del flujo
+   y el de apertura del mapa (antes 64 px + 64 px = 128 px de hueco). Solo Zenox; escritorio y tablet no cambian. */
+@media (max-width: 767px) {
+  .zx-root .zx-flow {
+    padding-bottom: 28px;
+  }
+  .zx-root .zx-evidence-wrap > section {
+    padding-top: 36px;
+  }
+}
+
+/* Revelado reversible (use-toggle-reveal). Nunca baja de 0.35: el contenido sigue legible fuera de pantalla. */
+.zx-root .zx-tr {
+  transition: opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root .zx-tr[data-visible="false"] {
+  opacity: 0.35;
+  transform: translate3d(0, 24px, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-tr,
+  .zx-root .zx-tr[data-visible="false"] {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fase 4E · Platform: dispositivo tipo tablet (horizontal) con la captura del estado activo. */
+.zx-root .zx-pf-device {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6% 5%;
+  border-radius: 22px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  background:
+    radial-gradient(70% 60% at 75% 20%, rgb(62 199 255 / 0.22), transparent 70%),
+    radial-gradient(60% 60% at 20% 90%, rgb(139 107 255 / 0.28), transparent 70%),
+    linear-gradient(160deg, #1b1f2a, #07080c);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.55), inset 0 0 0 6px #0b0d13;
+}
+.zx-root .zx-pf-device .zx-pf-art {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #05060b;
+}
+.zx-root .zx-pf-device .zx-pf-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.zx-root .zx-pf-device .zx-pf-art .zx-pf-layer {
+  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: none;
+  z-index: 1;
+}
+.zx-root .zx-pf-device .zx-pf-art .zx-pf-layer img {
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Fase 4G · Cumplimiento: cuatro sellos en una cuadrícula alineada (OEA, BASC, ISO 28000 y DIAN). */
+.zx-root .zx-seals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.zx-root .zx-seal {
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.01));
+}
+.zx-root .zx-seal--light {
+  background: #f4f7fb;
+  border-color: rgb(62 199 255 / 0.35);
+}
+.zx-root .zx-seal img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.zx-root .zx-seal--text span {
+  font-family: var(--font-display, inherit);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+@media (max-width: 520px) {
+  .zx-root .zx-seals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Fase 4G · revelado reversible: fuera de pantalla el contenido queda atenuado (nunca invisible) y vuelve al entrar. */
+.js-reveal .zx-root .reveal-item[data-visible="false"] {
+  opacity: 0.22;
+  transform: translate3d(0, 24px, 0);
+}
+
+/* Fase 4G · Presencia regional: el mundo (mapa) gana protagonismo y tiene halo de profundidad. */
+@media (min-width: 900px) {
+  .zx-root #clientes .ev3-main {
+    grid-template-columns: 42fr 58fr;
+  }
+}
+.zx-root #clientes .lr-figure::before {
+  content: "";
+  position: absolute;
+  inset: -12% -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(45% 45% at 50% 42%, rgb(62 199 255 / 0.2), transparent 70%),
+    radial-gradient(40% 40% at 72% 72%, rgb(139 107 255 / 0.22), transparent 72%);
+}
+
+/* Fase 4G · Lenguaje Zenox en el resto del front: aro luminoso y banda azul/violeta detrás del contenido.
+   Solo CSS (sin recursos nuevos), baja opacidad y z-index negativo: no tapan texto ni tarjetas. */
+.zx-root .zx-sv,
+.zx-root .zx-pf,
+.zx-root #planes,
+.zx-root section[aria-labelledby="zx-compliance-title"] {
+  isolation: isolate;
+  overflow: hidden;
+}
+.zx-root .zx-pf::before,
+.zx-root #planes::before,
+.zx-root section[aria-labelledby="zx-compliance-title"]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -10% -5%;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgb(62 199 255 / 0.1) 50%, rgb(139 107 255 / 0.12) 60%, transparent 70%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-sv::after { opacity: 0.4; }
+}

@@ -1,0 +1,114 @@
+/* Objetos holográficos de Capacidades. Solo transform y opacity en animaciones (GPU).
+   Capas: .zx-orb (posición) > .zx-orb-tilt (scroll) > .zx-orb-body (flotación/rotación). */
+.zx-root .zx-orbs {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.zx-root .zx-orb {
+  position: absolute;
+  perspective: 1100px;
+}
+.zx-root .zx-orb-tilt {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform:
+    translate3d(0, calc(var(--zx-orb-p, 0) * -14px - var(--zx-orb-v, 0) * 8px), 0)
+    rotateX(calc(var(--zx-orb-v, 0) * 5deg));
+  will-change: transform;
+}
+.zx-root .zx-orb-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Dona: arriba a la izquierda, detrás de la tarjeta. Ciclo de 16 s. */
+.zx-root .zx-orb--dona {
+  left: -9%;
+  top: -3%;
+  width: 44%;
+  aspect-ratio: 2048 / 1365;
+}
+.zx-root .zx-orb--dona .zx-orb-body {
+  animation-name: zx-orb-dona;
+  animation-duration: 16s;
+}
+.zx-root .zx-orb--dona img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.85;
+}
+.zx-root .zx-orb-glow {
+  position: absolute;
+  inset: -12%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(62 199 255 / 0.22), rgb(139 107 255 / 0.14) 55%, transparent 75%);
+  animation: zx-orb-breathe 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Aro: a la derecha, detrás del titular. Ciclo de 24 s, inclinado en el espacio. */
+.zx-root .zx-orb--ring {
+  right: -220px;
+  top: 8%;
+  width: 560px;
+  height: 560px;
+}
+.zx-root .zx-orb--ring .zx-orb-body {
+  border-radius: 50%;
+  opacity: 0.55;
+  background: radial-gradient(circle, transparent 56%, rgb(62 199 255 / 0.32) 62%, rgb(139 107 255 / 0.2) 70%, transparent 76%);
+  filter: drop-shadow(0 0 8px rgb(62 199 255 / 0.18));
+  animation-name: zx-orb-ring;
+  animation-duration: 24s;
+}
+
+/* Pausa fuera de pantalla. */
+.zx-root .zx-orbs[data-active="false"] .zx-orb-body,
+.zx-root .zx-orbs[data-active="false"] .zx-orb-glow {
+  animation-play-state: paused;
+}
+
+@keyframes zx-orb-dona {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(10deg) rotateY(-14deg) rotateZ(-2deg); }
+  25% { transform: translate3d(-6px, -8px, 0) rotateX(-4deg) rotateY(0deg) rotateZ(1deg); }
+  50% { transform: translate3d(4px, -16px, 0) rotateX(-10deg) rotateY(14deg) rotateZ(2deg); }
+  75% { transform: translate3d(-4px, -6px, 0) rotateX(-2deg) rotateY(4deg) rotateZ(-1deg); }
+}
+@keyframes zx-orb-ring {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateX(42deg) rotateZ(-10deg); }
+  50% { transform: translate3d(0, -12px, 0) rotateX(52deg) rotateZ(14deg); }
+}
+@keyframes zx-orb-breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-orb-tilt { transform: none; }
+  /* Mismo nivel de especificidad que las animaciones, para que no queden activas. */
+  .zx-root .zx-orb--dona .zx-orb-body,
+  .zx-root .zx-orb--ring .zx-orb-body,
+  .zx-root .zx-orb--dona .zx-orb-glow { animation-name: none; }
+  /* Postura fija con la propiedad individual rotate: el reset global de styles.css anula transform en reducido. */
+  .zx-root .zx-orb--dona .zx-orb-body { rotate: 0 1 0 -10deg; }
+  .zx-root .zx-orb--ring .zx-orb-body { rotate: 1 0 0 46deg; }
+}
+
+@media (max-width: 959px) {
+  .zx-root .zx-orb--dona {
+    left: -16%;
+    top: 0;
+    width: 62%;
+  }
+}

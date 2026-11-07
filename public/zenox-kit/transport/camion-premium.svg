@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" role="img" aria-label="Camion de carga terrestre">
+<defs>
+<linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#effbff"/><stop offset="0.38" stop-color="#6bddfa"/><stop offset="0.8" stop-color="#1c67ae"/><stop offset="1" stop-color="#0b1d42"/></linearGradient>
+<linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#72e6fc"/><stop offset="0.48" stop-color="#1873db"/><stop offset="1" stop-color="#3821a7"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe393"/><stop offset="1" stop-color="#ffad1d"/></linearGradient>
+<filter id="shine"><feGaussianBlur stdDeviation="4" /></filter>
+</defs>
+
+<path d="M34 201H615" stroke="#2160a9" stroke-width="5" opacity=".6"/>
+<rect x="55" y="76" width="371" height="111" rx="12" fill="url(#steel)" stroke="#79ddff" stroke-width="3"/>
+<rect x="67" y="85" width="350" height="92" rx="4" fill="#1a4384"/>
+<path d="M427 104H497L549 139L555 186H418Z" fill="url(#blue)" stroke="#85e3ff" stroke-width="3"/>
+<path d="M472 114H491L527 144V154H471Z" fill="#0c1b42" stroke="#8deaff" stroke-width="2"/>
+<rect x="553" y="154" width="26" height="15" rx="5" fill="url(#gold)"/>
+<rect x="541" y="178" width="34" height="10" rx="4" fill="#2cc4ed"/>
+<path d="M70 175H554V197H61Z" fill="#0d244c"/>
+<g><circle cx="142" cy="197" r="24" fill="#08142f" stroke="#3ab4e5" stroke-width="5"/><circle cx="142" cy="197" r="10" fill="url(#steel)"/><circle cx="251" cy="197" r="24" fill="#08142f" stroke="#3ab4e5" stroke-width="5"/><circle cx="251" cy="197" r="10" fill="url(#steel)"/><circle cx="467" cy="197" r="24" fill="#08142f" stroke="#3ab4e5" stroke-width="5"/><circle cx="467" cy="197" r="10" fill="url(#steel)"/></g>
+<path d="M72 122H410M75 150H407" stroke="#76c4ff" stroke-width="2" opacity=".3"/>
+<path d="M15 188H54" stroke="#42d9ff" stroke-width="4" opacity=".6"/>
+</svg>

@@ -32,7 +32,32 @@ const NODES = [
 const ORBIT_A = "M40 194 A300 110 0 1 0 640 194 A300 110 0 1 0 40 194";
 const ORBIT_B = "M110 194 A230 160 0 1 1 570 194 A230 160 0 1 1 110 194";
 
-function OrbitTraffic() {
+// Vehículos del globo: SVG premium del kit Zenox (public/zenox-kit/transport), elementos independientes de la escena.
+// Mismas órbitas y tiempos que antes. El avión sigue la tangente de la órbita; barco y camión van derechos.
+const VEHICLE_W = 104;
+const VEHICLE_H = Math.round((VEHICLE_W * 260) / 640 * 10) / 10;
+function OrbitTrafficZenox() {
+  return (
+    <svg className="gc-orbits" viewBox="0 0 680 388" focusable="false" aria-hidden="true">
+      <path d={ORBIT_A} className="gc-orbit-line" />
+      <path d={ORBIT_B} className="gc-orbit-line gc-orbit-line-b" />
+      <g className="gc-vehicle gc-vehicle-plane">
+        <image href="/zenox-kit/transport/avion-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <animateMotion dur="16s" repeatCount="indefinite" path={ORBIT_A} rotate="auto" />
+      </g>
+      <g className="gc-vehicle gc-vehicle-ship">
+        <image href="/zenox-kit/transport/barco-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ORBIT_A} />
+      </g>
+      <g className="gc-vehicle gc-vehicle-truck">
+        <image href="/zenox-kit/transport/camion-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <animateMotion dur="24s" repeatCount="indefinite" path={ORBIT_B} />
+      </g>
+    </svg>
+  );
+}
+
+function OrbitTrafficLegacy() {
   return (
     <svg className="gc-orbits" viewBox="0 0 680 388" focusable="false">
       <path d={ORBIT_A} className="gc-orbit-line" />
@@ -53,7 +78,7 @@ function OrbitTraffic() {
   );
 }
 
-export function GlobalCoverage() {
+export function GlobalCoverage({ variant = "legacy" }: { variant?: "legacy" | "zenox" } = {}) {
   return (
     <div className="gc-band" aria-hidden="true">
       <div className="gc-halo" />
@@ -76,7 +101,7 @@ export function GlobalCoverage() {
             />
           ))}
         </svg>
-        {FORWARDERS_V2 ? <OrbitTraffic /> : null}
+        {FORWARDERS_V2 ? (variant === "zenox" ? <OrbitTrafficZenox /> : <OrbitTrafficLegacy />) : null}
       </div>
     </div>
   );

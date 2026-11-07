@@ -1,0 +1,210 @@
+/* Qué es un Sistema Operativo: fondo cinematográfico, conexiones animadas y ficha como glass dashboard.
+   Solo transform y opacity en animaciones. Reversible con data-visible (useToggleReveal). Sin contenido fantasma:
+   visible = legible. Movimiento reducido: sin animaciones ni desplazamientos. */
+.zx-root .zx-os {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: 96px;
+}
+.zx-root .zx-os-bg {
+  position: absolute;
+  inset: -6% 0;
+  z-index: -1;
+  pointer-events: none;
+  transform: translate3d(0, calc(var(--zx-os-p, 0) * -28px), 0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+.zx-root .zx-os-drift {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgb(4 6 14 / 0.35), rgb(4 6 14 / 0.6)),
+    url("/zenox-kit/decor/fondo4.webp") center / cover no-repeat;
+  animation: zx-os-drift 42s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes zx-os-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-1.2%, 1%, 0) scale(1.05); }
+}
+
+.zx-root .zx-os-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  gap: 56px;
+  align-items: center;
+}
+.zx-root .zx-os-title {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.9s ease, transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root .zx-os[data-visible="true"] .zx-os-title {
+  opacity: 1;
+  transform: none;
+}
+.zx-root .zx-os-text {
+  color: rgb(224 230 245 / 0.86);
+  line-height: 1.65;
+}
+
+/* Conexiones: nodos Gestión comercial → Operación → Finanzas con flujo de datos. */
+.zx-root .zx-os-net {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin-top: 40px;
+  overflow: visible;
+}
+.zx-root .zx-os-net text {
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 12px;
+  fill: rgb(200 210 240 / 0.85);
+  letter-spacing: 0.04em;
+}
+.zx-root .zx-os-track {
+  fill: none;
+  stroke: rgb(62 199 255 / 0.18);
+  stroke-width: 1;
+}
+.zx-root .zx-os-flow {
+  fill: none;
+  stroke: url(#zx-os-flow-grad);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 14;
+  animation: zx-os-dash 2.6s linear infinite;
+}
+.zx-root .zx-os-flow--b {
+  animation-duration: 3.4s;
+  animation-direction: reverse;
+}
+@keyframes zx-os-dash {
+  to { stroke-dashoffset: -40; }
+}
+.zx-root .zx-os-node circle {
+  fill: rgb(8 14 30 / 0.9);
+  stroke: rgb(62 199 255 / 0.55);
+  stroke-width: 1.2;
+}
+.zx-root .zx-os-node .zx-os-core {
+  fill: #8b6bff;
+  stroke: none;
+  filter: drop-shadow(0 0 6px rgb(139 107 255 / 0.9));
+}
+.zx-root .zx-os[data-visible="false"] .zx-os-flow {
+  animation-play-state: paused;
+}
+
+/* Panel glass dashboard. */
+.zx-root .zx-os-panel {
+  position: relative;
+  padding: 28px 30px 16px;
+  border-radius: 20px;
+  border: 1px solid rgb(62 199 255 / 0.22);
+  background: linear-gradient(160deg, rgb(10 16 36 / 0.7), rgb(8 10 26 / 0.55));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 30px 70px rgb(0 0 0 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+.zx-root .zx-os-caption {
+  margin: 0 0 14px;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.9);
+}
+.zx-root .zx-os-rows {
+  margin: 0;
+}
+.zx-root .zx-os-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.85fr) minmax(0, 1.4fr);
+  gap: 18px;
+  align-items: start;
+  padding: 16px 12px;
+  margin: 0 -12px;
+  border-radius: 12px;
+  border-bottom: 1px solid rgb(62 199 255 / 0.12);
+  translate: 0 0;
+  opacity: 0;
+  transform: translate3d(18px, 0, 0);
+  transition-property: opacity, transform, background, translate;
+  transition-duration: 0.7s, 0.8s, 0.4s, 0.45s;
+  transition-timing-function: ease, cubic-bezier(0.2, 0.7, 0.2, 1), ease, ease;
+  transition-delay: calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), 0s, 0s;
+}
+.zx-root .zx-os[data-visible="true"] .zx-os-row {
+  opacity: 1;
+  transform: none;
+}
+.zx-root .zx-os-row:hover {
+  translate: 4px 0;
+  background: linear-gradient(90deg, rgb(62 199 255 / 0.1), rgb(139 107 255 / 0.06) 60%, transparent);
+  border-bottom-color: rgb(139 107 255 / 0.4);
+}
+.zx-root .zx-os-row:last-child {
+  border-bottom: 0;
+}
+.zx-root .zx-os-row dt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f5f7ff;
+  line-height: 1.4;
+}
+.zx-root .zx-os-row dt svg {
+  flex: 0 0 auto;
+  color: #3ec7ff;
+  filter: drop-shadow(0 0 6px rgb(62 199 255 / 0.5));
+}
+.zx-root .zx-os-row dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgb(214 222 242 / 0.9);
+}
+
+@media (max-width: 1099px) {
+  .zx-root .zx-os-row {
+    grid-template-columns: minmax(150px, 0.9fr) minmax(0, 1.4fr);
+  }
+}
+@media (max-width: 959px) {
+  .zx-root .zx-os {
+    padding-block: 72px;
+  }
+  .zx-root .zx-os-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .zx-root .zx-os-panel {
+    padding: 24px 20px 12px;
+  }
+}
+@media (max-width: 560px) {
+  .zx-root .zx-os-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-os-drift,
+  .zx-root .zx-os-flow { animation: none; }
+  .zx-root .zx-os-title,
+  .zx-root .zx-os-row { opacity: 1; transform: none; transition: none; }
+  .zx-root .zx-os-bg { transform: none; }
+}

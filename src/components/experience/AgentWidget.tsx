@@ -73,6 +73,7 @@ function AgentWidgetPanel() {
   const [status, setStatus] = useState<AgentStatus | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
 
   // Preguntas sugeridas: FAQ aprobadas del idioma activo (texto existente, no nuevo).
   const suggestions = [0, 6, 11].map((i) => content.faqs[i]?.q).filter((q): q is string => !!q);
@@ -135,11 +136,18 @@ function AgentWidgetPanel() {
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
+    inputRef.current?.focus();
     void ask(draft);
   };
 
+  // Cierre: vuelve el foco al launcher, que siempre está habilitado.
+  const closePanel = () => {
+    setOpen(false);
+    launcherRef.current?.focus();
+  };
+
   const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") setOpen(false);
+    if (event.key === "Escape" && open) closePanel();
   };
 
   const modeLabel = !status
@@ -173,7 +181,7 @@ function AgentWidgetPanel() {
             <button
               type="button"
               className="aw-icon focus-ring"
-              onClick={() => setOpen(false)}
+              onClick={closePanel}
               aria-label={t.close}
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -212,7 +220,10 @@ function AgentWidgetPanel() {
                         <button
                           type="button"
                           className="aw-chip focus-ring"
-                          onClick={() => void ask(q)}
+                          onClick={() => {
+                            inputRef.current?.focus();
+                            void ask(q);
+                          }}
                           disabled={busy}
                         >
                           {q}
@@ -283,6 +294,7 @@ function AgentWidgetPanel() {
 
       <button
         type="button"
+        ref={launcherRef}
         className="aw-launcher focus-ring"
         aria-expanded={open}
         aria-controls="aw-panel"

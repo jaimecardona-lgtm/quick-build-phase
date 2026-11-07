@@ -1,0 +1,590 @@
+/* Tablet con manos: mockup base public/zenox-kit/tablet.png (lienzo 1122×1402).
+   El vidrio está en x 180–944, y 389–946 del lienzo (765×558, radio ≈34 px). El viewport usa esas medidas en %.
+   Solo transform y opacity en animaciones. */
+.zx-root .zx-tab {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, var(--zx-tab-w, 620px));
+  aspect-ratio: 1122 / 1402;
+  margin: 0 auto;
+  animation: zx-tab-float 9s ease-in-out infinite;
+}
+.zx-root .zx-tab-device {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  /* Los bordes del PNG base se funden con el fondo de la página (sin rectángulo visible). */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 10%, #000 90%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 11%, #000 89%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 10%, #000 90%, transparent 100%);
+  mask-composite: intersect;
+}
+.zx-root .zx-tab-screen {
+  position: absolute;
+  left: 16.043%;
+  top: 27.746%;
+  width: 68.182%;
+  height: 39.8%;
+  border-radius: 4.44% / 6.09%;
+  overflow: hidden;
+  background: #050811;
+  z-index: 1;
+}
+.zx-root .zx-tab-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: block;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 0;
+  transform: translate3d(0, 14px, 0) scale(0.985);
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root .zx-tab[data-active-state="0"] .zx-tab-layer[data-layer="0"],
+.zx-root .zx-tab[data-active-state="1"] .zx-tab-layer[data-layer="1"],
+.zx-root .zx-tab[data-active-state="2"] .zx-tab-layer[data-layer="2"] {
+  opacity: 1;
+  transform: none;
+}
+.zx-root .zx-tab-glow {
+  position: absolute;
+  inset: -12% -14%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(45% 40% at 50% 45%, rgb(62 199 255 / 0.22), transparent 70%),
+    radial-gradient(40% 40% at 60% 70%, rgb(139 107 255 / 0.25), transparent 72%);
+}
+@keyframes zx-tab-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+@media (max-width: 959px) {
+  .zx-root .zx-tab { --zx-tab-w: 480px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-tab { animation: none; }
+  .zx-root .zx-tab-layer { transition: none; }
+}
+/* La escena de la tablet define su propia altura (antes: marco de teléfono de 520 px). */
+.zx-root .zx-pf-stage {
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 959px) {
+  .zx-root .zx-pf-stage { height: auto; }
+}
+
+/* Services (Fase 5): base gráfica del kit por categoría, captura con entrada lateral en cada cambio. */
+.zx-root .zx-sv-card {
+  background-size: cover;
+  background-position: center;
+}
+.zx-root .zx-sv-enter {
+  animation: zx-sv-enter 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes zx-sv-enter {
+  from { opacity: 0.25; transform: translate3d(28px, 0, 0) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-sv-enter { animation: none; }
+}
+
+/* Mapa zenox: iconos premium del kit con halo azul; el mismo recorrido GSAP que las siluetas anteriores. */
+.zx-root .lr-glyph-img {
+  filter: drop-shadow(0 0 5px rgb(62 199 255 / 0.85)) drop-shadow(0 0 10px rgb(139 107 255 / 0.5));
+}
+
+/* ---------- Fase 5 · Adornos luminosos (kit Zenox) ----------
+   Capas de fondo con baja opacidad y z-index negativo: no cubren texto ni controles.
+   Cada sección recibe una composición distinta. Solo CSS sobre los recursos de public/zenox-kit/. */
+.zx-root .zx-pf,
+.zx-root #planes,
+.zx-root #servicios,
+.zx-root #logix,
+.zx-root .zx-closing-section,
+.zx-root #clientes,
+.zx-root .zx-globe {
+  isolation: isolate;
+}
+.zx-root .zx-pf::after,
+.zx-root #planes::after,
+.zx-root #logix::after,
+.zx-root .zx-closing-section::after,
+.zx-root #clientes::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: screen;
+}
+.zx-root .zx-pf::after {
+  inset: 0;
+  opacity: 0.16;
+  background-image: url("/zenox-kit/decor/fondo1.webp");
+}
+.zx-root #planes::after {
+  inset: 0;
+  opacity: 0.14;
+  background-image: url("/zenox-kit/decor/fondo3.webp");
+}
+.zx-root #logix::after {
+  right: -6%;
+  top: 6%;
+  width: 62%;
+  height: 80%;
+  opacity: 0.32;
+  background-image: url("/zenox-kit/decor/linea3.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.zx-root .zx-closing-section::after {
+  inset: 0;
+  opacity: 0.2;
+  background-image: url("/zenox-kit/decor/fondo4.webp");
+}
+.zx-root #clientes::after {
+  left: -8%;
+  bottom: -10%;
+  width: 56%;
+  height: 70%;
+  opacity: 0.3;
+  background-image: url("/zenox-kit/decor/linea2.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+/* Halo orbital del globo: SVG del kit detrás de la cobertura global. */
+.zx-root .zx-globe::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: min(120%, 1000px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.55;
+  background: url("/zenox-kit/decor/halo-orbitas-globo.svg") center / contain no-repeat;
+}
+/* Globo: mayor protagonismo (escritorio y móvil optimizado). */
+.zx-root .zx-globe .gc-band {
+  min-height: 560px;
+}
+.zx-root .zx-globe .gc-globe {
+  width: min(92%, 760px);
+}
+@media (max-width: 767px) {
+  .zx-root .zx-globe .gc-band { min-height: 320px; }
+  .zx-root .zx-globe .gc-globe { width: min(96%, 460px); }
+}
+/* Títulos: revelado por máscara reversible (entran desde la izquierda, salen hacia arriba). */
+.zx-root [data-reveal] .zx-h2 {
+  transition: clip-path 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root [data-reveal][data-visible="false"] .zx-h2 {
+  clip-path: inset(0 0 35% 0);
+  transform: translate3d(-18px, 0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root [data-reveal] .zx-h2 { transition: none; clip-path: none; transform: none; }
+  .zx-root .zx-globe .gc-band, .zx-root .zx-globe .gc-globe { animation: none; }
+}
+
+/* Fase 5B · Globo: vehículos del kit con halo luminoso, sobre las órbitas existentes. */
+.zx-root .gc-vehicle image {
+  filter: drop-shadow(0 0 4px rgb(62 199 255 / 0.9)) drop-shadow(0 0 8px rgb(139 107 255 / 0.55));
+}
+
+/* ---------- Fase 5B · Decoraciones visibles (no solo importadas) ----------
+   Cada sección con su composición. Capas con z-index negativo, detrás del contenido, sin cubrir controles. */
+/* Hero: cinta neon del kit cruzando el lado derecho. */
+.zx-root .zx-hero-art {
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+/* The Platform: malla digital profunda detrás de la tablet. */
+.zx-root .zx-pf-stage {
+  isolation: isolate;
+}
+.zx-root .zx-pf-stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -18% -22%;
+  pointer-events: none;
+  background: url("/zenox-kit/decor/malla-digital-profunda.webp") center / cover no-repeat;
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+.zx-root .zx-pf::after {
+  opacity: 0.32;
+}
+/* Digitalización (flujo de ocho etapas): malla que conecta las etapas. */
+.zx-root .zx-flow {
+  isolation: isolate;
+}
+.zx-root .zx-flow::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: url("/zenox-kit/decor/malla-digital-profunda.webp") center / cover no-repeat;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+/* Globo: halo orbital más presente. */
+.zx-root .zx-globe::before {
+  opacity: 0.9;
+}
+/* Logix: resplandor coordinado con el robot (línea 3). */
+.zx-root #logix::after {
+  opacity: 0.6;
+}
+/* Implementación: cinta azul y violeta, discretas. */
+.zx-root #implementacion {
+  isolation: isolate;
+  position: relative;
+}
+.zx-root #implementacion::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -10%;
+  top: 8%;
+  width: 60%;
+  height: 70%;
+  pointer-events: none;
+  background: url("/zenox-kit/decor/ribbon-secundario-azul.webp") center / contain no-repeat;
+  opacity: 0.6;
+  mix-blend-mode: screen;
+}
+/* Planes: fondo de neón más visible. */
+.zx-root #planes::after {
+  opacity: 0.32;
+}
+/* CTA final: cinta cinematográfica + fondo. */
+.zx-root .zx-closing-section {
+  isolation: isolate;
+}
+.zx-root .zx-closing-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -8%;
+  bottom: -8%;
+  width: 70%;
+  height: 80%;
+  pointer-events: none;
+  background: url("/zenox-kit/decor/ribbon-secundario-violeta.webp") center / contain no-repeat;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+.zx-root .zx-closing-section::after {
+  opacity: 0.35;
+}
+
+/* Logix: la cinta decorativa queda en el lateral derecho, sin cruzar el texto de la columna izquierda. */
+.zx-root #logix::after {
+  left: auto;
+  right: -16%;
+  top: 28%;
+  width: 44%;
+  height: 56%;
+}
+
+/* Hero · legibilidad del copy (ajuste único). La cinta decorativa es absoluta y se pintaba por encima del texto:
+   el bloque de copy va por encima de ella, con color casi blanco y un halo oscuro muy ligero detrás. */
+.zx-root .zx-hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.zx-root .zx-hero-copy .zx-p--lead,
+.zx-root .zx-hero-copy .zx-p {
+  color: #f5f7ff;
+  opacity: 1;
+  text-shadow: 0 1px 2px rgb(3 4 8 / 0.75), 0 0 16px rgb(3 4 8 / 0.6);
+}
+.zx-root .zx-hero-copy .zx-support {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgb(3 4 8 / 0.8), 0 0 14px rgb(3 4 8 / 0.6);
+}
+.zx-root .zx-hero-copy .zx-micro {
+  color: #dfe5f5;
+  text-shadow: 0 1px 2px rgb(3 4 8 / 0.8);
+}
+.zx-root .zx-hero-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -28px -40px -24px -36px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgb(3 4 8 / 0.55), rgb(3 4 8 / 0));
+}
+/* Hero · pilares laterales (mismo tratamiento de legibilidad que el copy). */
+.zx-root .zx-hero-block {
+  position: relative;
+  z-index: 2;
+}
+.zx-root .zx-hero-block-p,
+.zx-root .zx-hero-block-title {
+  color: #eef2fc;
+  opacity: 1;
+  text-shadow: 0 1px 2px rgb(3 4 8 / 0.8), 0 0 14px rgb(3 4 8 / 0.55);
+}
+
+/* ---------- Hero · demostración de producto (Fase 5 · ajuste 02) ----------
+   Causa del recorte: el marco era 4:3 con object-fit: cover; las capturas son ~2:1 y solo se veía una ventana.
+   Ahora la altura sigue a la captura (object-fit: contain, sin recorte) y los textos son el selector de estados. */
+.zx-root .zx-hero-fw .zx-showcase {
+  aspect-ratio: auto;
+  height: auto;
+  width: min(100%, 760px);
+  display: grid;
+  gap: 22px;
+  justify-self: end;
+  position: relative;
+  isolation: isolate;
+  transform: translate3d(calc(var(--zx-px, 0) * -10px), calc(var(--zx-py, 0) * -8px), 0);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root .zx-showcase-tilt {
+  opacity: 1;
+  transform: perspective(1400px) rotateX(calc(var(--zx-py, 0) * -3deg)) rotateY(calc(var(--zx-px, 0) * 4deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+/* Entrada/salida reversible solo con movimiento (desplazamiento y escala). La opacidad del marco se mantiene en 1:
+   nunca aparece un velo sobre la interfaz. */
+.zx-root .zx-showcase[data-active="false"] .zx-showcase-tilt {
+  transform: perspective(1400px) translate3d(-24px, 36px, 0) scale(0.97);
+}
+.zx-root .zx-showcase .zx-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: auto;
+  height: auto;
+  left: auto;
+  top: auto;
+  padding: 0;
+  opacity: 1;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #20243a, #0b0d16 60%, #1d2033);
+  border: 1px solid rgb(62 199 255 / 0.55);
+  box-shadow:
+    0 40px 120px -30px rgb(139 107 255 / 0.55),
+    0 0 0 1px rgb(62 199 255 / 0.1),
+    0 0 70px -12px rgb(62 199 255 / 0.4),
+    inset 0 0 26px rgb(62 199 255 / 0.08);
+  animation: none;
+  overflow: hidden;
+}
+.zx-root .zx-frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.65);
+}
+.zx-root .zx-frame-bar > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.22);
+}
+.zx-root .zx-frame-bar em {
+  margin-left: auto;
+  font-style: normal;
+}
+.zx-root .zx-frame-screen {
+  position: relative;
+  display: block;
+  background: #05060b;
+  overflow: hidden;
+  transition: aspect-ratio 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root .zx-frame-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  opacity: 0;
+  transform: translate3d(-36px, 0, 0) scale(0.985);
+  /* Salida rápida de la captura anterior. */
+  transition: opacity 0.28s ease, transform 0.36s ease;
+}
+/* Entrada de la nueva captura: después de la salida, termina en opacidad 1 y se mantiene iluminada. */
+.zx-root .zx-frame-layer[data-on="true"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease 0.16s, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.16s;
+}
+/* Selector de estados: clic, teclado y toque. */
+.zx-root .zx-showcase-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.zx-root .zx-showcase-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(18 20 30 / 0.6);
+  color: #eef1f8;
+  font: 500 0.88rem/1 var(--font-ui);
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.zx-root .zx-showcase-tab:not([data-on="true"]) {
+  opacity: 0.8;
+}
+.zx-root .zx-showcase-tab[data-on="true"] {
+  border-color: rgb(62 199 255 / 0.65);
+  background: rgb(62 199 255 / 0.12);
+  box-shadow: 0 0 22px -4px rgb(62 199 255 / 0.6);
+}
+.zx-root .zx-showcase-tab .zx-dot {
+  transition: transform 0.3s ease;
+}
+.zx-root .zx-showcase-tab[data-on="true"] .zx-dot {
+  transform: scale(1.35);
+}
+@media (max-width: 959px) {
+  .zx-root .zx-hero-fw .zx-showcase { width: 100%; justify-self: stretch; }
+  .zx-root .zx-showcase-tabs { justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-showcase,
+  .zx-root .zx-showcase-tilt,
+  .zx-root .zx-frame-layer { transition: none; transform: none; }
+  .zx-root .zx-showcase[data-active="false"] .zx-showcase-tilt { transform: none; opacity: 1; }
+}
+
+/* ---------- Platform · aislamiento de columnas (Fase 5C) ----------
+   El glow y las capas decorativas no cruzan el texto: la tablet vive en su columna, recortada.
+   El titular no usa revelado reversible (sin atenuaciones con el scroll). */
+.zx-root .zx-pf {
+  isolation: isolate;
+  overflow: hidden;
+}
+.zx-root .zx-pf::before,
+.zx-root .zx-pf::after {
+  display: none;
+}
+.zx-root .zx-pf-grid {
+  position: relative;
+  isolation: isolate;
+}
+.zx-root .zx-pf-stage {
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+}
+.zx-root .zx-pf-stage::before {
+  inset: 0;
+  z-index: -2;
+}
+.zx-root .zx-pf-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 55% at 50% 48%, rgb(62 199 255 / 0.12), transparent 70%),
+    radial-gradient(50% 50% at 70% 85%, rgb(139 107 255 / 0.14), transparent 72%);
+}
+/* Pasos: los no activos siguen legibles. */
+.zx-root .zx-pf-step {
+  opacity: 0.62;
+}
+.zx-root .zx-pf-step[data-current="true"] {
+  opacity: 1;
+}
+.zx-root .zx-pf-steps {
+  position: relative;
+  z-index: 1;
+}
+/* Las capas de fondo de la columna de la tablet se desvanecen hacia los bordes (sin borde rectangular visible). */
+.zx-root .zx-pf-stage::before,
+.zx-root .zx-pf-stage::after {
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+}
+
+/* ---------- Hero · protagonismo de la pantalla (Fase 5 · ajuste) ----------
+   Escritorio: el copy sube 44 px y la fila de la captura se acerca 32 px; la captura pasa a 800 px y se centra en la página.
+   Tablet y móvil: sin cambios de estructura (la captura ocupa el ancho disponible). Todo con Grid, sin posiciones absolutas. */
+@media (min-width: 960px) {
+  .zx-root .zx-hero-fw .zx-hero-grid {
+    row-gap: 24px;
+  }
+  .zx-root .zx-hero-fw .zx-hero-copy {
+    margin-top: 40px;
+  }
+  .zx-root .zx-hero-fw .zx-showcase {
+    grid-column: 1 / span 3;
+    justify-self: center;
+    width: min(100%, 800px);
+    max-width: 800px;
+  }
+}
+
+/* La captura usa el ancho disponible en tablet y móvil (el límite de 640 px era de la versión anterior). */
+.zx-root .zx-hero-fw .zx-showcase {
+  max-width: none;
+}
+
+
+/* ---------- Platform · tablet completa durante cada step (ajuste de escala, posición y tramo de scroll) ----------
+   Escritorio: la tablet baja a 540 px y el stage queda centrado en el viewport mientras se recorren los steps.
+   Cada step ocupa ~46vh de scroll: el estado activo tiene tiempo visible antes de cambiar. Solo cambian dimensiones y posición. */
+@media (min-width: 960px) {
+  /* clip (no hidden): hidden convierte la sección en contenedor de scroll y anula el sticky. */
+  .zx-root .zx-pf {
+    overflow: clip;
+  }
+  .zx-root .zx-pf-stage {
+    --zx-tab-w: 540px;
+    position: sticky;
+    top: max(96px, calc(50vh - 340px));
+    align-self: start;
+  }
+  /* Espacio final: el sticky necesita recorrido después del último step para que la tablet llegue a verse completa. */
+  .zx-root .zx-pf-steps {
+    padding-bottom: 40vh;
+  }
+  .zx-root .zx-pf-steps .zx-pf-step {
+    min-height: 46vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

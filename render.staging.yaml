@@ -1,0 +1,44 @@
+# Blueprint de STAGING PRIVADO para Render. Independiente de render.yaml (producción, no se modifica).
+#
+# Uso: en Render, crear un Blueprint nuevo apuntando a este archivo (Blueprint file path: render.staging.yaml)
+# y a la rama feat/logixtic-staging-integration. No usar este archivo como render.yaml de producción.
+#
+# Reglas de este servicio:
+#  - Autenticación básica activa desde el primer arranque (STAGING_ACCESS_MODE=basic). Sin credencial, 503.
+#  - Agente en DRY-RUN. Sin OpenRouter de pago, sin claves de IA, sin Supabase, sin RAG, sin Tavily.
+#  - Auto Deploy desactivado: cada despliegue es manual y decidido.
+#  - Los secretos (sync: false) se introducen en el panel de Render; nunca aquí ni en el repositorio.
+services:
+  - type: web
+    name: logixtic-staging-privado
+    runtime: docker
+    plan: free
+    branch: feat/logixtic-staging-integration
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: false
+    envVars:
+      - key: APP_ENV
+        value: staging
+      - key: NODE_ENV
+        value: production
+      - key: STAGING_ACCESS_MODE
+        value: basic
+      - key: AGENT_DRY_RUN
+        value: "true"
+      - key: AGENT_JUDGE_ENABLED
+        value: "false"
+      - key: AGENT_ENGAGEMENT_ENABLED
+        value: "false"
+      - key: LEADS_ENABLED
+        value: "false"
+      - key: RAG_ENABLED
+        value: "false"
+      - key: TAVILY_ENABLED
+        value: "false"
+      # Secretos: definir en Render (Environment > Secret), nunca en este archivo.
+      - key: STAGING_BASIC_AUTH
+        sync: false
+      - key: INTERNAL_HMAC_SECRET
+        sync: false

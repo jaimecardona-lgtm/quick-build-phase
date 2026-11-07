@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as HealthzRouteImport } from './routes/healthz'
+import { Route as LegacyHomeRouteImport } from './routes/legacy-home'
 import { Route as PlaneacionRouteImport } from './routes/planeacion'
 import { Route as ZenoxPreviewRouteImport } from './routes/zenox-preview'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const HealthzRoute = HealthzRouteImport.update({
   id: '/healthz',
   path: '/healthz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegacyHomeRoute = LegacyHomeRouteImport.update({
+  id: '/legacy-home',
+  path: '/legacy-home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlaneacionRoute = PlaneacionRouteImport.update({
@@ -38,12 +44,14 @@ const ZenoxPreviewRoute = ZenoxPreviewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
+  '/legacy-home': typeof LegacyHomeRoute
   '/planeacion': typeof PlaneacionRoute
   '/zenox-preview': typeof ZenoxPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
+  '/legacy-home': typeof LegacyHomeRoute
   '/planeacion': typeof PlaneacionRoute
   '/zenox-preview': typeof ZenoxPreviewRoute
 }
@@ -51,20 +59,29 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/healthz': typeof HealthzRoute
+  '/legacy-home': typeof LegacyHomeRoute
   '/planeacion': typeof PlaneacionRoute
   '/zenox-preview': typeof ZenoxPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/healthz' | '/planeacion' | '/zenox-preview'
+  fullPaths:
+    '/' | '/healthz' | '/legacy-home' | '/planeacion' | '/zenox-preview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/healthz' | '/planeacion' | '/zenox-preview'
-  id: '__root__' | '/' | '/healthz' | '/planeacion' | '/zenox-preview'
+  to: '/' | '/healthz' | '/legacy-home' | '/planeacion' | '/zenox-preview'
+  id:
+    | '__root__'
+    | '/'
+    | '/healthz'
+    | '/legacy-home'
+    | '/planeacion'
+    | '/zenox-preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HealthzRoute: typeof HealthzRoute
+  LegacyHomeRoute: typeof LegacyHomeRoute
   PlaneacionRoute: typeof PlaneacionRoute
   ZenoxPreviewRoute: typeof ZenoxPreviewRoute
 }
@@ -83,6 +100,13 @@ declare module '@tanstack/react-router' {
       path: '/healthz'
       fullPath: '/healthz'
       preLoaderRoute: typeof HealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legacy-home': {
+      id: '/legacy-home'
+      path: '/legacy-home'
+      fullPath: '/legacy-home'
+      preLoaderRoute: typeof LegacyHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planeacion': {
@@ -105,6 +129,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HealthzRoute: HealthzRoute,
+  LegacyHomeRoute: LegacyHomeRoute,
   PlaneacionRoute: PlaneacionRoute,
   ZenoxPreviewRoute: ZenoxPreviewRoute,
 }

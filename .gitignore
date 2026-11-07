@@ -39,3 +39,8 @@ dist-ssr
 
 # Supabase CLI: estado local generado (referencia de proyecto, pooler). No versionar.
 supabase/.temp/
+
+# Fase 5A: evidencia visual y respaldos locales (no forman parte de la aplicación).
+/visual-evidence/
+backup-*/
+/public/img zenox/mano con celular.jpg

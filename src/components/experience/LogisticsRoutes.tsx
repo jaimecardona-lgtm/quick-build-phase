@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { MAP_H, MAP_W, mapCountries, mapPoints } from "@/lib/americas-map";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MAP_H, MAP_W, mapCountries, mapPoints, mapPointsPresence } from "@/lib/americas-map";
 import type { Locale } from "@/lib/i18n";
 import "@/components/experience/logistics-routes.css";
 
@@ -10,20 +11,51 @@ import "@/components/experience/logistics-routes.css";
  * Las rutas, escalas, trackings, estados y fechas son DEMOSTRATIVOS y no representan datos reales.
  */
 
-type PlaceKey = keyof typeof mapPoints;
-type Place = { key: PlaceKey; side: "r" | "l" | "t" };
+type PlaceKey = keyof typeof mapPoints | keyof typeof mapPointsPresence;
+type Place = { key: PlaceKey; side: "r" | "l" | "t" | "b" };
 
 type Props = {
   caption: string;
   places: readonly Place[];
-  placeLabels: Record<PlaceKey, string>;
+  placeLabels: Partial<Record<PlaceKey, string>>;
   highlighted: Set<string>;
   mapLabel: string;
   locale: Locale;
+  /** Revelado progresivo ligado al scroll. Solo lo activa la Home Zenox; por defecto el mapa es estático. */
+  zenoxMotion?: boolean;
+  /** "zenox": presencia regional real (Ecuador, Colombia, Panamá, Miami), sin datos demo. "legacy" (por defecto): sin cambios. */
+  variant?: "legacy" | "zenox";
 };
+
+type RouteDef = { id: string; kind: "ship" | "plane" | "truck"; d: string; hop: readonly [number, number] | null };
 
 // Lienzo ampliado a izquierda y derecha para que las rutas de Asia y Europa entren desde los bordes.
 const VIEW = { x: -200, y: -20, w: MAP_W + 400, h: MAP_H + 40 };
+
+// Variante zenox (Fase 4E): rutas entre los cuatro puntos de presencia; mar, aire y tierra.
+const ROUTES_ZENOX: readonly RouteDef[] = [
+  { id: "miami-panama", kind: "ship", d: "M 320.8 58.4 Q 372 150 333.3 229.7", hop: null },
+  { id: "miami-colombia", kind: "plane", d: "M 320.8 58.4 Q 354 170 382.5 262.4", hop: null },
+  { id: "ecuador-panama", kind: "ship", d: "M 343 311 Q 292 300 333.3 229.7", hop: null },
+  { id: "ecuador-colombia", kind: "truck", d: "M 343 311 Q 374 292 382.5 262.4", hop: null },
+];
+
+// Lienzo recortado sobre la presencia: el mundo ocupa más área del módulo (variante zenox).
+const VIEW_ZENOX = { x: 180, y: 12, w: 360, h: 330 };
+
+// Iconos de transporte premium del kit Zenox (SVG editable, public/zenox-kit/transport).
+const TRANSPORT_ZENOX: Record<RouteDef["kind"], string> = {
+  plane: "/zenox-kit/transport/avion-premium.svg",
+  ship: "/zenox-kit/transport/barco-premium.svg",
+  truck: "/zenox-kit/transport/camion-premium.svg",
+};
+
+// Iconos de transporte de la variante zenox: silueta de avión, buque con superestructura y camión.
+const GLYPHS_ZENOX: Record<RouteDef["kind"], string> = {
+  plane: "M0 -11 L2 -2 L11 2 L11 4 L2 2 L1.5 8 L4.5 10 L4.5 11 L0 10 L-4.5 11 L-4.5 10 L-1.5 8 L-2 2 L-11 4 L-11 2 L-2 -2 Z",
+  ship: "M-11 -1 H11 L8 6 H-8 Z M-5 -1 V-6 H3 V-1 M5 -1 V-4 H7 V-1",
+  truck: "M-10 -5 H4 V4 H-10 Z M4 -2 H8 L11 1 V4 H4 Z",
+};
 
 const ROUTES = [
   { id: "shanghai", kind: "ship", d: "M -170 120 Q 150 260 333.3 229.7", hop: [115.8, 217.4] },
@@ -156,12 +188,39 @@ export function LogisticsRoutes({
   highlighted,
   mapLabel,
   locale,
+  zenoxMotion = false,
+  variant = "legacy",
 }: Props) {
   const d = COPY[localeKey(locale)];
   const figureRef = useRef<HTMLElement>(null);
   const pathRefs = useRef<Record<string, SVGPathElement | null>>({});
   const travelerRefs = useRef<Record<string, SVGGElement | null>>({});
   const [hot, setHot] = useState<PlaceKey | null>(null);
+  const zenox = variant === "zenox";
+  const routes: readonly RouteDef[] = zenox ? ROUTES_ZENOX : (ROUTES as readonly RouteDef[]);
+  const pts: Partial<Record<PlaceKey, readonly [number, number]>> = zenox ? mapPointsPresence : mapPoints;
+  const view = zenox ? VIEW_ZENOX : VIEW;
+  const glyphFor = (kind: RouteDef["kind"]) => (zenox ? GLYPHS_ZENOX[kind] : kind === "plane" ? PLANE_GLYPH : SHIP_GLYPH);
+
+  // Revelado progresivo ligado al scroll: rutas y nodos se activan en secuencia y se revierten al subir.
+  // El mapa nunca baja de opacidad 0.25 (sigue reconocible) y con movimiento reducido queda completo.
+  useEffect(() => {
+    const figure = figureRef.current;
+    if (!figure || !zenoxMotion) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const routeGroups = gsap.utils.toArray<SVGGElement>(figure.querySelectorAll(".lr-route-group"));
+    const nodes = gsap.utils.toArray<SVGGElement>(figure.querySelectorAll(".lr-origin, .lr-place"));
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: figure, start: "top 85%", end: "top 35%", scrub: 0.5 },
+      });
+      routeGroups.forEach((g, i) => tl.fromTo(g, { opacity: 0.25 }, { opacity: 1, duration: 0.25 }, i * 0.12));
+      nodes.forEach((g, i) => tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.2 }, 0.1 + i * 0.05));
+    }, figure);
+    return () => ctx.revert();
+  }, [zenoxMotion]);
 
   useEffect(() => {
     const figure = figureRef.current;
@@ -169,7 +228,7 @@ export function LogisticsRoutes({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const travelers: { tween: gsap.core.Tween; pos: { p: number } }[] = [];
 
-    ROUTES.forEach((route, index) => {
+    routes.forEach((route, index) => {
       const path = pathRefs.current[route.id];
       const traveler = travelerRefs.current[route.id];
       if (!path || !traveler) return;
@@ -179,7 +238,18 @@ export function LogisticsRoutes({
         const point = path.getPointAtLength(length * p);
         const ahead = path.getPointAtLength(length * Math.min(1, p + 0.01));
         const angle = (Math.atan2(ahead.y - point.y, ahead.x - point.x) * 180) / Math.PI;
-        traveler.setAttribute("transform", `translate(${point.x} ${point.y}) rotate(${angle})`);
+        if (zenox) {
+          // Zenox: el avión sigue la trayectoria; buques y camiones van derechos y solo se espejan según el sentido.
+          const leftward = Math.abs(angle) > 90;
+          traveler.setAttribute(
+            "transform",
+            route.kind === "plane"
+              ? `translate(${point.x} ${point.y}) rotate(${angle})${leftward ? " scale(1,-1)" : ""}`
+              : `translate(${point.x} ${point.y}) scale(${leftward ? -1 : 1},1)`,
+          );
+        } else {
+          traveler.setAttribute("transform", `translate(${point.x} ${point.y}) rotate(${angle})`);
+        }
       };
       if (reduced) {
         place(0.5);
@@ -215,9 +285,9 @@ export function LogisticsRoutes({
   return (
     <figure ref={figureRef} className="lr-figure">
       <figcaption className="font-display">{caption}</figcaption>
-      <div className="lr-demo-chip font-ui">{d.demo}</div>
+      {zenox ? null : <div className="lr-demo-chip font-ui">{d.demo}</div>}
       <svg
-        viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
+        viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         role="img"
         aria-label={mapLabel}
         className="lr-svg"
@@ -232,10 +302,10 @@ export function LogisticsRoutes({
           </radialGradient>
         </defs>
         <rect
-          x={VIEW.x}
-          y={VIEW.y}
-          width={VIEW.w}
-          height={VIEW.h}
+          x={view.x}
+          y={view.y}
+          width={view.w}
+          height={view.h}
           fill="url(#lr-grid)"
           className="lr-ocean"
         />
@@ -243,8 +313,8 @@ export function LogisticsRoutes({
           <path key={c.id} d={c.d} className="lr-land" data-hl={highlighted.has(c.id)} />
         ))}
 
-        {ROUTES.map((route) => (
-          <g key={route.id}>
+        {routes.map((route) => (
+          <g key={route.id} className="lr-route-group">
             <path
               id={`lr-route-${route.id}`}
               ref={(el) => {
@@ -265,12 +335,16 @@ export function LogisticsRoutes({
               }}
               className="lr-traveler"
             >
-              <path d={route.kind === "plane" ? PLANE_GLYPH : SHIP_GLYPH} className="lr-glyph" />
+              {zenox ? (
+                <image href={TRANSPORT_ZENOX[route.kind]} x={-16} y={-6.5} width={32} height={13} className="lr-glyph-img" />
+              ) : (
+                <path d={glyphFor(route.kind)} className="lr-glyph" />
+              )}
             </g>
           </g>
         ))}
 
-        {ORIGINS.map(({ key, x, y, side }) => {
+        {zenox ? null : ORIGINS.map(({ key, x, y, side }) => {
           const label = d.cities[key];
           const w = label.length * 11 + 26;
           // Miami comparte punto con Florida: su etiqueta va a la izquierda para no taparla.
@@ -289,11 +363,11 @@ export function LogisticsRoutes({
         })}
 
         {places.map(({ key, side }) => {
-          const [x, y] = mapPoints[key];
-          const label = placeLabels[key];
+          const [x, y] = pts[key] ?? [0, 0];
+          const label = placeLabels[key] ?? key;
           const w = label.length * 11 + 26;
-          const lx = side === "r" ? x + 14 : side === "t" ? x - w / 2 : x - 14 - w;
-          const ly = side === "t" ? y - 34 : y - 16;
+          const lx = side === "r" ? x + 14 : side === "t" || side === "b" ? x - w / 2 : x - 14 - w;
+          const ly = side === "t" ? y - 34 : side === "b" ? y + 30 : y - 16;
           return (
             <g
               key={key}
@@ -319,6 +393,7 @@ export function LogisticsRoutes({
         })}
       </svg>
 
+      {zenox ? null : (<>
       <p className="lr-cards-title font-ui">{d.tracking}</p>
       <ol className="lr-cards">
         {CARDS.map((card, index) => {
@@ -349,6 +424,7 @@ export function LogisticsRoutes({
           );
         })}
       </ol>
+      </>)}
     </figure>
   );
 }

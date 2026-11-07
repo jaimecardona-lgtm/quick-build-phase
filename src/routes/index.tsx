@@ -1,39 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Header } from "@/components/site/Header";
-import { Hero } from "@/components/site/Hero";
-import { Problem } from "@/components/site/Problem";
-import { SuccessStories } from "@/components/site/SuccessStories";
-import { Flow } from "@/components/site/Flow";
-import { LogixAI } from "@/components/site/LogixAI";
-import { ClientsReel } from "@/components/site/ClientsReel";
-import { OperationalChallenges } from "@/components/site/OperationalChallenges";
-import { Evidence } from "@/components/site/Evidence";
-import { Implementation } from "@/components/site/Implementation";
-import { Plans } from "@/components/site/Plans";
-import { Faq } from "@/components/site/Faq";
-import { Closing } from "@/components/site/Closing";
-import { Footer } from "@/components/site/Footer";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { AgentWidget } from "@/components/experience/AgentWidget";
 import { useReveal } from "@/hooks/use-reveal";
-import { MultimodalTracking } from "@/components/experience/MultimodalTracking";
-import { CinematicHero } from "@/components/experience/CinematicHero";
-import "@/components/experience/home-cinematic.css";
-import "@/components/experience/scene-ambient.css";
-import { CINEMATIC_ENABLED, FORWARDERS_V2 } from "@/lib/cinematic-assets";
-import { WhyChooseUs } from "@/components/experience/WhyChooseUs";
-import { faqs } from "@/lib/content";
+import { ZenoxHome } from "@/components/zenox/ZenoxHome";
+import { ZenoxHeader } from "@/components/zenox/ZenoxHeader";
+import { ZenoxFooter } from "@/components/zenox/ZenoxFooter";
+import { ZX_FAQ, ZX_META } from "@/components/zenox/zenox-copy";
 import { useLanguage } from "@/lib/i18n";
 
-// Hero cinematográfico detrás de feature flag. Desactivado por defecto; el Hero original es el fallback.
-const MOTION_HERO_ENABLED = CINEMATIC_ENABLED;
-const title = "Logixtic® | Software para Agentes de Carga Internacional";
-const description =
-  "Logixtic® conecta la gestión comercial, operativa, documental y de clientes de los agentes de carga internacional en una sola plataforma, con automatización e inteligencia artificial aplicada a la operación.";
+// Home oficial: diseño Zenox. La versión anterior vive en /legacy-home (reversión segura).
+// El contenido Zenox está redactado en español; otros idiomas se redirigen a la home anterior.
+const title = ZX_META.title;
+const description = ZX_META.description;
 
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: faqs.map((item) => ({
+  mainEntity: ZX_FAQ.map((item) => ({
     "@type": "Question",
     name: item.q,
     acceptedAnswer: { "@type": "Answer", text: item.a },
@@ -67,10 +49,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [
-      { rel: "canonical", href: "https://www.logixtic.co/" },
-      { rel: "preload", as: "image", href: "/assets/01-plataforma-servicios-menu.webp" },
-    ],
+    links: [{ rel: "canonical", href: "https://www.logixtic.co/" }],
     scripts: [
       { type: "application/ld+json", children: JSON.stringify(orgSchema) },
       { type: "application/ld+json", children: JSON.stringify(appSchema) },
@@ -82,7 +61,11 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   useReveal();
-  const { content } = useLanguage();
+  const { content, locale } = useLanguage();
+
+  if (locale !== "es") {
+    return <Navigate to="/legacy-home" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-night">
@@ -92,24 +75,11 @@ function Index() {
       >
         {content.ui.skipContent}
       </a>
-      <Header />
-      <main id="contenido" className={MOTION_HERO_ENABLED ? "home-cinematic" : undefined}>
-        {MOTION_HERO_ENABLED ? <CinematicHero /> : <Hero />}
-        {MOTION_HERO_ENABLED ? <MultimodalTracking /> : null}
-        <ClientsReel />
-        <OperationalChallenges />
-        <Problem />
-        <SuccessStories />
-        <Flow />
-        <LogixAI />
-        {FORWARDERS_V2 ? <WhyChooseUs /> : null}
-        <Evidence />
-        <Implementation />
-        <Plans />
-        <Faq />
-        <Closing />
+      <ZenoxHeader />
+      <main id="contenido">
+        <ZenoxHome />
       </main>
-      <Footer />
+      <ZenoxFooter />
       <AgentWidget />
     </div>
   );

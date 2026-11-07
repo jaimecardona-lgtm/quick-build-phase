@@ -24,7 +24,7 @@ const copy = {
     metrics: ["Operaciones globales gestionadas", "Agentes de carga han probado la plataforma"],
     presence: "Presencia regional",
     rr: "Más de 20 % de reducción de costos operativos y 35 % de mejora en tiempos de respuesta.",
-    places: { florida: "Florida", panama: "Panamá", colombia: "Colombia", venezuela: "Venezuela" },
+    places: { florida: "Florida", panama: "Panamá", colombia: "Colombia", venezuela: "Venezuela", miami: "Miami", ecuador: "Ecuador" },
   },
   en: {
     kicker: "Results and regional presence",
@@ -33,7 +33,7 @@ const copy = {
     metrics: ["Global operations managed", "Freight forwarders have tried the platform"],
     presence: "Regional presence",
     rr: "Over 20% reduction in operating costs and 35% improvement in response times.",
-    places: { florida: "Florida", panama: "Panama", colombia: "Colombia", venezuela: "Venezuela" },
+    places: { florida: "Florida", panama: "Panama", colombia: "Colombia", venezuela: "Venezuela", miami: "Miami", ecuador: "Ecuador" },
   },
   pt: {
     kicker: "Resultados e presença regional",
@@ -42,11 +42,19 @@ const copy = {
     metrics: ["Operações globais gerenciadas", "Agentes de carga já testaram a plataforma"],
     presence: "Presença regional",
     rr: "Mais de 20% de redução nos custos operacionais e 35% de melhoria nos tempos de resposta.",
-    places: { florida: "Flórida", panama: "Panamá", colombia: "Colômbia", venezuela: "Venezuela" },
+    places: { florida: "Flórida", panama: "Panamá", colombia: "Colômbia", venezuela: "Venezuela", miami: "Miami", ecuador: "Equador" },
   },
 } as const;
 
 const highlighted = new Set(["PAN", "COL", "VEN"]);
+// Presencia regional de la Home Zenox: solo Ecuador, Colombia, Panamá y Miami.
+const highlightedPresence = new Set(["ECU", "COL", "PAN"]);
+const placesPresence = [
+  { key: "miami", side: "t" },
+  { key: "panama", side: "l" },
+  { key: "colombia", side: "r" },
+  { key: "ecuador", side: "l" },
+] as const;
 
 function CountUp({ target, locale }: { target: number; locale: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -80,7 +88,12 @@ function CountUp({ target, locale }: { target: number; locale: string }) {
   );
 }
 
-export function Evidence({ showMetrics = true }: { showMetrics?: boolean } = {}) {
+export function Evidence({
+  showMetrics = true,
+  showGlobe = CINEMATIC_ENABLED,
+  zenoxMotion = false,
+  variant = "legacy",
+}: { showMetrics?: boolean; showGlobe?: boolean; zenoxMotion?: boolean; variant?: "legacy" | "zenox" } = {}) {
   const { content, locale } = useLanguage();
   const { evidence, ui } = content;
   const t = copy[locale.startsWith("pt") ? "pt" : locale.startsWith("en") ? "en" : "es"];
@@ -105,12 +118,14 @@ export function Evidence({ showMetrics = true }: { showMetrics?: boolean } = {})
     tabs.current[n]?.focus();
   };
 
-  const places = [
-    { key: "florida", side: "r" },
-    { key: "panama", side: "l" },
-    { key: "colombia", side: "r" },
-    { key: "venezuela", side: "t" },
-  ] as const;
+  const places = variant === "zenox"
+    ? placesPresence
+    : ([
+        { key: "florida", side: "r" },
+        { key: "panama", side: "l" },
+        { key: "colombia", side: "r" },
+        { key: "venezuela", side: "t" },
+      ] as const);
 
   return (
     <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid amb bgseq-host">
@@ -143,13 +158,15 @@ export function Evidence({ showMetrics = true }: { showMetrics?: boolean } = {})
             caption={t.presence}
             places={places}
             placeLabels={t.places}
-            highlighted={highlighted}
+            highlighted={variant === "zenox" ? highlightedPresence : highlighted}
             mapLabel={ui.mapLabel}
             locale={locale}
+            zenoxMotion={zenoxMotion}
+            variant={variant}
           />
         </div>
 
-        {CINEMATIC_ENABLED ? <GlobalCoverage /> : null}
+        {showGlobe ? <GlobalCoverage /> : null}
 
 
 

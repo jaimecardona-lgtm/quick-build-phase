@@ -1,0 +1,330 @@
+/* Casos de éxito tras el Hero: composición de Framer (Desktop 1440, Tablet, Phone).
+ * Tokens locales en .zc. Solo transform/opacity para movimiento; sin autoplay de video. */
+
+.zc {
+  --zc-bg: #000;
+  --zc-text: #fff;
+  --zc-muted: rgb(255 255 255 / 0.62);
+  --zc-soft: rgb(255 255 255 / 0.82);
+  --zc-line: rgb(255 255 255 / 0.14);
+  --zc-card: #08090c;
+  --zc-tab-on: rgb(255 255 255 / 0.1);
+  --zc-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --zc-radius: 24px;
+  background: var(--zc-bg);
+  color: var(--zc-text);
+  padding: 120px 0;
+}
+
+.zc-inner {
+  display: grid;
+  gap: 56px;
+}
+
+.zc-kicker {
+  font-family: var(--zc-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--zc-soft);
+  margin: 0;
+}
+
+.zc-title {
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 14px 0 0;
+  max-width: 960px;
+}
+
+.zc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.zc-tab {
+  font-family: var(--zc-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--zc-muted);
+  background: transparent;
+  border: 1px solid var(--zc-line);
+  border-radius: 12px;
+  padding: 14px 22px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.zc-tab[aria-pressed="true"] {
+  color: var(--zc-text);
+  background: var(--zc-tab-on);
+}
+
+.zc-tab:focus-visible,
+.zc-video-card:focus-visible,
+.zc-close:focus-visible {
+  outline: 2px solid var(--zc-text);
+  outline-offset: 3px;
+}
+
+.zc-case {
+  display: grid;
+  grid-template-columns: 315px minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  margin: 0;
+}
+
+.zc-photo {
+  margin: 0;
+  width: 315px;
+  height: 315px;
+  border-radius: var(--zc-radius);
+  overflow: hidden;
+  background: var(--zc-card);
+}
+
+.zc-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.zc-copy {
+  display: grid;
+  gap: 0;
+  max-width: 880px;
+}
+
+.zc-meta {
+  font-family: var(--zc-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--zc-muted);
+  margin: 0;
+}
+
+.zc-case-title {
+  font-size: clamp(28px, 2.8vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 14px 0 0;
+}
+
+.zc-quote {
+  margin: 22px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--zc-soft);
+}
+
+.zc-quote p {
+  margin: 0;
+}
+
+.zc-person {
+  font-family: var(--zc-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--zc-muted);
+  margin: 22px 0 0;
+}
+
+.zc-logos {
+  list-style: none;
+  margin: 0;
+  padding: 40px 0 0;
+  border-top: 1px solid var(--zc-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 64px;
+}
+
+.zc-logos li {
+  display: flex;
+  align-items: center;
+}
+
+.zc-logos img {
+  display: block;
+  width: 180px;
+  height: auto;
+  max-height: 64px;
+  object-fit: contain;
+}
+
+.zc-logos img[data-logo="rr-logistics"] {
+  width: 180px;
+}
+
+.zc-logos img[data-logo="connecta-global"] {
+  width: 180px;
+}
+
+.zc-logos img[data-logo="trade-business"] {
+  width: 180px;
+}
+
+.zc-video {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 600px;
+  gap: 56px;
+  align-items: center;
+}
+
+.zc-video-title {
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 14px 0 0;
+}
+
+.zc-video-card {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 40px;
+  width: 100%;
+  min-height: 240px;
+  padding: 36px 32px;
+  border-radius: var(--zc-radius);
+  background: var(--zc-card);
+  border: 1px solid var(--zc-line);
+}
+
+.zc-video-cta {
+  font-size: 36px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--zc-text);
+}
+
+.zc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(0 0 0 / 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.zc-overlay-box {
+  width: min(1000px, 100%);
+  display: grid;
+  gap: 16px;
+}
+
+.zc-close {
+  justify-self: end;
+  font-family: var(--zc-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  color: var(--zc-text);
+  background: transparent;
+  border: 1px solid var(--zc-line);
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.zc-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+}
+
+.zc-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .zc-case {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 40px;
+  }
+  .zc-photo {
+    width: 260px;
+    height: 260px;
+  }
+  .zc-video {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .zc-video-card {
+    width: 100%;
+  }
+}
+
+/* Phone */
+@media (max-width: 760px) {
+  .zc {
+    padding: 80px 0;
+  }
+  .zc-inner {
+    gap: 40px;
+  }
+  .zc-tab {
+    padding: 12px 16px;
+  }
+  .zc-case {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .zc-photo {
+    width: 100%;
+    max-width: 315px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+  .zc-logos {
+    gap: 32px 40px;
+  }
+  .zc-video-card {
+    min-height: 200px;
+    padding: 28px 24px;
+  }
+  .zc-video-cta {
+    font-size: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zc-tab {
+    transition: none;
+  }
+}
+
+/* Cambio de caso: el contenido entra con desplazamiento y opacidad (se repite al cambiar de pestaña). */
+.zc-case-enter {
+  animation: zc-case-enter 620ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes zc-case-enter {
+  from { opacity: 0.3; transform: translate3d(18px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zc-case-enter { animation: none; }
+}
