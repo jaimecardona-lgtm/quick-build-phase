@@ -36,21 +36,24 @@ const ORBIT_B = "M110 194 A230 160 0 1 1 570 194 A230 160 0 1 1 110 194";
 // Mismas órbitas y tiempos que antes. El avión sigue la tangente de la órbita; barco y camión van derechos.
 const VEHICLE_W = 104;
 const VEHICLE_H = Math.round((VEHICLE_W * 260) / 640 * 10) / 10;
+// Variante zenox: transportes 1.6× (más legibles a 1440 px). La variante legacy no cambia.
+const ZX_VEHICLE_W = Math.round(VEHICLE_W * 1.6);
+const ZX_VEHICLE_H = Math.round(ZX_VEHICLE_W * 260 / 640 * 10) / 10;
 function OrbitTrafficZenox() {
   return (
     <svg className="gc-orbits" viewBox="0 0 680 388" focusable="false" aria-hidden="true">
       <path d={ORBIT_A} className="gc-orbit-line" />
       <path d={ORBIT_B} className="gc-orbit-line gc-orbit-line-b" />
       <g className="gc-vehicle gc-vehicle-plane">
-        <image href="/zenox-kit/transport/avion-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <image href="/zenox-kit/transport/avion-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
         <animateMotion dur="16s" repeatCount="indefinite" path={ORBIT_A} rotate="auto" />
       </g>
       <g className="gc-vehicle gc-vehicle-ship">
-        <image href="/zenox-kit/transport/barco-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <image href="/zenox-kit/transport/barco-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
         <animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ORBIT_A} />
       </g>
       <g className="gc-vehicle gc-vehicle-truck">
-        <image href="/zenox-kit/transport/camion-premium.svg" x={-VEHICLE_W / 2} y={-VEHICLE_H / 2} width={VEHICLE_W} height={VEHICLE_H} />
+        <image href="/zenox-kit/transport/camion-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
         <animateMotion dur="24s" repeatCount="indefinite" path={ORBIT_B} />
       </g>
     </svg>

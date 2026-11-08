@@ -1,0 +1,52 @@
+/* Presencia regional (variante zenox de Evidence). Todo bajo .rg-zenox: fondo de sección completa con fondo3 del kit
+   reflejado (gráficos a la izquierda, libres del mapa). Solo transform en animaciones y parallax. */
+.rg-zenox.section-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #050813;
+}
+.rg-zenox .rg-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.rg-zenox .rg-par {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--rg-p, 0) * -22px), 0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+.rg-zenox .rg-drift {
+  position: absolute;
+  inset: -6%;
+  animation: rg-zx-drift 60s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.rg-zenox .rg-img {
+  position: absolute;
+  inset: 0;
+  /* Reflejado: el gráfico queda a la izquierda y el mapa a la derecha conserva su espacio. */
+  background:
+    linear-gradient(rgb(5 8 19 / 0.3), rgb(5 8 19 / 0.5)),
+    url("/zenox-kit/decor/fondo3.webp") center / cover no-repeat;
+  /* rotate (propiedad individual) no la anula el reset global de movimiento reducido. */
+  rotate: y 180deg;
+  opacity: 0.95;
+}
+@keyframes rg-zx-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(1.2%, -1%, 0) scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rg-zenox .rg-par { transform: none; }
+  .rg-zenox .rg-drift { animation: none; }
+}

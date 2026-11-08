@@ -1,0 +1,54 @@
+/* Variante Zenox de "El costo de una operación fragmentada" (.oc-zenox). Solo afecta a esta sección.
+   Capas: base (.oc-bg-base) > fotografía de rutas del kit con fundido (.oc-bg-par > .oc-bg-img).
+   Parallax por variable --oc-p (solo transform). Deriva lenta solo en .oc-bg-img. */
+.oc-zenox.operational-challenges {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #050813;
+}
+.oc-zenox .oc-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.oc-zenox .oc-bg-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgb(62 199 255 / 0.12), transparent 70%),
+    radial-gradient(50% 50% at 90% 100%, rgb(139 107 255 / 0.12), transparent 72%),
+    #050813;
+}
+.oc-zenox .oc-bg-par {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--oc-p, 0) * -22px), 0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 80%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 80%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+.oc-zenox .oc-bg-img {
+  position: absolute;
+  inset: -6%;
+  background:
+    linear-gradient(rgb(5 8 19 / 0.55), rgb(5 8 19 / 0.72)),
+    url("/zenox-kit/decor/fondo2.webp") center / cover no-repeat;
+  opacity: 0.9;
+  animation: oc-zx-drift 52s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes oc-zx-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-1.2%, 1%, 0) scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-zenox .oc-bg-par { transform: none; }
+  .oc-zenox .oc-bg-img { animation: none; }
+}

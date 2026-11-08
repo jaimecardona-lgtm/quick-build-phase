@@ -328,8 +328,17 @@
   transform: none;
 }
 
+/* Revelado reversible de la home Zenox: fuera de pantalla queda atenuado (nunca en 0) y vuelve al entrar.
+   Vive en esta hoja, que siempre se carga desde ZenoxHome; zenox-scenes.css ya no se importa en la home
+   y la regla global .js-reveal .reveal-item[data-visible="false"] dejaba el contenido invisible al subir. */
+.js-reveal .zx-root [data-reveal][data-visible="false"] {
+  opacity: 0.22;
+  transform: translate3d(0, 24px, 0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .zx-ribbon { animation: none; }
+  .js-reveal .zx-root [data-reveal][data-visible="false"] { opacity: 1; transform: none; }
   .zx-root [data-reveal] { opacity: 1; transform: none; transition: none; }
   .zx-card, .zx-btn { transition: none; }
   .zx-card:hover, .zx-btn:hover { transform: none; }

@@ -10,13 +10,14 @@ import connectaLogo from "@/assets/logo-connecta-global-logistics.png.asset.json
 import tradeLogo from "@/assets/logo-trade-business-sas.png.asset.json";
 import { CinematicBackgroundSequence } from "@/components/experience/CinematicBackgroundSequence";
 import { CINEMATIC_CLIPS } from "@/lib/cinematic-media";
+import "./evidence-zenox.css";
 
 // Rutas internacionales de fondo: el mapa original y las métricas siguen al frente.
 const EVIDENCE_CLIPS = [CINEMATIC_CLIPS.sea];
 
 const logos = [rrLogo.url, connectaLogo.url, tradeLogo.url];
 
-const copy = {
+export const copy = {
   es: {
     kicker: "Resultados y presencia regional",
     title: ["Más control por embarque.", "Más capacidad para crecer."],
@@ -100,6 +101,30 @@ export function Evidence({
   const numLocale = locale.startsWith("pt") ? "pt-BR" : locale.startsWith("en") ? "en-US" : "es-CO";
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const zenox = variant === "zenox";
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Parallax suave del fondo de la variante zenox (variable CSS). Con movimiento reducido no se aplica.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!zenox || !el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight));
+      el.style.setProperty("--rg-p", p.toFixed(3));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [zenox]);
 
   const cases = evidence.cases.map((c, i) => (i === 0 ? { ...c, result: t.rr } : c));
   const current = cases[active] ?? cases[0];
@@ -128,11 +153,26 @@ export function Evidence({
       ] as const);
 
   return (
-    <section id="clientes" aria-labelledby="clientes-title" className="section-shell surface-mid amb bgseq-host">
-      <CinematicBackgroundSequence
-        clips={FORWARDERS_V2 ? videoClipsFor(SCENE_SECTIONS.evidence) : EVIDENCE_CLIPS}
-        className="bgseq-veil-strong"
-      />
+    <section
+      ref={sectionRef}
+      id="clientes"
+      aria-labelledby="clientes-title"
+      className={zenox ? "section-shell surface-mid amb rg-zenox" : "section-shell surface-mid amb bgseq-host"}
+    >
+      {zenox ? (
+        <div className="rg-bg" aria-hidden="true">
+          <div className="rg-par">
+            <div className="rg-drift">
+              <div className="rg-img" />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <CinematicBackgroundSequence
+          clips={FORWARDERS_V2 ? videoClipsFor(SCENE_SECTIONS.evidence) : EVIDENCE_CLIPS}
+          className="bgseq-veil-strong"
+        />
+      )}
       <div className="mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="ev3-main">
           <div data-reveal className="reveal-item ev3-content">
@@ -170,6 +210,7 @@ export function Evidence({
 
 
 
+        {zenox ? null : (
         <div data-reveal className="reveal-item ev3-cases mt-10">
           <div role="tablist" aria-label={ui.successCases} className="ev3-tabs">
             {cases.map((item, index) => (
@@ -199,6 +240,7 @@ export function Evidence({
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );

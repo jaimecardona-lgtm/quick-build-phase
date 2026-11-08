@@ -1,0 +1,132 @@
+/* El problema: fondo en capas (base, malla digital, red de conexiones) y tarjetas interactivas.
+   Todo aislado en .zx-pb. Solo transform, translate y opacity en animaciones. Las capas decorativas quedan detrás
+   del contenido (.zx-pb-content con z-index). Movimiento reducido: sin deriva, sin destellos, sin parallax. */
+.zx-root .zx-pb {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: 96px;
+}
+.zx-root .zx-pb > * {
+  pointer-events: none;
+}
+.zx-root .zx-pb-content {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Capa inferior: azul noche con luces radiales azul eléctrico y violeta, fundidas en los bordes. */
+.zx-root .zx-pb-base {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(60% 55% at 12% 20%, rgb(62 199 255 / 0.1), transparent 70%),
+    radial-gradient(55% 50% at 88% 80%, rgb(139 107 255 / 0.12), transparent 72%),
+    linear-gradient(180deg, #05070f 0%, #070b1a 50%, #05070f 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+/* Capa media: malla digital profunda (kit), baja opacidad y deriva muy lenta. */
+.zx-root .zx-pb-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  transform: translate3d(0, calc(var(--zx-pb-p, 0) * -18px), 0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 80%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 16%, #000 80%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-composite: intersect;
+}
+.zx-root .zx-pb-mesh-drift {
+  position: absolute;
+  inset: 0;
+  background: url("/zenox-kit/decor/malla-digital-profunda.webp") center / cover no-repeat;
+  opacity: 0.32;
+  mix-blend-mode: screen;
+  animation: zx-pb-drift 70s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes zx-pb-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.04); }
+  100% { transform: translate3d(-1.5%, -2%, 0) scale(1.08); }
+}
+
+/* Capa superior de fondo: red de conexiones neón. */
+.zx-root .zx-pb-net {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.55;
+  transform: translate3d(0, calc(var(--zx-pb-p, 0) * 24px), 0);
+  overflow: visible;
+}
+.zx-root .zx-pb-line {
+  stroke: rgb(62 199 255 / 0.22);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.zx-root .zx-pb-pulse {
+  stroke: #8b6bff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 22 620;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 4px rgb(139 107 255 / 0.9));
+  animation: zx-pb-pulse 9s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes zx-pb-pulse {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -642; }
+}
+.zx-root .zx-pb-node {
+  fill: rgb(62 199 255 / 0.7);
+}
+.zx-root .zx-pb[data-visible="false"] .zx-pb-pulse,
+.zx-root .zx-pb[data-visible="false"] .zx-pb-mesh-drift {
+  animation-play-state: paused;
+}
+
+/* Tarjetas: fondo y jerarquía intactos. Escalonado de entrada y hover (translate y borde). */
+.zx-root .zx-pb .zx-pb-card {
+  transition-property: opacity, transform, translate, border-color, box-shadow;
+  transition-duration: 0.8s, 0.8s, 0.45s, 0.45s, 0.45s;
+  transition-timing-function: ease, ease, ease, ease, ease;
+  transition-delay: calc(var(--i, 0) * 140ms), calc(var(--i, 0) * 140ms), 0s, 0s, 0s;
+}
+.zx-root .zx-pb .zx-pb-card:hover {
+  translate: 0 -6px;
+  border-color: rgb(139 107 255 / 0.55);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45), 0 0 0 1px rgb(62 199 255 / 0.18), 0 0 36px rgb(62 199 255 / 0.14);
+  transition-delay: 0s;
+}
+.zx-root .zx-pb .zx-pb-card:hover .zx-icon {
+  color: #3ec7ff;
+  box-shadow: 0 0 18px rgb(62 199 255 / 0.45);
+}
+
+@media (max-width: 959px) {
+  .zx-root .zx-pb {
+    padding-block: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-pb-mesh-drift,
+  .zx-root .zx-pb-pulse { animation: none; }
+  .zx-root .zx-pb-pulse { opacity: 0; }
+  .zx-root .zx-pb-mesh,
+  .zx-root .zx-pb-net { transform: none; }
+  .zx-root .zx-pb .zx-pb-card { transition: none; }
+  .zx-root .zx-pb .zx-pb-card:hover { translate: none; }
+}

@@ -1,0 +1,190 @@
+/* FAQ en acordeón de dos niveles (variante zenox de Faq). Ámbito .faq-zx.
+   Expansión con grid-template-rows (0fr → 1fr): sin alturas fijas y con transición suave al abrir y cerrar.
+   Las respuestas cerradas siguen en el HTML: visibility oculta, no display none (SEO y lectores de pantalla). */
+
+.faq-zx .faq-zx-list {
+  max-width: 860px;
+  margin: 44px auto 0;
+  display: grid;
+  gap: 12px;
+}
+
+/* Nivel 1: tarjeta de categoría horizontal. */
+.faq-zx .faq-zx-cat {
+  border-radius: 16px;
+  border: 1px solid rgb(62 199 255 / 0.16);
+  background: linear-gradient(160deg, rgb(12 18 40 / 0.66), rgb(8 10 26 / 0.52));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.faq-zx .faq-zx-cat:hover,
+.faq-zx .faq-zx-cat[data-open="true"] {
+  border-color: rgb(62 199 255 / 0.45);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 0.35), 0 0 26px rgb(62 199 255 / 0.12);
+}
+.faq-zx .faq-zx-cat-btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-zx .faq-zx-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #3ec7ff;
+  border: 1px solid rgb(62 199 255 / 0.35);
+  background: rgb(62 199 255 / 0.08);
+  transition: box-shadow 0.35s ease, background 0.35s ease;
+}
+.faq-zx .faq-zx-cat:hover .faq-zx-icon,
+.faq-zx .faq-zx-cat[data-open="true"] .faq-zx-icon {
+  box-shadow: 0 0 18px rgb(62 199 255 / 0.4);
+  background: rgb(62 199 255 / 0.14);
+}
+.faq-zx .faq-zx-cat-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.faq-zx .faq-zx-cat-title {
+  font-family: var(--font-display, inherit);
+  font-size: 17px;
+  font-weight: 600;
+  color: #f5f7ff;
+}
+.faq-zx .faq-zx-cat-count {
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgb(160 200 255 / 0.85);
+}
+.faq-zx .faq-zx-toggle {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #8fd8ff;
+  border: 1px solid rgb(62 199 255 / 0.3);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.35s ease;
+}
+.faq-zx .faq-zx-toggle--small {
+  width: 24px;
+  height: 24px;
+}
+.faq-zx .faq-zx-cat-btn:focus-visible,
+.faq-zx .faq-zx-q-btn:focus-visible {
+  outline: 2px solid #3ec7ff;
+  outline-offset: 3px;
+}
+
+/* Contenedores que se expanden con la transición de la rejilla. */
+.faq-zx .faq-zx-panel,
+.faq-zx .faq-zx-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0.5s;
+}
+.faq-zx .faq-zx-panel[data-open="true"],
+.faq-zx .faq-zx-a[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+.faq-zx .faq-zx-panel-inner,
+.faq-zx .faq-zx-a-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.faq-zx .faq-zx-panel-inner {
+  display: grid;
+  gap: 8px;
+  padding: 0 16px;
+}
+.faq-zx .faq-zx-panel[data-open="true"] .faq-zx-panel-inner {
+  padding-bottom: 16px;
+}
+
+/* Nivel 2: pregunta dentro de la categoría. */
+.faq-zx .faq-zx-q {
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(5 8 19 / 0.5);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.faq-zx .faq-zx-q:hover,
+.faq-zx .faq-zx-q[data-open="true"] {
+  border-color: rgb(139 107 255 / 0.45);
+  box-shadow: 0 0 22px rgb(139 107 255 / 0.12);
+}
+.faq-zx .faq-zx-q-btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: transparent;
+  color: #f5f7ff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-zx .faq-zx-q-btn > span:first-child {
+  flex: 1 1 auto;
+}
+.faq-zx .faq-zx-q-btn .faq-zx-toggle {
+  color: #b9a7ff;
+  border-color: rgb(139 107 255 / 0.35);
+}
+.faq-zx .faq-zx-a-inner p {
+  margin: 0;
+  padding: 0 16px 16px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: rgb(214 222 242 / 0.9);
+}
+.faq-zx .faq-zx-a {
+  grid-template-rows: 0fr;
+}
+
+/* Teclado y móvil: sin cambios de estructura. */
+@media (max-width: 560px) {
+  .faq-zx .faq-zx-cat-btn {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+  .faq-zx .faq-zx-cat-title {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-zx .faq-zx-panel,
+  .faq-zx .faq-zx-a,
+  .faq-zx .faq-zx-cat,
+  .faq-zx .faq-zx-q,
+  .faq-zx .faq-zx-toggle,
+  .faq-zx .faq-zx-icon {
+    transition: none;
+  }
+}

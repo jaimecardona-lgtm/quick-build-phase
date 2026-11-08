@@ -328,3 +328,36 @@
 @media (prefers-reduced-motion: reduce) {
   .zc-case-enter { animation: none; }
 }
+
+
+/* Historias reales: fondo cinematográfico (fondo3 del kit, reflejado) en una capa independiente detrás del contenido.
+   Sin opacidad en el contenedor ni en los textos: el contenido siempre se ve completo. */
+.zx-root section.zc {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #050813;
+}
+.zx-root section.zc .zc-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgb(5 8 19 / 0.62), rgb(5 8 19 / 0.78)),
+    url("/zenox-kit/decor/fondo3.webp") center / cover no-repeat;
+  rotate: y 180deg;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-composite: intersect;
+}
+/* Revelado: los bloques de esta sección solo se desplazan; nunca quedan atenuados. */
+.zx-root section.zc [data-reveal],
+.js-reveal .zx-root section.zc [data-reveal][data-visible="false"] {
+  opacity: 1;
+}

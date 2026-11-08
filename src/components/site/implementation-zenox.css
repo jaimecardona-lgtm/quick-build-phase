@@ -1,0 +1,119 @@
+/* Implementación (variante zenox): fondo continuo de toda la sección con fondo2 del kit.
+   Ámbito .im2-zenox. Quita la cinta azul de #implementacion::before, que tenía un borde derecho visible. */
+.zx-root #implementacion.im2-zenox::before {
+  display: none;
+}
+.zx-root #implementacion.im2-zenox {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Capas: base (gradiente) → imagen con fundido en los cuatro bordes → luces y flujo. */
+.zx-root #implementacion .im2-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-composite: intersect;
+}
+.zx-root #implementacion .im2-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(55% 40% at 80% 20%, rgb(62 199 255 / 0.12), transparent 70%),
+    radial-gradient(50% 40% at 15% 85%, rgb(139 107 255 / 0.12), transparent 72%),
+    linear-gradient(180deg, #05070f 0%, #070b1a 50%, #05070f 100%);
+}
+.zx-root #implementacion .im2-par {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--im-p, 0) * -24px), 0);
+}
+.zx-root #implementacion .im2-drift {
+  position: absolute;
+  inset: -6%;
+  animation: zx-im2-drift 60s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.zx-root #implementacion .im2-img {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgb(5 8 19 / 0.4), rgb(5 8 19 / 0.62)),
+    url("/zenox-kit/decor/fondo2.webp") center / cover no-repeat;
+  opacity: 0.95;
+}
+
+/* Resplandor azul y violeta que respira detrás de las etapas (solo opacity). */
+.zx-root #implementacion .im2-glow {
+  position: absolute;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgb(62 199 255 / 0.2), transparent 75%);
+  animation: zx-im2-breathe 8s ease-in-out infinite;
+}
+.zx-root #implementacion .im2-glow--a {
+  left: -8%;
+  top: 30%;
+}
+.zx-root #implementacion .im2-glow--b {
+  right: -10%;
+  top: 60%;
+  background: radial-gradient(closest-side, rgb(139 107 255 / 0.2), transparent 75%);
+  animation-delay: -4s;
+}
+
+/* Flujo de información: puntos que suben lentamente por la sección. */
+.zx-root #implementacion .im2-flow {
+  position: absolute;
+  left: var(--x);
+  bottom: -8px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #8fd8ff;
+  box-shadow: 0 0 8px rgb(62 199 255 / 0.9);
+  opacity: 0;
+  animation: zx-im2-flow var(--t, 16s) linear infinite;
+  animation-delay: calc(var(--d, 0s) * -1);
+}
+
+/* Fuera de pantalla: nada se anima. */
+.zx-root #implementacion.im2-zenox[data-active="false"] .im2-drift,
+.zx-root #implementacion.im2-zenox[data-active="false"] .im2-glow,
+.zx-root #implementacion.im2-zenox[data-active="false"] .im2-flow {
+  animation-play-state: paused;
+}
+
+@keyframes zx-im2-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-1.2%, 1%, 0) scale(1.05); }
+}
+@keyframes zx-im2-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes zx-im2-flow {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  15% { opacity: 0.8; }
+  85% { opacity: 0.8; }
+  100% { transform: translate3d(0, -110vh, 0); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root #implementacion .im2-par { transform: none; }
+  .zx-root #implementacion .im2-drift,
+  .zx-root #implementacion .im2-glow { animation: none; }
+  .zx-root #implementacion .im2-flow { display: none; }
+}

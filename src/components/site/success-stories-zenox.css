@@ -1,0 +1,418 @@
+/* Casos de éxito con fondo cinematográfico (variante zenox de SuccessStories). Todo bajo .zx-ss.
+   Solo transform, translate y opacity en animaciones. Revelado reversible con data-visible (useToggleReveal):
+   el contenido queda en opacidad 1 mientras está visible. Movimiento reducido: sin animaciones ni desplazamientos. */
+
+.zx-ss.success-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: 96px;
+  background: #050813;
+}
+
+/* Fondo: fondo1 del kit (red global y cintas), con fundido en los cuatro bordes y parallax suave. */
+.zx-ss .zx-ss-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.zx-ss .zx-ss-par {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--ss-p, 0) * -22px), 0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 14%, #000 84%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+.zx-ss .zx-ss-img {
+  position: absolute;
+  inset: -6%;
+  background:
+    linear-gradient(rgb(5 8 19 / 0.5), rgb(5 8 19 / 0.74)),
+    url("/zenox-kit/decor/fondo1.webp") center / cover no-repeat;
+  opacity: 0.9;
+  animation: zx-ss-drift 56s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes zx-ss-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-1.2%, 1%, 0) scale(1.05); }
+}
+
+/* Encabezado: mismo texto y clases tipográficas que la versión anterior. */
+.zx-ss .zx-ss-head {
+  max-width: 920px;
+  margin: 0 auto 48px;
+  text-align: center;
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity 0.9s ease, transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-ss[data-visible="true"] .zx-ss-head {
+  opacity: 1;
+  transform: none;
+}
+
+/* Dos columnas: tres casos compactos a la izquierda, video a la derecha. */
+.zx-ss .zx-ss-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.zx-ss .zx-ss-cases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+/* Tarjeta de caso: borde fino azulado, fondo translúcido moderado. */
+.zx-ss .zx-ss-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid rgb(62 199 255 / 0.16);
+  background: linear-gradient(160deg, rgb(12 18 40 / 0.66), rgb(8 10 26 / 0.52));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: left;
+  opacity: 0;
+  transform: translate3d(-28px, 0, 0);
+  transition-property: opacity, transform, translate, border-color, box-shadow;
+  transition-duration: 0.8s, 0.9s, 0.45s, 0.45s, 0.45s;
+  transition-timing-function: ease, cubic-bezier(0.2, 0.7, 0.2, 1), ease, ease, ease;
+  transition-delay: calc(var(--i, 0) * 140ms), calc(var(--i, 0) * 140ms), 0s, 0s, 0s;
+}
+.zx-ss[data-visible="true"] .zx-ss-card {
+  opacity: 1;
+  transform: none;
+}
+.zx-ss .zx-ss-card:hover,
+.zx-ss .zx-ss-card:focus-visible {
+  translate: 0 -4px;
+  border-color: rgb(62 199 255 / 0.5);
+  box-shadow: 0 20px 48px rgb(0 0 0 / 0.4), 0 0 28px rgb(62 199 255 / 0.14);
+  transition-delay: 0s, 0s, 0s, 0s, 0s;
+}
+.zx-ss .zx-ss-card:focus-visible {
+  outline: 2px solid #3ec7ff;
+  outline-offset: 4px;
+}
+.zx-ss .zx-ss-who {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.zx-ss .zx-ss-photo {
+  flex: 0 0 auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgb(139 107 255 / 0.5);
+  box-shadow: 0 0 18px rgb(139 107 255 / 0.25);
+}
+.zx-ss .zx-ss-person {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f5f7ff;
+}
+.zx-ss .zx-ss-role {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: rgb(190 200 230 / 0.78);
+}
+.zx-ss .zx-ss-company {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.zx-ss .zx-ss-logo {
+  display: block;
+  height: 26px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f5f7ff;
+  box-sizing: content-box;
+}
+.zx-ss .zx-ss-meta {
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: rgb(160 200 255 / 0.85);
+}
+.zx-ss .zx-ss-result {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border-left: 2px solid #8b6bff;
+  background: linear-gradient(90deg, rgb(139 107 255 / 0.14), rgb(62 199 255 / 0.04));
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #f5f7ff;
+}
+.zx-ss .zx-ss-result-label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8fd8ff;
+}
+.zx-ss .zx-ss-quote {
+  margin: 0;
+}
+.zx-ss .zx-ss-quote p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgb(214 222 242 / 0.92);
+}
+
+/* Tarjeta del video: proporción cuadrada, póster sin recortar (contain) sobre un fondo desenfocado del mismo póster. */
+.zx-ss .zx-ss-video {
+  position: relative;
+  min-height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgb(62 199 255 / 0.2);
+  box-shadow: 0 30px 70px rgb(0 0 0 / 0.45), 0 0 50px rgb(139 107 255 / 0.15);
+  opacity: 0;
+  transform: translate3d(36px, 0, 0);
+  transition: opacity 0.9s ease calc(var(--i, 0) * 140ms), transform 1s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 140ms);
+}
+.zx-ss[data-visible="true"] .zx-ss-video {
+  opacity: 1;
+  transform: none;
+}
+.zx-ss .zx-ss-play {
+  appearance: none;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background: #050813;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+.zx-ss .zx-ss-play:focus-visible {
+  outline: 2px solid #3ec7ff;
+  outline-offset: 4px;
+}
+.zx-ss .zx-ss-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* El póster de YouTube (480×360) lleva barras negras de 60 px a cada lado: con cover la tarjeta cuadrada
+     encuadra exactamente el contenido de 360×360 (sin barras y sin recortar a la persona). */
+  object-fit: cover;
+  object-position: center;
+}
+.zx-ss .zx-ss-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(5 8 19 / 0.1) 0%, rgb(5 8 19 / 0.2) 45%, rgb(5 8 19 / 0.92) 100%);
+  pointer-events: none;
+}
+.zx-ss .zx-ss-kicker {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #8fd8ff;
+}
+.zx-ss .zx-ss-cta {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.zx-ss .zx-ss-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #05070f;
+  background: linear-gradient(135deg, #3ec7ff, #8b6bff);
+  box-shadow: 0 0 26px rgb(62 199 255 / 0.5);
+  transition: transform 0.35s ease;
+}
+.zx-ss .zx-ss-play:hover .zx-ss-icon {
+  transform: scale(1.08);
+}
+.zx-ss .zx-ss-cta-text strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+.zx-ss .zx-ss-cta-text small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: rgb(220 228 245 / 0.8);
+}
+
+/* Modal del video: diálogo accesible, proporción vertical 9:16, cierre con botón o Escape. */
+.zx-ss-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(3 5 12 / 0.84);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.zx-ss-dialog {
+  position: relative;
+  max-height: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid rgb(62 199 255 / 0.25);
+  background: #07091a;
+  box-shadow: 0 40px 100px rgb(0 0 0 / 0.6), 0 0 60px rgb(139 107 255 / 0.2);
+}
+.zx-ss-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgb(62 199 255 / 0.4);
+  background: #0b1030;
+  color: #fff;
+  cursor: pointer;
+}
+.zx-ss-close:focus-visible {
+  outline: 2px solid #3ec7ff;
+  outline-offset: 3px;
+}
+.zx-ss-frame {
+  position: relative;
+  height: min(78vh, 720px);
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+}
+.zx-ss-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Escritorio: tarjeta del video cuadrada; los tres casos apilados a la izquierda. */
+@media (max-width: 959px) {
+  .zx-ss.success-shell {
+    padding-block: 72px;
+  }
+  .zx-ss .zx-ss-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  /* Teléfono y tablet: título, video compacto y después los casos. */
+  .zx-ss .zx-ss-video {
+    order: -1;
+  }
+  .zx-ss .zx-ss-head {
+    margin-bottom: 36px;
+  }
+}
+@media (max-width: 560px) {
+  .zx-ss .zx-ss-cases {
+    gap: 12px;
+  }
+  .zx-ss .zx-ss-card {
+    padding: 16px;
+  }
+  .zx-ss .zx-ss-photo {
+    width: 52px;
+    height: 52px;
+  }
+  .zx-ss-dialog {
+    padding: 8px;
+  }
+  .zx-ss-close {
+    top: -10px;
+    right: -6px;
+  }
+  .zx-ss-modal {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-ss .zx-ss-img { animation: none; }
+  .zx-ss .zx-ss-par { transform: none; }
+  .zx-ss .zx-ss-head,
+  .zx-ss .zx-ss-card,
+  .zx-ss .zx-ss-video {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .zx-ss .zx-ss-card:hover,
+  .zx-ss .zx-ss-card:focus-visible { translate: none; }
+  .zx-ss .zx-ss-play:hover .zx-ss-icon { transform: none; }
+}
+
+/* Video testimonial: la portada disponible (hqdefault, 480×360) tiene el contenido real en un cuadrado de 360×360.
+   Se muestra a esa escala (sin ampliar) y centrado en su tarjeta, para que no se vea borroso ni pixelado. */
+.zx-root section.zx-ss .zx-ss-video {
+  width: min(360px, 100%);
+  min-height: 0;
+  margin: 0 auto;
+  align-self: center;
+  justify-self: center;
+}
+.zx-root section.zx-ss .zx-ss-play {
+  aspect-ratio: 1 / 1;
+  height: auto;
+  min-height: 0;
+}
+.zx-root section.zx-ss .zx-ss-poster {
+  object-fit: cover;
+  object-position: center;
+}

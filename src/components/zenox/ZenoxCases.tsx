@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useToggleReveal } from "./use-toggle-reveal";
 import "./zenox-cases.css";
+import { CASES, CASE_VIDEO_ID, type CaseItem } from "@/lib/success-cases";
+
+const CASE_VIDEO_SRC = `https://www.youtube-nocookie.com/embed/${CASE_VIDEO_ID}?rel=0&playsinline=1`;
 
 /*
  * Casos de éxito tras el Hero (espejo de la sección "Clientes y casos de éxito" de Framer).
@@ -9,60 +12,6 @@ import "./zenox-cases.css";
  * Pendiente: documentar la autorización de distribución de cada logo y retrato antes de Render.
  * El video NO tiene autoplay: se abre al hacer clic y el usuario lo reproduce desde YouTube.
  */
-
-const CASE_VIDEO_ID = "V39UQwu2THo";
-const CASE_VIDEO_SRC = `https://www.youtube-nocookie.com/embed/${CASE_VIDEO_ID}?rel=0&playsinline=1`;
-
-type CaseItem = {
-  tab: string;
-  logoName: string;
-  logoId: string;
-  logo: string;
-  photo: string;
-  person: string;
-  meta: string;
-  title: string;
-  quote: string;
-};
-
-const CASES: readonly CaseItem[] = [
-  {
-    tab: "R&R Logistics CFS",
-    logoName: "R&R Logistics CFS",
-    logoId: "rr-logistics",
-    logo: "/cases/logos/rr-logistics-cfs.png",
-    photo: "/cases/diana-moncayo.png",
-    person: "Diana Moncayo · Directora Comercial",
-    meta: "R&R Logistics CFS / Miami",
-    title: "Solución pensada para nuestra realidad",
-    quote:
-      "“Con Logixtic® logramos centralizar toda nuestra operación comercial, documental y logística en una sola plataforma, sin aumentar personal ni complejidad operativa.”",
-  },
-  {
-    tab: "Connecta Global",
-    logoName: "Connecta Global",
-    logoId: "connecta-global",
-    logo: "/cases/logos/connecta-global.png",
-    photo: "/cases/carlos-sanchez.png",
-    person: "Carlos Sánchez · Controller",
-    meta: "Connecta Global / Panamá",
-    title: "Adiós al caos de correos",
-    quote:
-      "“Con el portal de clientes de Logixtic® transformamos por completo la comunicación con nuestros clientes y la visibilidad de cada operación.”",
-  },
-  {
-    tab: "Trade & Business SAS",
-    logoName: "Trade & Business SAS",
-    logoId: "trade-business",
-    logo: "/cases/logos/trade-business-sas.png",
-    photo: "/cases/dayana-ordonez.png",
-    person: "Dayana Ordóñez · CEO",
-    meta: "Trade & Business SAS / Colombia",
-    title: "Centralización que transforma",
-    quote:
-      "“Antes de Logixtic®, nuestra operación era un caos de correos, llamadas y hojas de Excel. Hoy tenemos todo centralizado, los estatus se actualizan solos y el cliente siempre sabe en qué va su carga. Ahorramos tiempo y eliminamos errores que antes eran parte del día a día.”",
-  },
-];
 
 export function ZenoxCases() {
   const [active, setActive] = useState(0);
@@ -83,6 +32,7 @@ export function ZenoxCases() {
 
   return (
     <section id="clientes-logos" className="zc" aria-labelledby="zc-title">
+      <div className="zc-bg" aria-hidden="true" />
       <div className="zx-wrap zc-inner">
         <header className="zc-head" data-reveal>
           <p className="zc-kicker">CLIENTES / HISTORIAS REALES</p>

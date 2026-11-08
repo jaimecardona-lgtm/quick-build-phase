@@ -1,0 +1,227 @@
+/* Escena de presencia y control global (GeoCinematic). Ámbito .geo-scene.
+   - .geo-intro: titular, mapa y descripción en flujo normal (sin fijar, sin recortes).
+   - .geo-pin > .geo-stage: escena fijada solo para el globo, su texto y la frase final.
+   La regla general de secciones (.zx-root section) no debe añadir relleno a esta escena. */
+
+.zx-root section.geo-scene {
+  padding: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ---------- Bloque de presencia regional (flujo normal) ---------- */
+.zx-root .geo-intro {
+  position: relative;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: clamp(72px, 9vw, 120px) 20px clamp(40px, 5vw, 64px);
+  text-align: center;
+}
+.zx-root .geo-intro .section-kicker {
+  margin: 0 0 clamp(12px, 1.4vw, 20px);
+}
+.zx-root .geo-intro .geo-h2 {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.zx-root .geo-map {
+  position: relative;
+  width: min(92vw, 860px);
+  margin: clamp(48px, 5.5vw, 72px) auto 0;
+}
+.zx-root .geo-map .lr-figure {
+  margin: 0;
+  gap: clamp(16px, 1.6vw, 24px);
+}
+.zx-root .geo-band {
+  margin: clamp(18px, 2.2vw, 28px) auto 0;
+  max-width: 720px;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.5;
+  color: rgb(205 218 240 / 0.92);
+  text-shadow: 0 2px 16px rgb(5 7 15 / 0.7);
+}
+
+/* ---------- Escena fijada: visión conectada (globo) ---------- */
+.zx-root .geo-pin {
+  position: relative;
+  height: 200vh;
+}
+.zx-root .geo-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Fondo: azul noche con luces cian y violeta. Fundido lateral y resplandor en el borde inferior. */
+.zx-root .geo-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%),
+    linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-composite: intersect;
+  background:
+    radial-gradient(60% 50% at 70% 35%, rgb(62 199 255 / 0.14), transparent 70%),
+    radial-gradient(55% 50% at 20% 85%, rgb(139 107 255 / 0.14), transparent 72%),
+    radial-gradient(50% 22% at 50% 100%, rgb(62 199 255 / 0.12), transparent 70%),
+    linear-gradient(180deg, #05070f 0%, #070b1a 50%, #070b1a 100%);
+}
+.zx-root .geo-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: zx-geo-breathe 9s ease-in-out infinite;
+}
+.zx-root .geo-glow--a {
+  width: 60vw;
+  aspect-ratio: 1;
+  left: 46%;
+  top: 14%;
+  background: radial-gradient(closest-side, rgb(62 199 255 / 0.12), transparent 75%);
+}
+.zx-root .geo-glow--b {
+  width: 50vw;
+  aspect-ratio: 1;
+  left: -12%;
+  top: 58%;
+  background: radial-gradient(closest-side, rgb(139 107 255 / 0.12), transparent 75%);
+  animation-delay: -4s;
+}
+@keyframes zx-geo-breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Textos del globo: centrados. Opacidad inicial coherente con el progreso 0 (el JS la actualiza). */
+.zx-root .geo-text {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  width: min(1040px, 92vw);
+  text-align: center;
+  will-change: opacity;
+}
+.zx-root .geo-text-b {
+  top: clamp(84px, 9vh, 120px);
+  opacity: 0;
+}
+.zx-root .geo-text-c {
+  top: 50%;
+  translate: -50% -50%;
+  opacity: 0;
+}
+.zx-root .geo-h2 {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(30px, 4.4vw, 62px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: #f5f7ff;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgb(5 7 15 / 0.7);
+}
+.zx-root .geo-h2--c {
+  font-size: clamp(26px, 3.6vw, 52px);
+  background: linear-gradient(90deg, #3ec7ff, #f5f7ff 45%, #b9a7ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.zx-root .geo-p {
+  margin: 18px auto 0;
+  max-width: 760px;
+  font-size: clamp(16px, 1.5vw, 20px);
+  line-height: 1.6;
+  color: rgb(225 232 248 / 0.92);
+  text-shadow: 0 2px 18px rgb(5 7 15 / 0.7);
+}
+
+/* Globo: ocupa el alto disponible bajo el texto B. */
+.zx-root .geo-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  transform-origin: 50% 50%;
+  will-change: opacity, transform;
+}
+.zx-root .geo-globe {
+  top: 33vh;
+  width: min(92vw, calc((100vh - 33vh - 20px) / 0.5706));
+  opacity: 0;
+  transform: scale(0.72);
+}
+.zx-root .geo-globe .gc-globe {
+  width: 100%;
+}
+.zx-root .geo-globe .gc-band {
+  margin-top: 0;
+  min-height: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-mask-image: radial-gradient(ellipse 62% 64% at 50% 50%, #000 56%, transparent 100%);
+  mask-image: radial-gradient(ellipse 62% 64% at 50% 50%, #000 56%, transparent 100%);
+}
+.zx-root .geo-globe .gc-band::before,
+.zx-root .geo-globe .gc-band::after {
+  display: none;
+}
+
+/* Tablet y móvil: el globo y el texto se adaptan al ancho disponible. */
+@media (max-width: 959px) {
+  .zx-root .geo-globe {
+    top: 40vh;
+    width: 92vw;
+  }
+  .zx-root .geo-h2 {
+    font-size: clamp(26px, 6.2vw, 44px);
+  }
+}
+@media (max-width: 560px) {
+  .zx-root .geo-text-b {
+    top: 8vh;
+  }
+  .zx-root .geo-h2 {
+    font-size: clamp(24px, 7.4vw, 40px);
+  }
+}
+
+/* Movimiento reducido: secuencia estática, sin fijar ni animar. */
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .geo-pin {
+    height: auto;
+  }
+  .zx-root .geo-stage {
+    position: relative;
+    height: auto;
+    display: grid;
+    gap: 48px;
+    padding-block: 96px;
+    overflow: visible;
+  }
+  .zx-root .geo-text,
+  .zx-root .geo-layer {
+    position: relative;
+    left: auto;
+    top: auto;
+    right: auto;
+    translate: none;
+    width: min(1040px, 92vw);
+    margin: 0 auto;
+    opacity: 1;
+    transform: none;
+  }
+  .zx-root .geo-glow {
+    animation: none;
+  }
+}

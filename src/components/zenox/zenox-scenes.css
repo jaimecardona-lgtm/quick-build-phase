@@ -301,6 +301,27 @@ body:has(#zenox-home) .aw-launcher > span {
   height: auto;
   object-fit: contain;
 }
+/* ISO 28000 como referencia normativa: tarjeta tipográfica (sin sello ni imagen de certificación). */
+.zx-root .zx-seal--iso {
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+.zx-root .zx-seal-iso-name {
+  font-family: var(--font-display, inherit);
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.zx-root .zx-seal-iso-note {
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.85);
+}
 .zx-root .zx-seal--text span {
   font-family: var(--font-display, inherit);
   font-size: 22px;
@@ -358,4 +379,46 @@ body:has(#zenox-home) .aw-launcher > span {
 }
 @media (prefers-reduced-motion: reduce) {
   .zx-root .zx-sv::after { opacity: 0.4; }
+}
+
+/* Franja de logos de cumplimiento: nueve fichas de tamaño uniforme en dos grupos. */
+.zx-root .zx-logo-group {
+  margin-top: 18px;
+}
+.zx-root .zx-logo-group-title {
+  margin: 0 0 10px;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.85);
+}
+.zx-root .zx-seals--eco {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.zx-root .zx-seals--norm {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.zx-root .zx-seal {
+  padding: 14px 16px;
+}
+.zx-root .zx-seal--dark {
+  background: rgb(5 8 19 / 0.55);
+  border-color: rgb(62 199 255 / 0.2);
+}
+/* Logos con fondo blanco (OEA, BASC): se funden con la ficha clara sin recuadro visible. */
+.zx-root .zx-seal--light img {
+  mix-blend-mode: multiply;
+}
+.zx-root .zx-logo-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgb(190 200 230 / 0.75);
+}
+@media (max-width: 520px) {
+  .zx-root .zx-seals--eco,
+  .zx-root .zx-seals--norm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

@@ -21,15 +21,13 @@ import { WHATSAPP_URL } from "@/lib/whatsapp";
 import { SuccessStories } from "@/components/site/SuccessStories";
 import { OperationalChallenges } from "@/components/site/OperationalChallenges";
 import { ZenoxFlow } from "./ZenoxFlow";
-import { Evidence } from "@/components/site/Evidence";
 import { Implementation as SiteImplementation } from "@/components/site/Implementation";
 import { Plans as SitePlans } from "@/components/site/Plans";
 import { Faq as SiteFaq } from "@/components/site/Faq";
-import { ZenoxGlobe } from "./ZenoxGlobe";
+import { GeoCinematic } from "./GeoCinematic";
 import { useToggleReveal } from "./use-toggle-reveal";
 import { ZenoxTablet } from "./ZenoxTablet";
 import { ZenoxOrbs } from "./ZenoxOrbs";
-import isoSeal from "@/assets/compliance/iso-28000-seal.png.asset.json";
 import { useVisibility } from "./use-visibility";
 import { TestimonialStage } from "@/components/experience/TestimonialStage";
 import swift from "@/assets/client-logos/swift-cargo.png.asset.json";
@@ -72,6 +70,9 @@ import "./zenox-v2.css";
 import "./zenox-original-art.css";
 import "./zenox-lower.css";
 import "./zenox-system.css";
+import "./zenox-logix-bg.css";
+import "./zenox-compliance.css";
+import "./zenox-problem.css";
 
 const PLATFORM_ICONS = [Users, FileText, Link2, Ship, FolderOpen, ListChecks, PieChart, UserCheck];
 const PROBLEM_ICONS = [TrendingDown, PieChart, Clock];
@@ -297,11 +298,89 @@ function Entity() {
   );
 }
 
-/* El problema: tres tarjetas con composición asimétrica (la primera protagonista). */
-function Problem() {
+/* El problema: fondo de malla digital y red de conexiones (capas aisladas en .zx-pb), tres tarjetas con composición asimétrica. */
+// Nodos y conexiones de la red (viewBox 1200×700). Cada nodo se une con sus dos vecinos más cercanos.
+const PB_NODES: ReadonlyArray<readonly [number, number]> = [
+  [90, 120], [260, 60], [420, 170], [600, 80], [780, 150], [960, 60], [1120, 170],
+  [170, 330], [360, 360], [540, 290], [720, 380], [900, 300], [1080, 400],
+  [80, 560], [300, 600], [500, 520], [680, 610], [880, 540], [1100, 620],
+];
+const PB_EDGES: ReadonlyArray<readonly [number, number]> = (() => {
+  const set = new Map<string, [number, number]>();
+  PB_NODES.forEach(([x, y], i) => {
+    PB_NODES.map(([nx, ny], j) => ({ j, d: Math.hypot(nx - x, ny - y) }))
+      .filter((o) => o.j !== i)
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 2)
+      .forEach((o) => {
+        const key = i < o.j ? `${i}-${o.j}` : `${o.j}-${i}`;
+        set.set(key, [i, o.j]);
+      });
+  });
+  return Array.from(set.values());
+})();
+
+function ProblemNetwork() {
   return (
-    <section aria-labelledby="zx-problem-title">
-      <div className="zx-wrap">
+    <svg className="zx-pb-net" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      {PB_EDGES.map(([a, b], k) => {
+        const [x1, y1] = PB_NODES[a]!;
+        const [x2, y2] = PB_NODES[b]!;
+        return <line key={`l${k}`} className="zx-pb-line" x1={x1} y1={y1} x2={x2} y2={y2} />;
+      })}
+      {PB_EDGES.filter((_, k) => k % 3 === 0).map(([a, b], k) => {
+        const [x1, y1] = PB_NODES[a]!;
+        const [x2, y2] = PB_NODES[b]!;
+        return (
+          <line
+            key={`p${k}`}
+            className="zx-pb-pulse"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            style={{ "--d": `${k * -1.3}s` } as CSSProperties}
+          />
+        );
+      })}
+      {PB_NODES.map(([x, y], i) => (
+        <circle key={`n${i}`} className="zx-pb-node" cx={x} cy={y} r={i % 4 === 0 ? 3.2 : 2} />
+      ))}
+    </svg>
+  );
+}
+
+function Problem() {
+  const ref = useToggleReveal<HTMLElement>();
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      if (el.getAttribute("data-visible") !== "true") return;
+      const r = el.getBoundingClientRect();
+      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight));
+      el.style.setProperty("--zx-pb-p", p.toFixed(3));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+  return (
+    <section ref={ref} className="zx-pb" data-visible="true" aria-labelledby="zx-problem-title">
+      <div className="zx-pb-base" aria-hidden="true" />
+      <div className="zx-pb-mesh" aria-hidden="true">
+        <div className="zx-pb-mesh-drift" />
+      </div>
+      <ProblemNetwork />
+      <div className="zx-wrap zx-pb-content">
         <div data-reveal>
           <Label n="01 /">{ZX_UI.problem}</Label>
           <h2 id="zx-problem-title" className="zx-h2 zx-mt-16" style={{ maxWidth: "24ch" }}>
@@ -312,7 +391,12 @@ function Problem() {
           {ZX_PROBLEM.items.map((item, i) => {
             const Icon = PROBLEM_ICONS[i] ?? TrendingDown;
             return (
-              <article key={item.h3} className={`zx-card zx-problem-card zx-problem-card--${i}`} data-reveal>
+              <article
+                key={item.h3}
+                className={`zx-card zx-problem-card zx-problem-card--${i} zx-pb-card`}
+                data-reveal
+                style={{ "--i": i } as CSSProperties}
+              >
                 <span className="zx-icon" aria-hidden="true">
                   <Icon size={20} strokeWidth={1.6} />
                 </span>
@@ -698,11 +782,49 @@ function Clients() {
 /* Logix (Framer "Logix"): robot original a la derecha; filas de capacidades a la izquierda. El widget es el existente. */
 const LOGIX_ROBOT = "/__l5e/assets-v1/b05fdbf7-58c4-4f42-b563-2faf808eedcd/logix-transparent.png";
 const LOGIX_ROWS = ZX_LOGIX.copilots;
+// Partículas lentas del fondo de Logix: posición (%), posición (%) y retardo de la animación.
+const LX_DOTS: ReadonlyArray<readonly [number, number, number]> = [
+  [8, 14, 0], [22, 62, 1.3], [41, 9, 2.1], [57, 78, 0.6], [88, 18, 3.2], [94, 58, 1.8], [12, 88, 2.7],
+  [33, 40, 4.1], [70, 92, 0.9], [78, 30, 2.4], [48, 52, 3.6], [96, 84, 1.1],
+];
 
 function Logix() {
   const lxRef = useVisibility<HTMLElement>();
+  // Parallax suave del fondo de Logix (variable CSS --lx-p, solo transform). Con movimiento reducido no se aplica.
+  useEffect(() => {
+    const el = lxRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight));
+      el.style.setProperty("--lx-p", p.toFixed(3));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [lxRef]);
   return (
     <section ref={lxRef} id="logix" aria-labelledby="zx-logix-title" className="zx-lx" data-active="false">
+      <div className="zx-lx-bg" aria-hidden="true">
+        <div className="zx-lx-base" />
+        <div className="zx-lx-par">
+          <div className="zx-lx-drift">
+            <div className="zx-lx-img" />
+          </div>
+        </div>
+        <span className="zx-lx-glow" />
+        {LX_DOTS.map((d, i) => (
+          <span key={i} className="zx-lx-dot" style={{ "--x": `${d[0]}%`, "--y": `${d[1]}%`, "--d": `${d[2]}s` } as CSSProperties} />
+        ))}
+      </div>
       <div className="zx-wrap zx-lx-grid">
         <div className="zx-lx-copy" id="diagnostico-roi" data-reveal>
           <Label n="04 /">Logix (IA)</Label>
@@ -809,10 +931,28 @@ function Plans() {
 }
 
 /* Seguridad, cumplimiento y cobertura: referencias normativas, no sellos. */
+// Franja de logos de cumplimiento: nueve elementos en dos grupos, todos con la misma ficha.
+// Fuentes: public/respaldo (archivos entregados por el propietario) y public/compliance/dian.png.
+// El ISO 28000 no usa imagen: se identifica tipográficamente (no imita un sello de certificación).
+const LOGO_ECOSYSTEM: ReadonlyArray<{ name: string; src: string; zoom?: number }> = [
+  { name: "Cámara de Comercio de Cali", src: "/respaldo/04-camara-comercio-cali.png" },
+  { name: "Gobernación del Valle del Cauca · Paraíso de Todos", src: "/respaldo/05-gobernacion-y-paraiso.png", zoom: 1.12 },
+  { name: "NIDO", src: "/respaldo/01-nido.png" },
+  { name: "Endeavor", src: "/respaldo/02-endeavor.png" },
+  { name: "Rockstart", src: "/respaldo/03-rockstart.png" },
+];
+const LOGO_NORMATIVE: ReadonlyArray<{ name: string; src: string | null; tone: "light" | "dark"; zoom?: number }> = [
+  { name: "OEA · Operador Económico Autorizado (Colombia)", src: "/respaldo/Logo-OEA.jpg", tone: "light", zoom: 1.45 },
+  { name: "BASC · Business Alliance for Secure Commerce", src: "/respaldo/images.jpg", tone: "light", zoom: 1.2 },
+  { name: "ISO 28000 · Seguridad de la cadena de suministro", src: "/respaldo/images%20(1).jpg", tone: "dark" },
+  { name: "DIAN · Dirección de Impuestos y Aduanas Nacionales", src: "/compliance/dian.png", tone: "light" },
+];
+
 function Compliance() {
   const cardRef = useToggleReveal<HTMLDivElement>();
   return (
-    <section aria-labelledby="zx-compliance-title">
+    <section aria-labelledby="zx-compliance-title" className="zx-cmp">
+      <div className="zx-cmp-bg" aria-hidden="true" />
       <div className="zx-wrap zx-split">
         <div data-reveal>
           <Label n="07 /">Cumplimiento</Label>
@@ -822,24 +962,42 @@ function Compliance() {
           <p className="zx-p zx-mt-16">{ZX_COMPLIANCE.p}</p>
         </div>
         <div ref={cardRef} className="zx-card zx-card--glass zx-tr" data-visible="true">
-          <ul className="zx-seals" aria-label="Normas y programas con los que opera Logixtic">
-            <li className="zx-seal zx-seal--text">
-              <span>OEA</span>
-            </li>
-            <li className="zx-seal zx-seal--text">
-              <span>BASC</span>
-            </li>
-            <li className="zx-seal">
-              <img src={isoSeal.url} alt="ISO 28000 · Sistemas de gestión de seguridad de la cadena de suministro" width={96} height={96} decoding="async" />
-            </li>
-            <li className="zx-seal zx-seal--light">
-              {/* Logo DIAN suministrado por el propietario. Uso conforme a las condiciones de la marca; no implica certificación de Logixtic. */}
-              <img src="/compliance/dian.png" alt="DIAN · Dirección de Impuestos y Aduanas Nacionales" width={2172} height={724} decoding="async" />
-            </li>
-          </ul>
-          <p className="sr-only">{ZX_COMPLIANCE.disclaimer}</p>
+          <div className="zx-logo-group">
+            <p className="zx-logo-group-title">Normativa y comercio exterior</p>
+            <ul className="zx-seals zx-seals--norm" aria-label="Normativa y comercio exterior">
+              {LOGO_NORMATIVE.map((l) =>
+                l.src ? (
+                  <li key={l.name} className={`zx-seal ${l.tone === "light" ? "zx-seal--light" : "zx-seal--dark"}`} style={{ "--zoom": l.zoom ?? 1 } as CSSProperties}>
+                    <img src={l.src} alt={l.name} width={600} height={300} loading="lazy" decoding="async" />
+                  </li>
+                ) : (
+                  <li key={l.name} className="zx-seal zx-seal--iso" aria-label={l.name}>
+                    <span className="zx-seal-iso-name">ISO 28000</span>
+                    <span className="zx-seal-iso-note">Norma de referencia</span>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+          <p className="zx-logo-note">{ZX_COMPLIANCE.disclaimer}</p>
           <h3 className="zx-h3 zx-mt-16">{ZX_COVERAGE.h2}</h3>
           <p className="zx-p zx-p--sm">{ZX_COVERAGE.p}</p>
+        </div>
+      </div>
+      <div className="zx-ticker" aria-label="Ecosistema e instituciones">
+        <p className="zx-ticker-title">Ecosistema e instituciones</p>
+        <div className="zx-ticker-viewport">
+          <div className="zx-ticker-track">
+            {[0, 1, 2, 3].map((k) => (
+              <ul key={k} className="zx-ticker-set" aria-hidden={k > 0 ? "true" : undefined}>
+                {LOGO_ECOSYSTEM.map((l) => (
+                  <li key={`${k}-${l.name}`} className="zx-ticker-item">
+                    <img src={l.src} alt={k === 0 ? l.name : ""} loading="lazy" decoding="async" />
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -902,18 +1060,15 @@ export function ZenoxHome() {
       <Services />
       <SystemDefinition />
       <Problem />
-      <OperationalChallenges />
+      <OperationalChallenges variant="zenox" />
       <ZenoxFlow />
-      <div data-reveal className="reveal-item zx-evidence-wrap">
-        <Evidence showMetrics={false} showGlobe={false} zenoxMotion variant="zenox" />
-      </div>
-      <ZenoxGlobe />
-      <SuccessStories />
+      <GeoCinematic />
+      <SuccessStories variant="zenox" />
       <Logix />
-      <SiteImplementation />
+      <SiteImplementation variant="zenox" />
       <SitePlans />
       <Compliance />
-      <SiteFaq />
+      <SiteFaq variant="zenox" />
       <Closing />
     </div>
   );

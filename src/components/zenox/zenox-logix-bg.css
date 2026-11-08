@@ -1,0 +1,125 @@
+/* Logix (IA): fondo cinematográfico en capas (base → imagen del kit → luz y partículas). Ámbito #logix.
+   Causa del problema anterior: la sección no tenía fondo propio y su ::after (linea3.webp) quedaba recortado
+   en el borde derecho; la tarjeta del robot tenía fondo opaco. Solo transform/opacity en animaciones.
+   Pausa fuera de pantalla (data-active="false") y sin movimiento con prefers-reduced-motion. */
+
+/* La línea recortada (linea3) ya no se dibuja en Logix. */
+.zx-root #logix.zx-lx {
+  position: relative;
+  isolation: isolate;
+}
+.zx-root #logix.zx-lx::after {
+  display: none;
+}
+
+/* Capas del fondo. Contenedor con overflow hidden: nada se sale de la sección. */
+.zx-root #logix .zx-lx-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+}
+.zx-root #logix .zx-lx-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(50% 45% at 74% 52%, rgb(62 199 255 / 0.16), transparent 70%),
+    radial-gradient(45% 45% at 14% 88%, rgb(139 107 255 / 0.14), transparent 72%),
+    linear-gradient(180deg, #05070f 0%, #070b1a 50%, #05070f 100%);
+}
+.zx-root #logix .zx-lx-par {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--lx-p, 0) * -26px), 0);
+}
+.zx-root #logix .zx-lx-drift {
+  position: absolute;
+  inset: -6%;
+  animation: zx-lx-bg-drift 60s ease-in-out infinite alternate;
+  will-change: transform;
+}
+/* Imagen del kit: fondo4 reflejado (distinto de los fondos de Hero, Capacidades y Testimonios). */
+/* Sala de operaciones (/experiencia.jpg). Degradado oscuro detrás del texto y más claro hacia el robot. */
+.zx-root #logix .zx-lx-img {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(5 8 19 / 0.88) 0%, rgb(5 8 19 / 0.6) 46%, rgb(5 8 19 / 0.32) 100%),
+    url("/experiencia.jpg") 62% 40% / cover no-repeat;
+  opacity: 1;
+}
+.zx-root #logix .zx-lx-glow {
+  position: absolute;
+  left: 74%;
+  top: 52%;
+  width: 62%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(62 199 255 / 0.22), rgb(139 107 255 / 0.12) 55%, transparent 75%);
+  animation: zx-lx-bg-breathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+.zx-root #logix .zx-lx-dot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #8fd8ff;
+  box-shadow: 0 0 8px rgb(62 199 255 / 0.9);
+  opacity: 0.2;
+  animation: zx-lx-bg-twinkle 6s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+
+/* La tarjeta del robot deja ver la luz de fondo (mismo tamaño, posición y robot). */
+.zx-root #logix .zx-lx-visual {
+  background:
+    radial-gradient(circle at 50% 40%, rgb(124 92 255 / 0.22), transparent 65%),
+    rgb(6 7 11 / 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Contenido siempre legible: el revelado de esta sección solo desplaza (no atenúa). Así no queda texto fantasmal
+   cuando el usuario se detiene con la sección parcialmente visible. */
+.zx-root #logix [data-reveal] {
+  opacity: 1;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root #logix [data-reveal][data-visible="false"] {
+  transform: translate3d(0, 18px, 0);
+}
+
+/* Fuera de pantalla: nada se anima. */
+.zx-root #logix[data-active="false"] .zx-lx-drift,
+.zx-root #logix[data-active="false"] .zx-lx-glow,
+.zx-root #logix[data-active="false"] .zx-lx-dot {
+  animation-play-state: paused;
+}
+
+@keyframes zx-lx-bg-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-1.2%, 1%, 0) scale(1.05); }
+}
+@keyframes zx-lx-bg-breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes zx-lx-bg-twinkle {
+  0%, 100% { opacity: 0.15; transform: translate3d(0, 0, 0); }
+  50% { opacity: 0.9; transform: translate3d(0, -6px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-root #logix .zx-lx-par { transform: none; }
+  .zx-root #logix .zx-lx-drift,
+  .zx-root #logix .zx-lx-glow,
+  .zx-root #logix .zx-lx-dot { animation: none; }
+  .zx-root #logix .zx-lx-dot { opacity: 0.6; }
+}

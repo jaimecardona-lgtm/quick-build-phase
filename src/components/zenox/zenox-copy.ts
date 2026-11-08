@@ -227,6 +227,21 @@ export const ZX_SOCIAL = {
   pending: "Los casos de clientes se publicarán con autorización escrita de cada cliente.",
 } as const;
 
+/* Escena cinematográfica de presencia y control global (GeoCinematic). Textos aprobados para esta escena. */
+export const ZX_GEO = {
+  a: {
+    h2: "Tu operación crece. Tu control también debe hacerlo.",
+    band: "Presencia regional, procesos conectados y visibilidad para cada decisión",
+  },
+  b: {
+    h2: "Una sola operación. Toda la información conectada.",
+    p: "De la gestión comercial a la operación, los documentos y la rentabilidad. Logixtic transforma información dispersa en control y decisiones.",
+  },
+  c: {
+    p: "La tecnología cobra valor cuando transforma operaciones reales.",
+  },
+} as const;
+
 export const ZX_CASES = {
   h2: "Cómo los Freight Forwarders de LATAM ganan capacidad operativa con Logixtic®",
   p: "Escucha a quienes ya operan sobre un solo sistema.",

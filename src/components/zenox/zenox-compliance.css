@@ -1,0 +1,222 @@
+/* Franja de logos de cumplimiento (sección 07). Reglas que estaban en zenox-scenes.css, que la Home ya no carga.
+   Ámbito .zx-root; sin cambios de layout fuera de esta sección. */
+.zx-root .zx-seals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.zx-root .zx-seal {
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.01));
+}
+.zx-root .zx-seal--light {
+  background: #f4f7fb;
+  border-color: rgb(62 199 255 / 0.35);
+}
+.zx-root .zx-seal img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+/* ISO 28000 como referencia normativa: tarjeta tipográfica (sin sello ni imagen de certificación). */
+.zx-root .zx-seal--iso {
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+.zx-root .zx-seal-iso-name {
+  font-family: var(--font-display, inherit);
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.zx-root .zx-seal-iso-note {
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.85);
+}
+.zx-root .zx-seal--text span {
+  font-family: var(--font-display, inherit);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+@media (max-width: 520px) {
+  .zx-root .zx-seals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Franja de logos de cumplimiento: nueve fichas de tamaño uniforme en dos grupos. */
+.zx-root .zx-logo-group {
+  margin-top: 18px;
+}
+.zx-root .zx-logo-group-title {
+  margin: 0 0 10px;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.85);
+}
+.zx-root .zx-seals--eco {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.zx-root .zx-seals--norm {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.zx-root .zx-seal {
+  padding: 14px 16px;
+}
+.zx-root .zx-seal--dark {
+  background: rgb(5 8 19 / 0.55);
+  border-color: rgb(62 199 255 / 0.2);
+}
+/* Logos con fondo blanco (OEA, BASC): se funden con la ficha clara sin recuadro visible. */
+.zx-root .zx-seal--light img {
+  mix-blend-mode: multiply;
+}
+.zx-root .zx-logo-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgb(190 200 230 / 0.75);
+}
+@media (max-width: 520px) {
+  .zx-root .zx-seals--eco,
+  .zx-root .zx-seals--norm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Escala por logo (--zoom): compensa márgenes blancos de los archivos sin recortar su contenido. */
+.zx-root .zx-seal {
+  overflow: hidden;
+}
+.zx-root .zx-seal img {
+  transform: scale(var(--zoom, 1));
+}
+
+/* Sección 07 · Cumplimiento: fondo cinematográfico fondo2 del kit, con fundido en los bordes. Solo en esta sección. */
+.zx-root section.zx-cmp {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.zx-root .zx-cmp-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgb(5 8 19 / 0.5), rgb(5 8 19 / 0.72)),
+    url(/zenox-kit/decor/fondo2.webp) center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+/* Cumplimiento: el texto siempre legible. El revelado de esta sección solo desplaza; nunca atenúa el contenido. */
+.zx-root section.zx-cmp [data-reveal] {
+  opacity: 1;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.zx-root section.zx-cmp [data-reveal][data-visible="false"] {
+  transform: translate3d(0, 18px, 0);
+}
+.zx-root section.zx-cmp .zx-h2 {
+  color: #f5f7ff;
+  text-shadow: 0 2px 24px rgb(5 7 15 / 0.75);
+}
+.zx-root section.zx-cmp .zx-p {
+  color: rgb(225 232 248 / 0.92);
+  text-shadow: 0 2px 16px rgb(5 7 15 / 0.7);
+}
+
+/* Cinta infinita de ecosistema e instituciones (ancho completo, debajo del contenido de Cumplimiento). */
+.zx-root section.zx-cmp > .zx-ticker {
+  position: relative;
+  margin-top: 56px;
+  padding-block: 28px;
+  border-top: 1px solid rgb(62 199 255 / 0.12);
+  border-bottom: 1px solid rgb(62 199 255 / 0.12);
+  overflow: hidden;
+}
+.zx-root .zx-ticker-title {
+  margin: 0 0 22px;
+  text-align: center;
+  font-family: var(--zx-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(160 200 255 / 0.85);
+}
+.zx-root .zx-ticker-viewport {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+.zx-root .zx-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: zx-ticker-scroll 30s linear infinite;
+  will-change: transform;
+}
+.zx-root .zx-ticker:hover .zx-ticker-track {
+  animation-play-state: paused;
+}
+.zx-root .zx-ticker-set {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 80px;
+  margin: 0;
+  padding: 0 40px;
+  list-style: none;
+}
+.zx-root .zx-ticker-item {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  flex: 0 0 auto;
+}
+.zx-root .zx-ticker-item img {
+  display: block;
+  height: 56px;
+  width: auto;
+  max-width: 240px;
+  object-fit: contain;
+}
+@keyframes zx-ticker-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (max-width: 560px) {
+  .zx-root .zx-ticker-item { height: 44px; }
+  .zx-root .zx-ticker-item img { height: 44px; max-width: 180px; }
+  .zx-root .zx-ticker-set { gap: 56px; padding: 0 28px; }
+}
+/* Movimiento reducido: los logos se muestran estáticos, sin copias ni animación. */
+@media (prefers-reduced-motion: reduce) {
+  .zx-root .zx-ticker-track { animation: none; }
+  .zx-root .zx-ticker-viewport { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+  .zx-root .zx-ticker-set[aria-hidden="true"] { display: none; }
+  .zx-root .zx-ticker-set { flex-wrap: wrap; justify-content: center; }
+}

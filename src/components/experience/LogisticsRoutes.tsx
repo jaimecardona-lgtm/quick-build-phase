@@ -41,7 +41,7 @@ const ROUTES_ZENOX: readonly RouteDef[] = [
 ];
 
 // Lienzo recortado sobre la presencia: el mundo ocupa más área del módulo (variante zenox).
-const VIEW_ZENOX = { x: 180, y: 12, w: 360, h: 330 };
+const VIEW_ZENOX = { x: 110, y: 12, w: 460, h: 330 };
 
 // Iconos de transporte premium del kit Zenox (SVG editable, public/zenox-kit/transport).
 const TRANSPORT_ZENOX: Record<RouteDef["kind"], string> = {
@@ -336,7 +336,7 @@ export function LogisticsRoutes({
               className="lr-traveler"
             >
               {zenox ? (
-                <image href={TRANSPORT_ZENOX[route.kind]} x={-16} y={-6.5} width={32} height={13} className="lr-glyph-img" />
+                <image href={TRANSPORT_ZENOX[route.kind]} x={zenox ? -24 : -16} y={zenox ? -9.75 : -6.5} width={zenox ? 48 : 32} height={zenox ? 19.5 : 13} className="lr-glyph-img" />
               ) : (
                 <path d={glyphFor(route.kind)} className="lr-glyph" />
               )}
