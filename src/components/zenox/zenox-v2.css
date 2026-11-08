@@ -1211,8 +1211,8 @@
   .zx-root ~ .aw-root .aw-launcher,
   body:has(#zenox-home) .aw-launcher {
     padding: 0;
-    width: 48px;
-    height: 48px;
+    width: 70px;
+    height: 70px;
     justify-content: center;
     border-radius: 999px;
     font-size: 0;
@@ -1221,13 +1221,8 @@
     bottom: 12px;
   }
   body:has(#zenox-home) .aw-launcher img {
-    width: 30px;
-    height: 30px;
+    width: 70px;
+    height: 70px;
+    margin: -16px 0 -16px -4px;
   }
-  body:has(#zenox-home) .wa-float {
-    width: 44px;
-    height: 44px;
-    right: 12px;
-    bottom: 12px;
   }
-}

@@ -10,6 +10,12 @@ export const WIDGET_LABELS: Record<
   WidgetLang,
   {
     open: string;
+    greeting: string;
+    voiceOn: string;
+    voiceOff: string;
+    offer: string;
+    offerYes: string;
+    offerNo: string;
     title: string;
     close: string;
     tabChat: string;
@@ -24,6 +30,7 @@ export const WIDGET_LABELS: Record<
     modeReal: string;
     modeDegraded: string;
     modeUnavailable: string;
+    retry: string;
     errUnavailable: string;
     errRateLimited: string;
     errInvalid: string;
@@ -45,6 +52,12 @@ export const WIDGET_LABELS: Record<
 > = {
   es: {
     open: "Preguntar a Logix Web",
+    greeting: "¡Hola! Te saluda Logix. ¿Cómo puedo ayudarte?",
+    voiceOn: "Activar voz",
+    voiceOff: "Silenciar voz",
+    offer: "¡Excelente! Si quieres, puedo ponerte en contacto con un asesor de Logixtic para revisar las necesidades de tu operación. ¿Te gustaría hablar con él?",
+    offerYes: "Hablar con un asesor",
+    offerNo: "Seguir preguntando",
     title: "Logix Web",
     close: "Cerrar",
     tabChat: "Consulta",
@@ -58,7 +71,8 @@ export const WIDGET_LABELS: Record<
     modeDry: "DRY-RUN · respuesta del contenido aprobado, sin modelo real",
     modeReal: "Modelo real",
     modeDegraded: "Respuesta del contenido aprobado (modelo no disponible)",
-    modeUnavailable: "Asistente no disponible",
+    modeUnavailable: "Problema temporal de conexión",
+    retry: "Reintentar",
     errUnavailable: "El asistente no está disponible en este momento. Puedes agendar una demo.",
     errRateLimited: "Hiciste muchas consultas seguidas. Intenta de nuevo en un minuto.",
     errInvalid: "Revisa tu mensaje e inténtalo de nuevo.",
@@ -76,11 +90,16 @@ export const WIDGET_LABELS: Record<
     roiNote:
       "Estimación ilustrativa con los supuestos que ingresas. No es una promesa de resultados.",
     roiVersion: "Versión de supuestos",
-    intro:
-      "Respondo solo con el contenido aprobado de Logixtic. No tengo acceso a embarques reales.",
+    intro: "Soy Logix, tu asistente inteligente. Descubre cómo Logixtic conecta tu operación comercial, logística y financiera. ¿Qué te gustaría conocer?",
   },
   en: {
     open: "Ask Logix Web",
+    greeting: "Hi! Logix says hello. How can I help you?",
+    voiceOn: "Turn voice on",
+    voiceOff: "Mute voice",
+    offer: "Great! If you want, I can connect you with a Logixtic advisor to review your operation's needs. Would you like to talk to them?",
+    offerYes: "Talk to an advisor",
+    offerNo: "Keep asking",
     title: "Logix Web",
     close: "Close",
     tabChat: "Ask",
@@ -94,7 +113,8 @@ export const WIDGET_LABELS: Record<
     modeDry: "DRY-RUN · answer from approved content, no live model",
     modeReal: "Live model",
     modeDegraded: "Answer from approved content (model unavailable)",
-    modeUnavailable: "Assistant unavailable",
+    modeUnavailable: "Temporary connection issue",
+    retry: "Retry",
     errUnavailable: "The assistant is not available right now. You can book a demo.",
     errRateLimited: "Too many questions in a row. Try again in a minute.",
     errInvalid: "Check your message and try again.",
@@ -111,10 +131,16 @@ export const WIDGET_LABELS: Record<
     roiNet: "Net monthly saving",
     roiNote: "Illustrative estimate with the assumptions you enter. Not a promise of results.",
     roiVersion: "Assumptions version",
-    intro: "I only answer with Logixtic's approved content. I have no access to real shipments.",
+    intro: "I'm Logix, your smart assistant. Discover how Logixtic connects your commercial, logistics and financial operations. What would you like to know?",
   },
   pt: {
     open: "Perguntar ao Logix Web",
+    greeting: "Olá! A Logix te cumprimenta. Como posso ajudar?",
+    voiceOn: "Ativar voz",
+    voiceOff: "Silenciar voz",
+    offer: "Excelente! Se quiser, posso colocá-lo em contato com um consultor da Logixtic para revisar as necessidades da sua operação. Gostaria de falar com ele?",
+    offerYes: "Falar com um consultor",
+    offerNo: "Continuar perguntando",
     title: "Logix Web",
     close: "Fechar",
     tabChat: "Consulta",
@@ -128,7 +154,8 @@ export const WIDGET_LABELS: Record<
     modeDry: "DRY-RUN · resposta do conteúdo aprovado, sem modelo real",
     modeReal: "Modelo real",
     modeDegraded: "Resposta do conteúdo aprovado (modelo indisponível)",
-    modeUnavailable: "Assistente indisponível",
+    modeUnavailable: "Problema temporário de conexão",
+    retry: "Tentar novamente",
     errUnavailable: "O assistente não está disponível agora. Você pode agendar uma demonstração.",
     errRateLimited: "Muitas consultas seguidas. Tente novamente em um minuto.",
     errInvalid: "Revise sua mensagem e tente novamente.",
@@ -145,8 +172,7 @@ export const WIDGET_LABELS: Record<
     roiNet: "Economia líquida mensal",
     roiNote: "Estimativa ilustrativa com as premissas informadas. Não é promessa de resultados.",
     roiVersion: "Versão das premissas",
-    intro:
-      "Respondo apenas com o conteúdo aprovado da Logixtic. Não tenho acesso a embarques reais.",
+    intro: "Sou a Logix, sua assistente inteligente. Descubra como a Logixtic conecta sua operação comercial, logística e financeira. O que você gostaria de conhecer?",
   },
 };
 

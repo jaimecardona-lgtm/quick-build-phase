@@ -1,6 +1,11 @@
 export const WHATSAPP_URL =
   "https://wa.me/573189733174?text=Hola%2C%20quiero%20hablar%20con%20un%20experto%20y%20conocer%20m%C3%A1s%20sobre%20Logixtic.";
 
+// Enlace de asesor: mismo número comercial existente, con un mensaje breve (sin historial ni datos personales).
+export const WHATSAPP_ADVISOR_URL =
+  WHATSAPP_URL.split("?")[0] +
+  "?text=" + encodeURIComponent("Hola, vengo de Logix Web y me interesa conocer Logixtic. Quisiera hablar con un asesor");
+
 export const whatsappCopy = {
   es: { heroLabel: "Hablar con un experto de Logixtic por WhatsApp", floatLabel: "Contactar a Logixtic por WhatsApp", tooltip: "Hablar con un experto" },
   en: { heroLabel: "Talk to a Logixtic expert on WhatsApp", floatLabel: "Contact Logixtic on WhatsApp", tooltip: "Talk to an expert" },

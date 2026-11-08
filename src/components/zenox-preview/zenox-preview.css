@@ -490,8 +490,6 @@
    ===================================================================== */
 @media (max-width: 640px) {
   .zxp-page { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
-  .zxp-page .wa-float { right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; }
-  .zxp-page .wa-float svg { width: 22px; height: 22px; }
   .zxp-page .aw-root { left: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   .zxp-page .aw-launcher { width: 44px; height: 44px; min-height: 44px; padding: 0; justify-content: center; }
   .zxp-page .aw-launcher img { width: 24px; height: 24px; }

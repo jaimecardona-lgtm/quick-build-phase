@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { Calculator, MessageCircle, Send, X } from "lucide-react";
+import { Calculator, MessageCircle, Send, Volume2, VolumeX, X } from "lucide-react";
+import { WHATSAPP_ADVISOR_URL } from "@/lib/whatsapp";
 import logixAsset from "@/assets/logix-transparent.png.asset.json";
 import {
   askCommercialAssistant,
@@ -28,8 +29,14 @@ import "@/components/experience/agent-widget.css";
 const AGENT_WIDGET_ENABLED =
   import.meta.env.DEV || import.meta.env["VITE_LOGIXTIC_AGENT"] === "true";
 
+// Intención comercial verificable: términos de demostración, precio, planes, implementación o contacto comercial.
+const COMMERCIAL_INTENT =
+  /demo|demostraci|cu[aá]nto cuesta|precio|tarifa|planes?|implement|contrat|comprar|ventas|asesor|vendedor|hablar con alguien|pricing|price|sales|buy|hire|quanto custa|preço|contratar|consultor/i;
+
 type Message =
   | { role: "user"; text: string }
+  | { role: "greeting"; text: string }
+  | { role: "offer" }
   | {
       role: "assistant";
       text: string;
@@ -69,6 +76,9 @@ function AgentWidgetPanel() {
   const [tab, setTab] = useState<Tab>("chat");
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
+  const [voiceOn, setVoiceOn] = useState(true);
+  const greetedRef = useRef(false);
+  const offerDoneRef = useRef(false);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<AgentStatus | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -104,6 +114,41 @@ function AgentWidgetPanel() {
     return content.faqs[index]?.q ?? t.approvedSource;
   };
 
+  // Síntesis de voz del navegador: solo se llama desde un clic del visitante. Sin voz disponible, queda el texto.
+  const speak = (text: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || !voiceOn) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang === "en" ? "en-US" : lang === "pt" ? "pt-BR" : "es-CO";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Saludo: se añade y se lee solo la primera vez que se abre; al reabrir no se repite.
+  const toggleOpen = () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    setOpen(true);
+    if (!greetedRef.current) {
+      greetedRef.current = true;
+      setMessages((prev) => [...prev, { role: "greeting", text: t.greeting }]);
+      speak(t.greeting);
+    }
+  };
+
+  useEffect(() => {
+    if (!open && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  }, [open]);
+
+  // Reintenta la comprobación de estado (p. ej., tras un fallo temporal de conexión).
+  const retryStatus = () => {
+    setStatus(null);
+    void getCommercialAssistantStatus().then(setStatus);
+  };
+
   const ask = async (question: string) => {
     const message = question.trim();
     if (!message || busy) return;
@@ -131,6 +176,11 @@ function AgentWidgetPanel() {
       ]);
     } else {
       setMessages((prev) => [...prev, { role: "error", code: result.code }]);
+    }
+    // Oferta de asesor: una sola vez, después de responder, solo si hay intención comercial clara.
+    if (!offerDoneRef.current && COMMERCIAL_INTENT.test(message)) {
+      offerDoneRef.current = true;
+      setMessages((prev) => [...prev, { role: "offer" }]);
     }
   };
 
@@ -178,6 +228,25 @@ function AgentWidgetPanel() {
                 </span>
               ) : null}
             </div>
+            {status && !status.ok ? (
+              <button type="button" className="aw-retry focus-ring" onClick={retryStatus}>
+                {t.retry}
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="aw-icon focus-ring"
+              aria-pressed={voiceOn}
+              aria-label={voiceOn ? t.voiceOff : t.voiceOn}
+              onClick={() => {
+                if (voiceOn && typeof window !== "undefined" && "speechSynthesis" in window) {
+                  window.speechSynthesis.cancel();
+                }
+                setVoiceOn((v) => !v);
+              }}
+            >
+              {voiceOn ? <Volume2 className="h-4 w-4" aria-hidden="true" /> : <VolumeX className="h-4 w-4" aria-hidden="true" />}
+            </button>
             <button
               type="button"
               className="aw-icon focus-ring"
@@ -237,6 +306,31 @@ function AgentWidgetPanel() {
                     <p key={i} className="aw-bubble aw-user">
                       {m.text}
                     </p>
+                  ) : m.role === "greeting" ? (
+                    <div key={i} className="aw-bubble aw-bot">
+                      <p>{m.text}</p>
+                    </div>
+                  ) : m.role === "offer" ? (
+                    <div key={i} className="aw-bubble aw-bot aw-offer">
+                      <p>{t.offer}</p>
+                      <div className="aw-offer-actions">
+                        <a
+                          className="aw-offer-yes focus-ring"
+                          href={WHATSAPP_ADVISOR_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {t.offerYes}
+                        </a>
+                        <button
+                          type="button"
+                          className="aw-offer-no focus-ring"
+                          onClick={() => setMessages((prev) => prev.filter((_, j) => j !== i))}
+                        >
+                          {t.offerNo}
+                        </button>
+                      </div>
+                    </div>
                   ) : m.role === "error" ? (
                     <p key={i} className="aw-bubble aw-error">
                       {errorText(m.code, t)}
@@ -298,7 +392,7 @@ function AgentWidgetPanel() {
         className="aw-launcher focus-ring"
         aria-expanded={open}
         aria-controls="aw-panel"
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggleOpen}
       >
         <img src={logixAsset.url} alt="" width={28} height={28} />
         <span>{t.open}</span>

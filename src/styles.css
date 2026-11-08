@@ -826,11 +826,6 @@ body {
 @media (prefers-reduced-motion: reduce) { .success-video, .success-play { transition: none; } .success-video:hover { transform: none; } }
 
 /* WhatsApp flotante */
-.wa-float { position: fixed; right: 24px; bottom: 24px; z-index: 90; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 999px; background: #25d366; color: #fff; box-shadow: 0 10px 24px -8px oklch(0.12 0.07 252 / .55); transition: transform .2s ease; }
-.wa-float svg { width: 30px; height: 30px; }
-.wa-float:hover { transform: translateY(-2px); }
-.wa-float::after { content: attr(data-tooltip); position: absolute; right: calc(100% + 10px); top: 50%; translate: 0 -50%; white-space: nowrap; padding: .4rem .7rem; border-radius: 8px; background: var(--color-night); color: var(--color-on-dark); font-family: var(--font-ui); font-size: .8rem; opacity: 0; pointer-events: none; transition: opacity .2s; }
-.wa-float:hover::after, .wa-float:focus-visible::after { opacity: 1; }
 @media (max-width: 640px) { .wa-float { right: 16px; bottom: 16px; width: 50px; height: 50px; } .wa-float svg { width: 26px; height: 26px; } }
 
 /* Flow section v2: capture + results left, stage menu right */
