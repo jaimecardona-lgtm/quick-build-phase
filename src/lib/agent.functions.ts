@@ -16,6 +16,15 @@ const DEFAULT_AGENT_URL = "http://127.0.0.1:8010";
 
 export type AgentErrorCode = "unavailable" | "rate_limited" | "invalid" | "misconfigured" | "error";
 
+// Origen real de cada respuesta. Nunca se presenta una respuesta programada como generada por IA.
+export type AnswerKind =
+  | "model"
+  | "deterministic"
+  | "extractive"
+  | "dry_run"
+  | "provider_failure"
+  | "refusal";
+
 export type ChatResult =
   | {
       ok: true;
@@ -25,6 +34,7 @@ export type ChatResult =
       dryRun: boolean;
       degraded: boolean;
       refused: boolean;
+      answerKind: AnswerKind;
     }
   | { ok: false; code: AgentErrorCode };
 
@@ -44,6 +54,16 @@ export type RoiResult =
 const ChatInput = z.object({
   message: z.string().trim().min(1).max(800),
   locale: z.enum(["es", "en", "pt-BR"]).default("es"),
+  // Turnos recientes de esta sesión (solo en memoria del navegador). El backend vuelve a acotarlos.
+  history: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().max(600),
+      }),
+    )
+    .max(6)
+    .default([]),
 });
 
 const RoiInput = z.object({
@@ -129,6 +149,16 @@ export const askCommercialAssistant = createServerFn({ method: "POST" })
     if (response.status !== 200) return { ok: false, code: codeFor(response.status) };
     const json = response.json as Record<string, unknown> | null;
     if (!json || typeof json["text"] !== "string") return { ok: false, code: "error" };
+    const kinds: AnswerKind[] = [
+      "model",
+      "deterministic",
+      "extractive",
+      "dry_run",
+      "provider_failure",
+      "refusal",
+    ];
+    const rawKind = String(json["answer_kind"] ?? "");
+    const answerKind = kinds.find((k) => k === rawKind) ?? "deterministic";
     return {
       ok: true,
       text: json["text"] as string,
@@ -137,6 +167,7 @@ export const askCommercialAssistant = createServerFn({ method: "POST" })
       dryRun: Boolean(json["dry_run"]),
       degraded: Boolean(json["degraded"]),
       refused: Boolean(json["refused"]),
+      answerKind,
     };
   });
 

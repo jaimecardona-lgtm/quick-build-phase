@@ -32,13 +32,19 @@ const NODES = [
 const ORBIT_A = "M40 194 A300 110 0 1 0 640 194 A300 110 0 1 0 40 194";
 const ORBIT_B = "M110 194 A230 160 0 1 1 570 194 A230 160 0 1 1 110 194";
 
+// Variante zenox: cada transporte recorre su medio. Coordenadas en el espacio 680×388 del globo.
+// Avión: órbita aérea alrededor del planeta. Barco: corredor del Atlántico (agua). Camión: África (tierra).
+const ZX_AIR_PATH = "M 38 218 A 205 130 0 1 0 448 218 A 205 130 0 1 0 38 218";
+const ZX_SEA_PATH = "M 262 100 A 20 105 0 1 0 262 310 A 20 105 0 1 0 262 100";
+const ZX_LAND_PATH = "M 345 185 A 22 45 0 1 0 345 275 A 22 45 0 1 0 345 185";
+
 // Vehículos del globo: SVG premium del kit Zenox (public/zenox-kit/transport), elementos independientes de la escena.
 // Mismas órbitas y tiempos que antes. El avión sigue la tangente de la órbita; barco y camión van derechos.
 const VEHICLE_W = 104;
 const VEHICLE_H = Math.round((VEHICLE_W * 260) / 640 * 10) / 10;
-// Variante zenox: transportes 1.6× (más legibles a 1440 px). La variante legacy no cambia.
-const ZX_VEHICLE_W = Math.round(VEHICLE_W * 1.6);
-const ZX_VEHICLE_H = Math.round(ZX_VEHICLE_W * 260 / 640 * 10) / 10;
+// Variante zenox: transportes a tamaño base (antes 1.6×), más pequeños sobre el globo. La legacy no cambia.
+const ZX_VEHICLE_W = VEHICLE_W;
+const ZX_VEHICLE_H = VEHICLE_H;
 function OrbitTrafficZenox() {
   return (
     <svg className="gc-orbits" viewBox="0 0 680 388" focusable="false" aria-hidden="true">
@@ -46,15 +52,15 @@ function OrbitTrafficZenox() {
       <path d={ORBIT_B} className="gc-orbit-line gc-orbit-line-b" />
       <g className="gc-vehicle gc-vehicle-plane">
         <image href="/zenox-kit/transport/avion-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
-        <animateMotion dur="16s" repeatCount="indefinite" path={ORBIT_A} rotate="auto" />
+        <animateMotion dur="16s" repeatCount="indefinite" path={ZX_AIR_PATH} rotate="auto" />
       </g>
       <g className="gc-vehicle gc-vehicle-ship">
         <image href="/zenox-kit/transport/barco-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
-        <animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ORBIT_A} />
+        <animateMotion dur="16s" begin="-8s" repeatCount="indefinite" path={ZX_SEA_PATH} />
       </g>
       <g className="gc-vehicle gc-vehicle-truck">
         <image href="/zenox-kit/transport/camion-premium.svg" x={-ZX_VEHICLE_W / 2} y={-ZX_VEHICLE_H / 2} width={ZX_VEHICLE_W} height={ZX_VEHICLE_H} />
-        <animateMotion dur="24s" repeatCount="indefinite" path={ORBIT_B} />
+        <animateMotion dur="24s" repeatCount="indefinite" path={ZX_LAND_PATH} />
       </g>
     </svg>
   );

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToggleReveal } from "./use-toggle-reveal";
 import "./zenox-cases.css";
 import { CASES, CASE_VIDEO_ID, type CaseItem } from "@/lib/success-cases";
 
 const CASE_VIDEO_SRC = `https://www.youtube-nocookie.com/embed/${CASE_VIDEO_ID}?rel=0&playsinline=1`;
+// Tiempo que cada caso permanece visible antes de pasar al siguiente (1 → 2 → 3 → 1).
+const CASE_INTERVAL_MS = 7000;
 
 /*
  * Casos de éxito tras el Hero (espejo de la sección "Clientes y casos de éxito" de Framer).
@@ -15,9 +17,58 @@ const CASE_VIDEO_SRC = `https://www.youtube-nocookie.com/embed/${CASE_VIDEO_ID}?
 
 export function ZenoxCases() {
   const [active, setActive] = useState(0);
+  // Se incrementa en cada selección manual para reiniciar el temporizador de 12 s.
+  const [resetKey, setResetKey] = useState(0);
+  const [focused, setFocused] = useState(false);
+  const [inView, setInView] = useState(true);
+  const [docVisible, setDocVisible] = useState(() => typeof document === "undefined" || !document.hidden);
+  const [reduced, setReduced] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const caseRef = useToggleReveal<HTMLDivElement>();
   const [videoOpen, setVideoOpen] = useState(false);
   const current = CASES[active];
+
+  // Movimiento reducido: sin avance automático; la selección manual sigue funcionando.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Pausa cuando la sección sale del viewport y cuando la pestaña del navegador no es visible.
+  useEffect(() => {
+    const onVisibility = () => setDocVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    const el = sectionRef.current;
+    let observer: IntersectionObserver | undefined;
+    if (el && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(([entry]) => setInView(!!entry?.isIntersecting), { threshold: 0.25 });
+      observer.observe(el);
+    }
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      observer?.disconnect();
+    };
+  }, []);
+
+  // El cursor encima NO pausa: solo el foco por teclado, el vídeo abierto, la sección fuera de pantalla,
+  // la pestaña oculta o la preferencia de movimiento reducido.
+  const paused = focused || videoOpen || !inView || !docVisible || reduced;
+
+  // Avance automático. Cualquier cambio (manual o automático) reinicia el temporizador: sin saltos dobles.
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setTimeout(() => setActive((a) => (a + 1) % CASES.length), CASE_INTERVAL_MS);
+    return () => window.clearTimeout(id);
+  }, [active, paused, resetKey]);
+
+  const selectCase = (index: number) => {
+    setActive(index);
+    setResetKey((k) => k + 1);
+  };
 
   useEffect(() => {
     if (!videoOpen) return;
@@ -31,7 +82,19 @@ export function ZenoxCases() {
   if (!current) return null;
 
   return (
-    <section id="clientes-logos" className="zc" aria-labelledby="zc-title">
+    <section
+      ref={sectionRef}
+      id="clientes-logos"
+      className="zc"
+      aria-labelledby="zc-title"
+      onFocus={(e) => {
+        // Solo la navegación por teclado pausa; un clic con el ratón no debe dejar el carrusel parado.
+        if (e.target.matches(":focus-visible")) setFocused(true);
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false);
+      }}
+    >
       <div className="zc-bg" aria-hidden="true" />
       <div className="zx-wrap zc-inner">
         <header className="zc-head" data-reveal>
@@ -48,7 +111,7 @@ export function ZenoxCases() {
               type="button"
               className="zc-tab"
               aria-pressed={i === active}
-              onClick={() => setActive(i)}
+              onClick={() => selectCase(i)}
             >
               {c.tab}
             </button>

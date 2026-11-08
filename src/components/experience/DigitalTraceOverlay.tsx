@@ -1,6 +1,4 @@
-import { useLanguage } from "@/lib/i18n";
 import { CINEMATIC_ENABLED } from "@/lib/cinematic-assets";
-import { TRACE_LABEL, traceLang } from "@/components/experience/trace-labels";
 import "@/components/experience/digital-trace.css";
 
 /*
@@ -18,7 +16,6 @@ const NODES = [
 ];
 
 export function DigitalTraceOverlay() {
-  const { locale } = useLanguage();
   if (!CINEMATIC_ENABLED) return null;
 
   return (
@@ -30,7 +27,6 @@ export function DigitalTraceOverlay() {
         ))}
       </svg>
       <span className="dt-packet" />
-      <span className="dt-chip font-ui">{TRACE_LABEL[traceLang(locale)]}</span>
     </div>
   );
 }

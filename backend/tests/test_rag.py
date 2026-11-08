@@ -509,7 +509,7 @@ def test_social_messages_never_query_supabase_or_embeddings():
     rec = _Recorder([ROW])
     runtime, _ = _runtime(None, rec=rec)
     result = _ask(runtime, "hola")
-    assert result.metrics.answer_kind == "social"
+    assert result.metrics.answer_kind in ("conversational", "deterministic")
     assert rec.embed_calls == 0 and rec.rpc_payloads == []
 
 

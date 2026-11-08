@@ -319,10 +319,10 @@
 
 /* Cambio de caso: el contenido entra con desplazamiento y opacidad (se repite al cambiar de pestaña). */
 .zc-case-enter {
-  animation: zc-case-enter 620ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: zc-case-enter 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 @keyframes zc-case-enter {
-  from { opacity: 0.3; transform: translate3d(18px, 0, 0); }
+  from { opacity: 0.3; transform: translate3d(14px, 0, 0); }
   to { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {

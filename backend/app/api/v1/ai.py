@@ -10,7 +10,7 @@ from app.core.gateway import client_identity
 from app.core.logging import get_logger
 from app.core.ratelimit_types import RateLimiterLike
 from app.integrations.openrouter_client import OpenRouterClient
-from app.services.agent_orchestrator import AgentRuntime, answer
+from app.services.agent_orchestrator import AgentRuntime, Turn, answer
 from app.services.knowledge_service import KnowledgeBase
 from app.tools.registry import ToolNotAllowed, invoke
 
@@ -19,10 +19,17 @@ logger = get_logger(__name__)
 MAX_BODY_BYTES = 8000
 
 
+class HistoryTurn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=600)
+
+
 class ChatBody(BaseModel):
     message: str = Field(min_length=1, max_length=2000)
     session_id: str | None = Field(default=None, max_length=64)
     locale: Literal["es", "en", "pt-BR"] = "es"
+    # Turnos recientes de la sesión, enviados por el navegador. No se guardan en el servidor.
+    history: list[HistoryTurn] = Field(default_factory=list, max_length=6)
     # Clave de cuota del cliente final, fijada por la pasarela.
     # Solo es fiable dentro del cuerpo firmado.
     client_key: str | None = Field(default=None, max_length=64)
@@ -35,6 +42,8 @@ class ChatOut(BaseModel):
     dry_run: bool
     degraded: bool
     refused: bool
+    # Origen real de la respuesta: model | deterministic | extractive | dry_run | provider_failure | refusal
+    answer_kind: str
     knowledge_version: str
     suggested_action: str | None = None
 
@@ -76,8 +85,13 @@ async def chat(request: Request) -> ChatOut:
     if len(body.message) > settings.chat_max_chars:
         raise HTTPException(status_code=422, detail="Mensaje demasiado largo.")
 
+    turns = [Turn(role=t.role, content=t.content) for t in body.history]
     result = await answer(
-        body.message, _runtime(request), locale=body.locale, session_id=body.session_id
+        body.message,
+        _runtime(request),
+        locale=body.locale,
+        session_id=body.session_id,
+        history=turns,
     )
     return ChatOut(
         text=result.text,
@@ -86,6 +100,7 @@ async def chat(request: Request) -> ChatOut:
         dry_run=result.dry_run,
         degraded=result.degraded,
         refused=result.refused,
+        answer_kind=result.answer_kind,
         knowledge_version=knowledge.version,
         suggested_action=result.suggested_action,
     )

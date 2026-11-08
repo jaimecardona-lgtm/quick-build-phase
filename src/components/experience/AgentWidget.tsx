@@ -8,6 +8,7 @@ import {
   getCommercialAssistantStatus,
   type AgentErrorCode,
   type AgentStatus,
+  type AnswerKind,
   type ChatResult,
   type RoiResult,
 } from "@/lib/agent.functions";
@@ -44,6 +45,7 @@ type Message =
       dryRun: boolean;
       degraded: boolean;
       refused: boolean;
+      answerKind: AnswerKind;
     }
   | { role: "error"; code: AgentErrorCode };
 
@@ -51,6 +53,24 @@ type Tab = "chat" | "roi";
 
 function backendLocale(locale: Locale): "es" | "en" | "pt-BR" {
   return locale === "en" ? "en" : locale === "pt-BR" ? "pt-BR" : "es";
+}
+
+// Etiqueta honesta del origen de cada respuesta: IA, programada, respaldo o modo prueba.
+function answerKindLabel(kind: AnswerKind, t: (typeof WIDGET_LABELS)["es"]): string {
+  switch (kind) {
+    case "model":
+      return t.kindModel;
+    case "deterministic":
+      return t.kindDeterministic;
+    case "extractive":
+      return t.kindExtractive;
+    case "dry_run":
+      return t.modeDry;
+    case "provider_failure":
+      return t.kindProviderFailure;
+    default:
+      return t.kindDeterministic;
+  }
 }
 
 function errorText(code: AgentErrorCode, t: (typeof WIDGET_LABELS)["es"]): string {
@@ -68,6 +88,20 @@ function errorText(code: AgentErrorCode, t: (typeof WIDGET_LABELS)["es"]): strin
   }
 }
 
+// Idioma de síntesis por idioma de interfaz. Español: preferencia por acento latinoamericano.
+const VOICE_LANG: Record<WidgetLang, string> = { es: "es-CO", en: "en-US", pt: "pt-BR" };
+
+// Elige la mejor voz instalada para el idioma: voces naturales/neurales y, en español, LatAm primero.
+function pickVoice(voices: SpeechSynthesisVoice[], lang: WidgetLang): SpeechSynthesisVoice | undefined {
+  const prefix = lang === "en" ? "en" : lang === "pt" ? "pt" : "es";
+  const candidates = voices.filter((v) => v.lang.toLowerCase().startsWith(prefix));
+  const rank = (v: SpeechSynthesisVoice) =>
+    (lang === "es" && /es-(419|CO|MX|US)/i.test(v.lang) ? 4 : 0) +
+    (/natural|neural|online/i.test(v.name) ? 3 : 0) +
+    (/google|microsoft/i.test(v.name) ? 1 : 0);
+  return [...candidates].sort((a, b) => rank(b) - rank(a))[0];
+}
+
 function AgentWidgetPanel() {
   const { locale, content } = useLanguage();
   const lang: WidgetLang = widgetLang(locale);
@@ -79,6 +113,9 @@ function AgentWidgetPanel() {
   const [voiceOn, setVoiceOn] = useState(true);
   const greetedRef = useRef(false);
   const offerDoneRef = useRef(false);
+  // Voces cargadas de forma asíncrona y última locución: se guarda referencia para que el navegador no la descarte.
+  const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<AgentStatus | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -114,34 +151,62 @@ function AgentWidgetPanel() {
     return content.faqs[index]?.q ?? t.approvedSource;
   };
 
-  // Síntesis de voz del navegador: solo se llama desde un clic del visitante. Sin voz disponible, queda el texto.
-  const speak = (text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window) || !voiceOn) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === "en" ? "en-US" : lang === "pt" ? "pt-BR" : "es-CO";
+  // Carga las voces del navegador (asíncronas en muchos equipos) y las actualiza al cambiar la lista.
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const synth = window.speechSynthesis;
+    const loadVoices = () => {
+      voicesRef.current = synth.getVoices();
+    };
+    loadVoices();
+    synth.addEventListener("voiceschanged", loadVoices);
+    return () => synth.removeEventListener("voiceschanged", loadVoices);
+  }, []);
+
+  // Detiene cualquier lectura en curso. No se llama desde cleanups de React: así la despedida sobrevive al cierre.
+  const stopSpeech = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+    utteranceRef.current = null;
   };
 
-  // Saludo: se añade y se lee solo la primera vez que se abre; al reabrir no se repite.
+  // Síntesis de voz del navegador. Solo se llama desde un clic del visitante; cancela antes de hablar
+  // para que saludo y despedida nunca se solapen. Si no hay voz o el navegador lo bloquea, el chat sigue.
+  const speak = (text: string) => {
+    stopSpeech();
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || !voiceOn) return;
+    try {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = VOICE_LANG[lang];
+      const voice = pickVoice(voicesRef.current.length ? voicesRef.current : synth.getVoices(), lang);
+      if (voice) utterance.voice = voice;
+      const release = () => {
+        if (utteranceRef.current === utterance) utteranceRef.current = null;
+      };
+      utterance.onend = release;
+      utterance.onerror = release;
+      utteranceRef.current = utterance;
+      synth.speak(utterance);
+    } catch {
+      utteranceRef.current = null;
+    }
+  };
+
+  // Saludo: el texto escrito se añade solo la primera vez; la voz suena en cada apertura.
   const toggleOpen = () => {
     if (open) {
       setOpen(false);
+      stopSpeech();
       return;
     }
     setOpen(true);
     if (!greetedRef.current) {
       greetedRef.current = true;
       setMessages((prev) => [...prev, { role: "greeting", text: t.greeting }]);
-      speak(t.greeting);
     }
+    speak(t.greeting);
   };
-
-  useEffect(() => {
-    if (!open && typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-  }, [open]);
 
   // Reintenta la comprobación de estado (p. ej., tras un fallo temporal de conexión).
   const retryStatus = () => {
@@ -152,12 +217,21 @@ function AgentWidgetPanel() {
   const ask = async (question: string) => {
     const message = question.trim();
     if (!message || busy) return;
+    // Historial corto de esta sesión: solo texto de visitante y de respuestas, sin mensajes de sistema.
+    const history = messages
+      .filter((m): m is Extract<Message, { role: "user" | "assistant" }> =>
+        m.role === "user" || m.role === "assistant",
+      )
+      .slice(-6)
+      .map((m) => ({ role: m.role, content: m.text.slice(0, 600) }));
     setMessages((prev) => [...prev, { role: "user", text: message }]);
     setDraft("");
     setBusy(true);
     let result: ChatResult;
     try {
-      result = await askCommercialAssistant({ data: { message, locale: backendLocale(locale) } });
+      result = await askCommercialAssistant({
+        data: { message, locale: backendLocale(locale), history },
+      });
     } catch {
       result = { ok: false, code: "unavailable" };
     }
@@ -172,6 +246,7 @@ function AgentWidgetPanel() {
           dryRun: result.dryRun,
           degraded: result.degraded,
           refused: result.refused,
+          answerKind: result.answerKind,
         },
       ]);
     } else {
@@ -190,10 +265,18 @@ function AgentWidgetPanel() {
     void ask(draft);
   };
 
-  // Cierre: vuelve el foco al launcher, que siempre está habilitado.
+  // Cierre silencioso (Escape): vuelve el foco al launcher, que siempre está habilitado.
   const closePanel = () => {
     setOpen(false);
+    stopSpeech();
     launcherRef.current?.focus();
+  };
+
+  // Cierre con la X: el panel se cierra y la despedida se reproduce hasta el final.
+  const closeWithFarewell = () => {
+    setOpen(false);
+    launcherRef.current?.focus();
+    speak(t.farewell);
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
@@ -250,7 +333,7 @@ function AgentWidgetPanel() {
             <button
               type="button"
               className="aw-icon focus-ring"
-              onClick={closePanel}
+              onClick={closeWithFarewell}
               aria-label={t.close}
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -338,8 +421,8 @@ function AgentWidgetPanel() {
                   ) : (
                     <div key={i} className="aw-bubble aw-bot">
                       <p>{m.text}</p>
-                      {m.degraded && !m.refused ? (
-                        <small className="aw-note">{m.dryRun ? t.modeDry : t.modeDegraded}</small>
+                      {!m.refused ? (
+                        <small className="aw-note">{answerKindLabel(m.answerKind, t)}</small>
                       ) : null}
                       {m.sources.length > 0 ? (
                         <div className="aw-sources">
