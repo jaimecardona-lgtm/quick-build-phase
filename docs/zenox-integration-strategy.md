@@ -78,35 +78,18 @@ Reglas:
 Variables de runtime (no `VITE_`):
 
 - `APP_ENV=staging`, `AGENT_DRY_RUN=true`, `CORS_ALLOW_ORIGINS` (host de staging), `CHAT_RATE_LIMIT_PER_MINUTE=10`, `CHAT_MAX_CHARS=800`.
-- `STAGING_ACCESS_MODE=basic` (ver sección 7).
-- Secretos: `STAGING_BASIC_AUTH`, `INTERNAL_HMAC_SECRET` (nuevo, distinto de producción). Sin `OPENROUTER_API_KEY`, Supabase ni Tavily.
+- Sin HTTP Basic: `STAGING_ACCESS_MODE` y `STAGING_BASIC_AUTH` **ya no existen** (ver sección 7).
+- Secretos: `INTERNAL_HMAC_SECRET` (nuevo, distinto de producción). Sin `OPENROUTER_API_KEY`, Supabase ni Tavily.
 
-## 7. Control de acceso en servidor (implementado y probado)
+## 7. Acceso público y noindex en staging (sustituye al Basic Auth anterior)
 
-Implementado en `src/lib/staging-access.ts` y conectado en `src/server.ts`, delante de cualquier respuesta de la aplicación.
+Se retiró la autenticación HTTP Basic (gateway `scripts/staging-gateway.mjs` y `src/lib/staging-access.ts`). El sitio de staging es de acceso público normal. La protección de indexación se mantiene de forma independiente: `src/server.ts` añade `X-Robots-Tag: noindex, nofollow` a las respuestas de la aplicación cuando `APP_ENV=staging`. En producción (`APP_ENV` distinto de `staging`) no cambia nada.
 
-Comportamiento (probado contra el servidor `node-server` con `curl`):
+Aviso: el panel de Render puede conservar `STAGING_ACCESS_MODE` y `STAGING_BASIC_AUTH` de despliegues anteriores. Son inertes, pero deben eliminarse a mano.
 
-| Caso | Resultado |
-| --- | --- |
-| `/zenox-preview` sin credencial, modo `basic` | **401** + `WWW-Authenticate` + `X-Robots-Tag: noindex, nofollow` |
-| Credencial incorrecta | **401** |
-| Credencial correcta | **200** + `X-Robots-Tag` |
-| `/` sin credencial | **401** |
-| Función de servidor (`/_serverFn/…`) sin credencial | **401** |
-| Modo `basic` sin `STAGING_BASIC_AUTH` | **503** (cierre por defecto) |
-| Modo `off` (por defecto) | **200** sin cambios (producción y desarrollo no afectados) |
-| `/healthz` | Exento (solo devuelve estado). En v1 existe; en la rama de preview no hay ruta, así que da 404 hasta integrar `healthz.ts`. |
+Los estáticos de `public/` los sirve Nitro antes del wrapper de `fetch`, así que no llevan la cabecera `noindex`; los buscadores indexan páginas HTML, no assets.
 
-Comparación de credenciales con SHA-256 + `timingSafeEqual`. No se registran credenciales.
-
-**Límite no resuelto: recursos estáticos.** `GET /assets/06-costos-operacion.webp` responde **200 sin credencial**. Motivo verificado: Nitro registra el servido de `public/` con `unshift` **antes** de cualquier middleware de la aplicación (`node_modules/nitro/dist/_chunks/nitro.mjs`, líneas ~788–793), así que el wrapper de `fetch` no lo ve.
-
-Opciones para cerrarlo (decisión pendiente):
-
-1. **Recomendada:** poner el servicio de staging detrás de un control de acceso externo al contenedor (proxy o acceso con identidad delante del host). Cubre todo el tráfico, incluidos estáticos.
-2. Dentro de la app: `serveStatic: false` en la configuración de Nitro para el build de staging, y servir `public/` desde el wrapper tras la comprobación. Requiere cambiar la configuración de build y probarla completa.
-3. Reducir lo expuesto: el contenido de `public/` se publica sin control (ver sección 8).
+Historial (superado): el bloqueo Basic dejó `503 — Servicio no configurado` cuando faltaba `STAGING_BASIC_AUTH`.
 
 ## 8. Contenido expuesto por `public/` (bloqueante para staging)
 
@@ -151,9 +134,7 @@ Opciones para cerrarlo (decisión pendiente):
 
 Las secciones 7, 8 y 12 anteriores quedan **superadas** por lo siguiente, verificado en el contenedor real:
 
-- **Control de acceso de estáticos resuelto (Opción A):** `scripts/staging-gateway.mjs` escucha en `PORT` y reenvía a Nitro (`APP_INTERNAL_PORT`, 10001) solo tras comprobar la credencial. Cubre HTML, JS, CSS, imágenes, vídeos, `robots.txt`, funciones de servidor y `POST`. `/healthz` queda exento.
-- **Cierre seguro:** sin `STAGING_BASIC_AUTH` el gateway responde 503 a todo salvo `/healthz`, también dentro de la imagen.
-- **Modo `off`:** `scripts/start-render.sh` no levanta el gateway; Nitro escucha en `PORT`, como antes.
+- **Acceso público (revisado):** el gateway Basic y `STAGING_ACCESS_MODE` se eliminaron. Nitro escucha directamente en `PORT`; `scripts/start-render.sh` solo supervisa Node y FastAPI.
 - **Preset de Nitro:** `NITRO_PRESET=node-server` en el Dockerfile y comprobación del preset en el build.
 - **C4 interno:** ya no está en `public/` en la base `12832f9` (retirado en el commit `62e6370` de v1; copia en `docs/productization/archive/`). No requiere cambios.
 - **Vídeos sin licencia:** `public/media/cinematic/**/*.mp4` excluidos del contexto Docker. Verificado: 0 MP4 en la imagen, 404 al pedirlos.

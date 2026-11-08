@@ -103,7 +103,7 @@ Criterios: 0 errores de consola y de página, 0 px de desbordamiento, 0 imágene
 
 `noindex` **no protege** el contenido: solo pide a los buscadores que no indexen. Medidas necesarias:
 
-1. **Acceso restringido (requiere decisión):** autenticación HTTP Basic o cabecera de acceso implementada en el servidor Node (middleware de Nitro / `src/server.ts`), con credencial en secreto `STAGING_BASIC_AUTH`. Sin esto, la URL de Render es pública. No he verificado qué control de acceso ofrece Render en el plan usado (`plan: free` en `render.yaml`); asumir que hay que implementarlo en la aplicación hasta comprobarlo.
+1. **Acceso público (decisión vigente):** staging es público y sin HTTP Basic. Se retiró `STAGING_BASIC_AUTH` y `STAGING_ACCESS_MODE`; el control se hará con un sistema de usuarios con roles en una etapa futura, no con una credencial compartida.
 2. Cabecera `X-Robots-Tag: noindex, nofollow` a nivel de servidor (además de la meta).
 3. No enlazar staging desde producción, no añadir a sitemap, no asignar dominio personalizado.
 4. Nombre de servicio no predecible y sin datos reales: sin base de datos, sin leads, sin claves de pago.

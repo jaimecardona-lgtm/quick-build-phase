@@ -55,8 +55,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_ENV=staging \
     HOST=0.0.0.0 \
     PORT=10000 \
-    APP_INTERNAL_PORT=10001 \
-    STAGING_ACCESS_MODE=basic \
     AGENT_API_URL=http://127.0.0.1:8010 \
     PY=/opt/venv/bin/python
 
@@ -68,7 +66,6 @@ COPY --from=web-build /usr/local/bin/node /usr/local/bin/node
 COPY --from=web-build /app/.output /srv/app/.output
 COPY --from=api-build /opt/venv /opt/venv
 COPY scripts/start-render.sh /srv/app/scripts/start-render.sh
-COPY scripts/staging-gateway.mjs /srv/app/scripts/staging-gateway.mjs
 
 RUN sed -i 's/\r$//' /srv/app/scripts/start-render.sh \
  && chmod 0555 /srv/app/scripts/start-render.sh \

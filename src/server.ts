@@ -2,7 +2,6 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
-import { checkStagingAccess, withStagingHeaders } from "./lib/staging-access";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -36,6 +35,19 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+// En staging las respuestas de la aplicación piden a los buscadores que no indexen. Es independiente de
+// cualquier autenticación: el acceso público sigue siendo normal. En producción (APP_ENV distinto de staging) no cambia.
+function withStagingNoindex(response: Response): Response {
+  if (process.env["APP_ENV"] !== "staging") return response;
+  const headers = new Headers(response.headers);
+  headers.set("X-Robots-Tag", "noindex, nofollow");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 function isH3SwallowedErrorBody(body: string): boolean {
   try {
     const payload = JSON.parse(body) as { unhandled?: unknown; message?: unknown };
@@ -48,18 +60,17 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
-      // Control de acceso de staging (modo "off" por defecto): antes de cualquier respuesta de la aplicación.
-      const denied = checkStagingAccess(request);
-      if (denied) return denied;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return withStagingHeaders(await normalizeCatastrophicSsrResponse(response));
+      return withStagingNoindex(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return withStagingNoindex(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };
